@@ -23,129 +23,200 @@ body {
   a,
   span {
     color: gray(90);
-    font-family: "Rubik", sans-serif;
+    font-family: 'Rubik', sans-serif;
     font-weight: 400;
     margin: 0px;
     padding: 0px;
   }
 }
 
-$backgroundImage: "https://catherineasquithgallery.com/uploads/posts/2021-02/1612743094_124-p-fon-na-android-goluboi-144.jpg";
+$backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/1612743094_124-p-fon-na-android-goluboi-144.jpg';
 
 .background-image {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
+#tab-group {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0px 0;
+  border: solid 1px;
+  border-color: #fff;
+  border-radius: 10px;
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+  li a {
+    display: block;
+    border-radius: 10px;
+    text-decoration: none;
+    padding: 5px;
+    background: rgba(gray, 0.25);
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s ease;
+  }
+}
 .time {
   color: rgba(rgb(255, 255, 255), 0.71);
-     font-size: 4em;
-        height: 60px;
-        line-height: 60px;
-      }
-.time-container{
-  position:fixed;
+  font-size: 4em;
+  height: 60px;
+  line-height: 60px;
+}
+.time-container {
+  position: fixed;
   bottom: 0;
   right: 0;
-  padding-right: .5em;
-
+  padding-right: 0.5em;
 }
-.pt1{
-padding-top: 1em;
+.pt1 {
+  padding-top: 1em;
 }
-.ml1{
-margin-left: 1em;
+.ml1e {
+  margin-left: 1em;
 }
-.ml2{
-margin-left: 2em;
+.ml2e {
+  margin-left: 2em;
 }
-.ml3{
-margin-left: 3em;
+.ml3e {
+  margin-left: 3em;
 }
-.button-clear{
+.ml4e {
+  margin-left: 4em;
+}
+.ml5e {
+  margin-left: 5em;
+}
+.ml6e {
+  margin-left: 6em;
+}
+.ml7e {
+  margin-left: 7em;
+}
+.ml8e {
+  margin-left: 8em;
+}
+.ml9e {
+  margin-left: 9em;
+}
+.ml10e {
+  margin-left: 10em;
+}
+.button-clear {
   backdrop-filter: blur(3px);
   background-color: rgba(rgb(0, 0, 0), 0.1);
-  border: 1px solid rgba(white, .75);
+  border: 1px solid rgba(white, 0.75);
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(black, 0.1);
   height: 30px;
   &:hover {
-        background-color: #fff;
-        transition: 300ms;
-    }
+    background-color: #fff;
+    transition: 300ms;
+  }
 }
-.form{
-
-display:grid;
+.form {
+  display: grid;
 }
-.buttons-login-container{
-  display: inline;
+.buttons-login-container {
+  display: grid;
+  justify-content: end;
 }
-.input-field{
+.input-field {
   margin-top: 1em;
-   backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   background-color: rgba(rgb(0, 0, 0), 0.31);
-  border: 1px solid rgba(white, .75);
+  border: 1px solid rgba(white, 0.75);
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(black, 0.1);
   height: 30px;
   padding-left: 1em;
 }
 .input-field::-webkit-input-placeholder {
-    /* WebKit, Blink, Edge */
-    color: rgb(255, 255, 255);
+  /* WebKit, Blink, Edge */
+  color: rgb(255, 255, 255);
 }
 .input-field:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    color: rgb(255, 255, 255);
-    opacity: 1;
+  /* Mozilla Firefox 4 to 18 */
+  color: rgb(255, 255, 255);
+  opacity: 1;
 }
 .input-field::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    color: rgb(255, 255, 255);
-    opacity: 1;
+  /* Mozilla Firefox 19+ */
+  color: rgb(255, 255, 255);
+  opacity: 1;
 }
 .input-field:-ms-input-placeholder {
-    /* Internet Explorer 10-11 */
-    color: rgb(255, 255, 255);
+  /* Internet Explorer 10-11 */
+  color: rgb(255, 255, 255);
 }
 
-.welcome-container{
+.welcome-container {
   display: table;
   position: absolute;
+  align-items: center;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
 }
+.enter-logo {
+  position: absolute;
+}
 .mainlogo {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100%;
   margin: auto auto;
-  padding-left: 20em;
 }
-.svg > path {
-   fill: "white"
+.enter-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  transition: 450ms;
 }
+#image-logo {
+  transition: 450ms;
+}
+#form-enter-inputs {
+  position: absolute;
+  display: grid;
+  justify-content: flex-end;
+  transition: 450ms;
+}
+#enter-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-
+  transition: 450ms;
+}
+#logining-inputs {
+  display: grid;
+}
 #app {
   background-color: gray(30);
 
   &.logged-out {
-    #login-inputs{
-      opacity: 0;
-      width: 0.01;
-      transform: translateY(20%);
-      transition: (400ms);
-      transition-delay: 400ms;
-
-    }
-    #welcome-container{
-
+    #image-logo {
+      margin-top: -5%;
       cursor: pointer;
+      &:hover {
+        scale: 1.5;
+      }
+    }
+    #form-enter-inputs {
+      visibility: hidden;
+      opacity: 0;
+      margin-top: 5%;
     }
     #app-background {
       cursor: pointer;
@@ -153,30 +224,61 @@ display:grid;
   }
 
   &.logging-in,
+  &.registering,
   &.verifying-log-in,
   &.log-in-error {
-    #login-inputs{
-      transform: translateY( 0 );
-
+    #enter-tab {
+      background: rgb(255, 255, 255);
+    }
+    #registration-tab {
+      &:hover {
+        background: rgb(0, 0, 0);
+        color: white;
+      }
+    }
+    #image-logo {
+      margin-block-start: -5%;
+    }
+    #form-enter-inputs {
       opacity: 1;
-      transition: (400ms);
-      transition-delay: 400ms;
+      transition: (450ms);
+      transition-delay: 200ms;
+      margin-top: 3%;
     }
-    #welcome-container{
-     transform: translateX(-10%);
-     transition: (400ms);
-     opacity: 0.85;
+
+    #registering-inputs {
+      display: none;
+      visibility: hidden;
     }
+
     #app-background {
       #app-background-image {
-        filter: blur(8px);
+        filter: blur(18px);
         transform: scale(1.2);
       }
     }
-  }
-
-  &.logging-in,
-  &.log-in-error {
+    &.registering {
+      #enter-tab {
+        background: rgba(gray, 0.25);
+        &:hover {
+          background: rgb(0, 0, 0);
+          color: white;
+        }
+      }
+      #registration-tab {
+        background: rgb(255, 255, 255);
+        color: #000;
+      }
+      #registering-inputs {
+        display: grid;
+        visibility: visible;
+        transition: (1400ms);
+      }
+      #logining-inputs {
+        display: none;
+        visibility: hidden;
+      }
+    }
   }
 
   &.verifying-log-in {
