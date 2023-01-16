@@ -151,74 +151,63 @@ const Home: BlitzPage = () => {
     <Layout title="Digital Wonder">
       <div id="app" className={getStatusClass()}>
         <div className="welcome-container ">
-          <div className="enter-form-container">
-            <div id="enter-form" className={getStatusClass()}>
-              <Image
-                id="image-logo"
-                className="enter-logo"
-                src={Logo}
-                priority
-                alt="Wonder Digital"
-                onClick={() => setUserStatusTo(UserStatus.LoggingIn)}
-              />
-              <div id="form-enter-inputs" className={getStatusClass()}>
-                <ul id="tab-group">
-                  <li>
-                    <a
-                      id="enter-tab"
-                      className={getStatusClass()}
-                      onClick={() => setUserStatusTo(UserStatus.LoggingIn)}
-                    >
-                      Вход
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      id="registration-tab"
-                      className={getStatusClass()}
-                      onClick={() => setUserStatusTo(UserStatus.Registering)}
-                    >
-                      Регистрация
-                    </a>
-                  </li>
-                </ul>
-                <form className="form">
-                  <div id="logining-inputs" className={getStatusClass()}>
-                    <input
-                      placeholder="Почта"
-                      className="input-field"
-                      type="email"
-                      size="40"
-                    ></input>
-                    <input
-                      placeholder="Пароль"
-                      className="input-field"
-                      type="password"
-                      size="40"
-                    ></input>
-                  </div>
-                  <div id="registering-inputs" className={getStatusClass()}>
-                    <input placeholder="ФИО" className="input-field" type="text" size="40"></input>
-                    <input
-                      placeholder="Почта регистрации"
-                      className="input-field"
-                      type="email"
-                      size="40"
-                    ></input>
-                    <input
-                      placeholder="Пароль"
-                      className="input-field"
-                      type="password"
-                      size="40"
-                    ></input>
-                  </div>
-                  <div className="pt1 buttons-login-container">
-                    <button id="button-enter" className="ml1 button-clear" type="button">
-                      Отправить
-                    </button>
-                  </div>
-                </form>
+          <div id="enter-form" className={getStatusClass()}>
+            <Image
+              id="image-logo"
+              className="enter-logo"
+              src={Logo}
+              priority
+              alt="Wonder Digital"
+              onClick={() => setUserStatusTo(UserStatus.LoggingIn)}
+            />
+            <div id="form-enter-inputs" className={getStatusClass()}>
+              <div id="tab-group">
+                <div
+                  id="enter-tab"
+                  className={getStatusClass()}
+                  onClick={() => setUserStatusTo(UserStatus.LoggingIn)}
+                >
+                  Вход
+                </div>
+                <div
+                  id="registration-tab"
+                  className={getStatusClass()}
+                  onClick={() => setUserStatusTo(UserStatus.Registering)}
+                >
+                  Регистрация
+                </div>
               </div>
+              <form className="form">
+                <div id="logining-inputs" className={getStatusClass()}>
+                  <input placeholder="Почта" className="input-field" type="email" size="40"></input>
+                  <input
+                    placeholder="Пароль"
+                    className="input-field"
+                    type="password"
+                    size="40"
+                  ></input>
+                </div>
+                <div id="registering-inputs" className={getStatusClass()}>
+                  <input placeholder="ФИО" className="input-field" type="text" size="40"></input>
+                  <input
+                    placeholder="Почта регистрации"
+                    className="input-field"
+                    type="email"
+                    size="40"
+                  ></input>
+                  <input
+                    placeholder="Пароль"
+                    className="input-field"
+                    type="password"
+                    size="40"
+                  ></input>
+                </div>
+                <div className="pt1 buttons-login-container">
+                  <button id="button-enter" className="ml1 button-clear" type="button">
+                    Отправить
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
