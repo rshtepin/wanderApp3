@@ -1,13 +1,13 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 export const email = z
   .string()
-  .email()
+  .email({ message: 'Неправильный формат почты' })
   .transform((str) => str.toLowerCase().trim())
 
 export const password = z
   .string()
-  .min(10)
+  .min(10, { message: 'Пароль должен быть не менее 10 символов' })
   .max(100)
   .transform((str) => str.trim())
 
@@ -33,7 +33,7 @@ export const ResetPassword = z
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords don't match",
-    path: ["passwordConfirmation"], // set the path of the error
+    path: ['passwordConfirmation'], // set the path of the error
   })
 
 export const ChangePassword = z.object({
