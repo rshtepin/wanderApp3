@@ -2,18 +2,20 @@ import { Routes, BlitzPage } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import logout from 'src/auth/mutations/logout'
 import { useMutation } from '@blitzjs/rpc'
+import AllProducts from 'src/products/components/AllProducts'
+import { Button } from '@chakra-ui/react'
 const Home: BlitzPage = () => {
   const [logoutMutation] = useMutation(logout)
   return (
     <Layout>
-      <p>Залогинились</p>
-      <button
+      <AllProducts />
+      <Button
         onClick={async () => {
           await logoutMutation()
         }}
       >
         Logout
-      </button>
+      </Button>
     </Layout>
   )
 }

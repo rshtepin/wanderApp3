@@ -63,3 +63,29 @@ model Token {
 // enum TokenType {
 //   RESET_PASSWORD
 // }
+
+model Products {
+  id              Int               @id @default(autoincrement())
+  title           String
+  logo            String?
+  order           Int               @default(autoincrement())
+  Variable_values Variable_values[]
+}
+
+model Product_variables {
+  id              Int               @id @default(autoincrement())
+  var             String
+  name            String
+  order           Int               @default(autoincrement())
+  Variable_values Variable_values[]
+}
+
+model Variable_values {
+  id          Int               @id @default(autoincrement())
+  variable    Product_variables @relation(fields: [id_variable], references: [id])
+  id_variable Int
+  product     Products          @relation(fields: [id_product], references: [id])
+  id_product  Int
+  value       Int?
+  order       Int               @default(autoincrement())
+}
