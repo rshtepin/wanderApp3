@@ -7,18 +7,23 @@ import ProductItem from './ProductItem'
 import { Wrap, WrapItem } from '@chakra-ui/react'
 import { useSession } from '@blitzjs/auth'
 import { Button } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 const ITEMS_PER_PAGE = 30
 const deleteProduct = (item) => {
-  console.log(item)
+  console.log('УДАЛЯЕМ: ' + item)
 }
 
-const GetU = () => {
+const GetProductsDB = () => {
+  const router = useRouter()
   const pagination = usePagination()
   const [{ products, hasMore }] = usePaginatedQuery(getProducts, {
+    orderBy: { order: 'asc' },
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
 
+  const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
+  const goToNextPage = () => router.push({ query: { page: page + 1 } })
   console.log(products)
   return (
     <>
@@ -52,7 +57,7 @@ const AllProducts = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Wrap spacing="30px">
-        <GetU />
+        <GetProductsDB />
       </Wrap>
       <AdminBlock />
     </Suspense>

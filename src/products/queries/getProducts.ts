@@ -16,10 +16,10 @@ export default resolver.pipe(
     } = await paginate({
       skip,
       take,
-      count: () => db.products.count({ where }),
-      query: (paginateArgs) => db.products.findMany({ ...paginateArgs, where, orderBy }),
+      count: () => db.product.count({ where }),
+      query: (paginateArgs) => db.product.findMany({ ...paginateArgs, where, orderBy }),
     })
-    console.log(products)
+
     return {
       products,
       nextPage,

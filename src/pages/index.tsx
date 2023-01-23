@@ -4,6 +4,6 @@ const Index: BlitzPage = () => {
   return <></>
 }
 Index.authenticate = { redirectTo: Routes.LoginP() }
-Index.redirectAuthenticatedTo = '/home'
+Index.redirectAuthenticatedTo = '/products'
 
 export default Index

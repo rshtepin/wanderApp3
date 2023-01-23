@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Button, Card, Checkbox, Heading, CardBody, CardHeader, Image } from '@chakra-ui/react'
+import Link from 'next/link'
+import { Routes } from '@blitzjs/next'
 
 const ProductItem = ({ product, onDelete }) => {
   const [checked, setChecked] = useState(false)
@@ -14,7 +16,10 @@ const ProductItem = ({ product, onDelete }) => {
         <CardHeader>
           <Heading>{product.title}</Heading>
         </CardHeader>
-        <Button colorScheme="blue">Посмотреть</Button>
+
+        <Link href={Routes.ShowProductPage({ productId: product.id })}>
+          <Button colorScheme="blue">Посмотреть</Button>
+        </Link>
         <Button colorScheme="yellow">Редактировать</Button>
         <Button colorScheme="red" onClick={() => onDelete(product.id)}>
           Удалить

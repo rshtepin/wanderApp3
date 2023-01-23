@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
-
 import Layout from 'src/core/layouts/Layout'
 import getTesting from 'src/testings/queries/getTesting'
 import deleteTesting from 'src/testings/mutations/deleteTesting'
@@ -13,6 +12,7 @@ import deleteTesting from 'src/testings/mutations/deleteTesting'
 export const Testing = () => {
   const router = useRouter()
   const testingId = useParam('testingId', 'number')
+  console.log(testingId)
   const [deleteTestingMutation] = useMutation(deleteTesting)
   const [testing] = useQuery(getTesting, { id: testingId })
 
@@ -25,10 +25,6 @@ export const Testing = () => {
       <div>
         <h1>Testing {testing.id}</h1>
         <pre>{JSON.stringify(testing, null, 2)}</pre>
-
-        <Link href={Routes.EditTestingPage({ testingId: testing.id })}>
-          <a>Edit</a>
-        </Link>
 
         <button
           type="button"
@@ -50,11 +46,7 @@ export const Testing = () => {
 const ShowTestingPage = () => {
   return (
     <div>
-      <p>
-        <Link href={Routes.TestingsPage()}>
-          <a>Testings</a>
-        </Link>
-      </p>
+      <p></p>
 
       <Suspense fallback={<div>Loading...</div>}>
         <Testing />
