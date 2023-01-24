@@ -17,40 +17,34 @@ const FieldItem = (prop) => {
     dropHandler,
     id,
   } = prop
-  const [disabledEdit, setDisabledEdit] = useState(!btnPLusFlag)
-  const [disabledSave, setDisabledSave] = useState(true)
-  const [showInput, setShowInput] = useState(btnPLusFlag)
+
+  const [disabledEdit, setDisabledEdit] = useState(btnPLusFlag)
+  const [disabledSave, setDisabledSave] = useState(false)
   const [inputValueVar, setinputValueVar] = useState(name.var)
   const [inputValueShowVar, setinputValueShowVar] = useState(name.name)
-  const [btnEditFlag, setBtnEditFlag] = useState(false)
+  const [btnEditFlag, setBtnEditFlag] = useState(btnPLusFlag)
 
   const saveButton = () => {
     if (btnEditFlag) {
-      setShowInput(true)
+      console.log('UPDATE')
+      setDisabledEdit(true)
       setinputValueVar(name.var)
       setinputValueShowVar(name.name)
       updateItem(name, inputValueVar)
-      setDisabledEdit(false)
-      setDisabledSave(true)
     } else {
-      setShowInput(true)
+      console.log('SAVING')
+      setDisabledEdit(true)
       setinputValueVar(name.var)
       setinputValueShowVar(name.name)
       saveItem(name)
-      setDisabledEdit(false)
-      setDisabledSave(true)
     }
   }
   const editClick = () => {
-    setDisabledEdit(true)
+    setDisabledEdit(false)
     setBtnEditFlag(true)
-    setShowInput(false)
-
-    setDisabledSave(false)
   }
 
   const onBlurVar = (val) => {
-    console.log(inputValueVar)
     if (val == '' && !btnEditFlag) {
       delItem(name.var)
     }
@@ -58,12 +52,10 @@ const FieldItem = (prop) => {
       colomnInputVar.current.value = inputValueVar
       colomnInputShow.current.value = inputValueShowVar
       name.var = inputValueVar
-      setDisabledEdit(false)
-      setDisabledSave(true)
-      setShowInput(true)
-    } else {
       setDisabledEdit(true)
       setDisabledSave(false)
+    } else {
+      // setDisabledEdit(true)
     }
   }
   const onBlurShowVar = (val) => {
@@ -74,40 +66,27 @@ const FieldItem = (prop) => {
       colomnInputVar.current.value = inputValueVar
       colomnInputShow.current.value = inputValueShowVar
       name.name = inputValueShowVar
-      setDisabledEdit(false)
-      setDisabledSave(true)
-      setShowInput(true)
-    } else {
       setDisabledEdit(true)
       setDisabledSave(false)
+    } else {
+      // setDisabledEdit(true)
     }
   }
 
   const onChangeInputVar = (val) => {
-    console.log(inputValueShowVar)
     name.var = val
-    if (name.name == '' || name.var == '') {
-      setDisabledEdit(true)
-      setDisabledSave(true)
-    } else {
-      setDisabledSave(false)
-    }
+    val == '' ? setDisabledSave(true) : setDisabledSave(false)
   }
   const onChangeInputShow = (val) => {
     name.name = val
-    if (name.name == '' || name.var == '') {
-      setDisabledEdit(true)
-      setDisabledSave(true)
-    } else {
-      setDisabledSave(false)
-    }
+    val == '' ? setDisabledSave(true) : setDisabledSave(false)
   }
   return (
     <>
       <Flex
         minWidth="max-content"
         alignItems="center"
-        mt={3}
+        mt={2}
         border="1px"
         borderRadius="4px"
         p={1}
@@ -122,25 +101,25 @@ const FieldItem = (prop) => {
       >
         <Center>
           <FormControl
+            isDisabled={disabledEdit}
             minWidth="300px"
             onChange={(e) => onChangeInputVar(e.target.value)}
             onBlur={(e) => onBlurVar(e.target.value)}
           >
             <Input
               ref={colomnInputVar}
-              disabled={showInput}
               defaultValue={name.var}
               type="text"
               minWidth="300px"
               placeholder="SQL переменная одним словом (ENG)"
               size="sm"
               width="auto"
-              autoFocus
             />
           </FormControl>
         </Center>
         <Center>
           <FormControl
+            isDisabled={disabledEdit}
             minWidth="300px"
             className="me-auto"
             defaultValue={name.name}
@@ -150,7 +129,6 @@ const FieldItem = (prop) => {
             <Input
               defaultValue={name.name}
               ref={colomnInputShow}
-              disabled={showInput}
               type="text"
               minWidth="300px"
               placeholder="Заголовок для пользователя"
@@ -161,22 +139,15 @@ const FieldItem = (prop) => {
         </Center>
         <ButtonGroup>
           <Button
-            colorScheme="yellow"
+            isDisabled={disabledSave}
+            width={'150px'}
+            colorScheme={disabledEdit ? 'yellow' : 'blue'}
             size="sm"
-            isDisabled={disabledEdit}
-            onClick={() => editClick()}
+            onClick={disabledEdit ? () => editClick() : () => saveButton()}
           >
-            Редактировать
+            {disabledEdit ? 'Редактировать' : 'Сохранить'}
           </Button>
 
-          <Button
-            colorScheme="blue"
-            size="sm"
-            isDisabled={disabledSave}
-            onClick={() => saveButton()}
-          >
-            Сохранить
-          </Button>
           <Suspense>
             <Button
               colorScheme="red"

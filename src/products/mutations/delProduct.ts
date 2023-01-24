@@ -3,21 +3,21 @@ import db from 'db'
 import { z } from 'zod'
 import { NotFoundError } from 'blitz'
 
-const deleteProductField = z.object({
-  id: z.string(),
+const deleteProduct = z.object({
+  id: z.number(),
 })
 
 export default resolver.pipe(
-  resolver.zod(deleteProductField),
+  resolver.zod(deleteProduct),
   // resolver.authorize(),
   async ({ id }) => {
-    const field = await db.product_variable.delete({
+    const product = await db.product.delete({
       where: {
-        var: id,
+        id: id,
       },
     })
 
-    if (!field) throw new NotFoundError()
-    return field
+    if (!product) throw new NotFoundError()
+    return product
   }
 )

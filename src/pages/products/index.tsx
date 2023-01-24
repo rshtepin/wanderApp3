@@ -1,13 +1,16 @@
 import { Routes, BlitzPage } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import logout from 'src/auth/mutations/logout'
-import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
+import { useMutation } from '@blitzjs/rpc'
 import AllProducts from 'src/products/components/AllProducts'
 import { Button } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
+import { useState } from 'react'
+import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 
 const ProductsPage: BlitzPage = () => {
   const [logoutMutation] = useMutation(logout)
+
   return (
     <Layout>
       <AllProducts />
@@ -21,6 +24,7 @@ const ProductsPage: BlitzPage = () => {
     </Layout>
   )
 }
+
 ProductsPage.authenticate = { redirectTo: Routes.LoginP() }
 
 export default ProductsPage

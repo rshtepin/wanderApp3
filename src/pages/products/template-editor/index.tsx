@@ -8,11 +8,11 @@ import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
-import deleteProductField from 'src/products/template-editor/mutations/deleteProductField'
+import delProductField from 'src/products/template-editor/mutations/delProductField'
 
 const TemplatEditorList = () => {
-  const [delProductFieldMutation] = useMutation(deleteProductField)
-  const [addProductFieldMutation] = useMutation(addUpdateProductField)
+  const [delProductFieldMutation] = useMutation(delProductField)
+  const [addUpdateProductFieldMutation] = useMutation(addUpdateProductField)
   const pagination = usePagination()
   const [editorFields, setEditorFields] = useState<any>([])
   const [fVis, setFVis] = useState(true)
@@ -25,9 +25,26 @@ const TemplatEditorList = () => {
   })
 
   useEffect(() => {
+    console.log('Установка ФИЛД СТЕЙТА')
     setEditorFields(fields)
   }, [])
 
+  const updateState = async () => {
+    setEditorFields((prevState) => {
+      const newState = prevState.map((obj) => {
+        if (obj.order != prevState.indexOf(obj) + 1) {
+          console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
+          return {
+            ...obj,
+            order: prevState.indexOf(obj) + 1,
+          }
+        }
+        return obj
+      })
+      console.log(newState)
+      return newState
+    })
+  }
   function arrayMove(arr, oldindex, newindex) {
     if (newindex >= arr.length) {
       let k = newindex - arr.length + 1
@@ -45,63 +62,49 @@ const TemplatEditorList = () => {
   }
 
   function onDragEndHandler(e) {}
+
   function onDragOverHandler(e, name, id) {
     e.preventDefault()
   }
-  function dropHandler(e, name, id) {
+  async function dropHandler(e, name, id) {
     e.preventDefault()
-    console.log(currentField + ' droped to ' + name + ' id: ' + id)
     setEditorFields([...arrayMove(editorFields, currentField - 1, id - 1)])
-    console.log('OLD editorFields')
-    console.log(editorFields)
-
-    editorFields.map((field) => {
-      if (field.order != editorFields.indexOf(field) + 1) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        updateIdRecord(field, editorFields.indexOf(field) + 1)
-        console.log('АЙди ' + field.order + ' на позицию ' + (editorFields.indexOf(field) + 1))
+    await editorFields.map(async (field) => {
+      {
+        if (field.order != editorFields.indexOf(field) + 1) {
+          console.log('Такое дело: ' + field.order)
+          await addUpdateProductFieldMutation({
+            variable: field.var,
+            name: field.name,
+            oldVar: field.var,
+            order: editorFields.indexOf(field) + 1,
+          })
+        }
       }
     })
-    const updateState = async () => {
-      setEditorFields((prevState) => {
-        const newState = prevState.map((obj) => {
-          if (obj.order != prevState.indexOf(obj) + 1) {
-            console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
-            return {
-              ...obj,
-              id: prevState.indexOf(obj) + 1,
-            }
-          }
-          return obj
-        })
-        console.log(newState)
-        return newState
-      })
-    }
-    updateState()
+
+    await updateState()
   }
 
   const updateItem = async (id: any, oldVar) => {
     console.log(JSON.stringify(id) + ' ' + oldVar)
-    await addProductFieldMutation({ variable: id.var, name: id.name, oldVar })
+    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar })
   }
 
   const saveItem = async (id) => {
-    const variable = id.var
-    const name = id.name
-    console.log(variable + ' ' + name)
-    await addProductFieldMutation({ variable, name, oldVar: variable })
+    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
   }
 
   const delItem = async (id: string) => {
+    console.log('DELETE ' + id)
     let arr = [...editorFields]
     arr = arr.filter((item) => item.var !== id)
     setEditorFields([...arr])
-    if (id != '') {
-      console.log('на удаление уходт ' + id)
-
-      await delProductFieldMutation({ id: id })
+    if (id != undefined) {
+      await delProductFieldMutation({ variable: id })
     }
+
+    await updateState()
   }
 
   const addItem = () => {
@@ -120,7 +123,7 @@ const TemplatEditorList = () => {
       <Container centerContent>
         {editorFields.map((fields: any) => (
           <FieldItem
-            key={fields.var}
+            key={fields.id}
             id={fields.order}
             name={fields}
             dragStartHandler={dragStartHandler}

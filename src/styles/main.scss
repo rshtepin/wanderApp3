@@ -37,6 +37,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 #tab-group {
   box-sizing: border-box;
   display: flex;
@@ -51,61 +52,77 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   flex: none;
   order: 0;
   flex-grow: 0;
+
   &:after {
     content: '';
     display: table;
     clear: both;
   }
+
   li a {
     cursor: pointer;
     transition: 0.5s ease;
   }
 }
+
 .time {
   color: rgba(rgb(255, 255, 255), 0.71);
   font-size: 4em;
   height: 60px;
   line-height: 60px;
 }
+
 .time-container {
   position: fixed;
   bottom: 0;
   right: 0;
   padding-right: 0.5em;
 }
+
 .pt1 {
   padding-top: 1em;
 }
+
 .ml1e {
   margin-left: 1em;
 }
+
 .ml2e {
   margin-left: 2em;
 }
+
 .ml3e {
   margin-left: 3em;
 }
+
 .ml4e {
   margin-left: 4em;
 }
+
 .ml5e {
   margin-left: 5em;
 }
+
 .ml6e {
   margin-left: 6em;
 }
+
 .ml7e {
   margin-left: 7em;
 }
+
 .ml8e {
   margin-left: 8em;
 }
+
 .ml9e {
   margin-left: 9em;
 }
+
 .ml10e {
   margin-left: 10em;
 }
+
 .button-clear {
   backdrop-filter: blur(3px);
   background-color: rgba(rgb(0, 0, 0), 0.1);
@@ -113,18 +130,22 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(black, 0.1);
   height: 30px;
+
   &:hover {
     background-color: #fff;
     transition: 300ms;
   }
 }
+
 .form {
   display: grid;
 }
+
 .buttons-login-container {
   display: grid;
   justify-content: end;
 }
+
 .input-field {
   box-sizing: border-box;
   display: flex;
@@ -140,20 +161,24 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   box-shadow: 2px 2px 2px rgba(black, 0.1);
   height: 30px;
 }
+
 .input-field::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: rgb(255, 255, 255);
 }
+
 .input-field:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   color: rgb(255, 255, 255);
   opacity: 1;
 }
+
 .input-field::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   color: rgb(255, 255, 255);
   opacity: 1;
 }
+
 .input-field:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: rgb(255, 255, 255);
@@ -168,6 +193,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   height: 100%;
   width: 100%;
 }
+
 .enter-logo {
   display: flex;
   flex-direction: column;
@@ -175,6 +201,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   padding: 0px;
   gap: 10px;
 }
+
 .mainlogo {
   display: flex;
   align-items: center;
@@ -182,6 +209,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   height: 100%;
   margin: auto auto;
 }
+
 #image-logo {
   transition: 450ms;
 }
@@ -197,6 +225,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   cursor: pointer;
   transition: 0.25s;
 }
+
 #registration-tab {
   display: flex;
   flex-direction: column;
@@ -208,6 +237,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   cursor: pointer;
   transition: 0.25s;
 }
+
 #form-enter-inputs {
   display: flex;
   flex-direction: column;
@@ -220,6 +250,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   flex-grow: 0;
   transition: 450ms;
 }
+
 #enter-form {
   display: flex;
   flex-direction: column;
@@ -230,17 +261,17 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   position: absolute;
   width: fit-content;
   left: 50%;
-  top: 35%;
 
-  transform: translateX(-50%);
+  transform: translate(-50%, 60%);
+  transition: 450ms;
   /* Inside auto layout */
 
   flex: none;
   order: 0;
   flex-grow: 0;
   z-index: 0;
-  transition: 450ms;
 }
+
 #logining-inputs,
 #registering-inputs {
   display: flex;
@@ -250,6 +281,7 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   gap: 5px;
   transition: 450ms;
 }
+
 #app {
   display: flex;
   flex-direction: column;
@@ -265,10 +297,12 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
         scale: 1.5;
       }
     }
+
     #form-enter-inputs {
       opacity: 0;
       margin-top: 10%;
     }
+
     #app-background {
       cursor: pointer;
     }
@@ -278,18 +312,21 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   &.registering,
   &.verifying-log-in,
   &.log-in-error {
+    #enter-form {
+      transform: translate(-50%, 60%);
+    }
+
     #enter-tab {
       background: rgb(255, 255, 255);
     }
+
     #registration-tab {
       &:hover {
         background: rgb(0, 0, 0);
         color: white;
       }
     }
-    #image-logo {
-      transform: translateY(0%);
-    }
+
     #form-enter-inputs {
       opacity: 1;
       transition: (450ms);
@@ -307,23 +344,28 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
         transform: scale(1.2);
       }
     }
+
     &.registering {
       #enter-tab {
         background: rgba(gray, 0.25);
+
         &:hover {
           background: rgb(0, 0, 0);
           color: white;
         }
       }
+
       #registration-tab {
         background: rgb(255, 255, 255);
         color: #000;
       }
+
       #registering-inputs {
         display: grid;
         opacity: 1;
         transition: (1400ms);
       }
+
       #logining-inputs {
         display: none;
         opacity: 0;

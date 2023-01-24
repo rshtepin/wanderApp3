@@ -7,7 +7,8 @@ import { useQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
-
+import cn from 'classnames'
+import styles from '../../styles/ParticalCode.module.scss'
 export const Product = () => {
   const router = useRouter()
   const productId = useParam('productId', 'number')
@@ -19,7 +20,7 @@ export const Product = () => {
       <Head>
         <title>Product {Product.title}</title>
       </Head>
-      <div>Product {JSON.stringify(Product)}</div>
+      {Product.title}
     </>
   )
 }

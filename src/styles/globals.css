@@ -23,3 +23,100 @@ i {
 * {
   box-sizing: border-box;
 }
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 18px 20px;
+  gap: 11px;
+
+  position: relative;
+  width: 610px;
+  height: 335px;
+
+  background: #f2f2f2;
+  border-radius: 7px;
+}
+.card-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 0px 12px;
+
+  width: 570px;
+  height: 197px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.card-title {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 0px;
+  gap: 11px;
+
+  min-width: 570px;
+  height: 63px;
+  /* Inside auto layout */
+  font-family: 'Tilda Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+
+  color: #001d00;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.card-description {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 570px;
+  height: 122px;
+
+  /* Inside auto layout */
+  font-family: 'Tilda Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+.card-button {
+  box-sizing: border-box;
+
+  /* Auto layout */
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 8px;
+  gap: 6px;
+
+  width: 75px;
+  height: 29px;
+
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
