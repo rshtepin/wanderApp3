@@ -74,7 +74,7 @@ model Product {
 
 model Product_variable {
   id             Int              @id @default(autoincrement())
-  var            String
+  var            String           @unique
   name           String
   order          Int              @default(autoincrement())
   Variable_value Variable_value[]

@@ -1,5 +1,5 @@
 import { Button, FormControl, Input, Fle, Flexx, Flex, Center, ButtonGroup } from '@chakra-ui/react'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, Suspense } from 'react'
 
 const FieldItem = (prop) => {
   const colomnInputVar = useRef(null)
@@ -42,9 +42,10 @@ const FieldItem = (prop) => {
     }
   }
   const editClick = () => {
+    setDisabledEdit(true)
     setBtnEditFlag(true)
     setShowInput(false)
-    setDisabledEdit(true)
+
     setDisabledSave(false)
   }
 
@@ -162,24 +163,31 @@ const FieldItem = (prop) => {
           <Button
             colorScheme="yellow"
             size="sm"
-            disabled={disabledEdit}
+            isDisabled={disabledEdit}
             onClick={() => editClick()}
           >
             Редактировать
           </Button>
 
-          <Button colorScheme="blue" size="sm" disabled={disabledSave} onClick={() => saveButton()}>
+          <Button
+            colorScheme="blue"
+            size="sm"
+            isDisabled={disabledSave}
+            onClick={() => saveButton()}
+          >
             Сохранить
           </Button>
-          <Button
-            colorScheme="red"
-            size="sm"
-            onClick={() => {
-              delItem(name.var)
-            }}
-          >
-            Удалить
-          </Button>
+          <Suspense>
+            <Button
+              colorScheme="red"
+              size="sm"
+              onClick={() => {
+                delItem(name.var)
+              }}
+            >
+              Удалить
+            </Button>
+          </Suspense>
         </ButtonGroup>
       </Flex>
     </>

@@ -42,34 +42,34 @@ CREATE TABLE "Token" (
 );
 
 -- CreateTable
-CREATE TABLE "Products" (
+CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "logo" TEXT,
     "order" SERIAL NOT NULL,
 
-    CONSTRAINT "Products_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Product_variables" (
+CREATE TABLE "Product_variable" (
     "id" SERIAL NOT NULL,
     "var" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "order" SERIAL NOT NULL,
 
-    CONSTRAINT "Product_variables_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Product_variable_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Variable_values" (
+CREATE TABLE "Variable_value" (
     "id" SERIAL NOT NULL,
     "id_variable" INTEGER NOT NULL,
     "id_product" INTEGER NOT NULL,
-    "value" INTEGER,
+    "value" TEXT,
     "order" SERIAL NOT NULL,
 
-    CONSTRAINT "Variable_values_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Variable_value_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -81,6 +81,12 @@ CREATE UNIQUE INDEX "Session_handle_key" ON "Session"("handle");
 -- CreateIndex
 CREATE UNIQUE INDEX "Token_hashedToken_type_key" ON "Token"("hashedToken", "type");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Product_variable_var_key" ON "Product_variable"("var");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Variable_value_id_product_id_variable_key" ON "Variable_value"("id_product", "id_variable");
+
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -88,7 +94,7 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Variable_values" ADD CONSTRAINT "Variable_values_id_variable_fkey" FOREIGN KEY ("id_variable") REFERENCES "Product_variables"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_variable_fkey" FOREIGN KEY ("id_variable") REFERENCES "Product_variable"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Variable_values" ADD CONSTRAINT "Variable_values_id_product_fkey" FOREIGN KEY ("id_product") REFERENCES "Products"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_product_fkey" FOREIGN KEY ("id_product") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

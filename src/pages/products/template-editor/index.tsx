@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
+import { useMutation, useQuery } from '@blitzjs/rpc'
 import Head from 'next/head'
 import Layout from 'src/core/layouts/Layout'
 import { Button, Container, Flex } from '@chakra-ui/react'
@@ -6,26 +7,26 @@ import FieldItem from 'src/products/template-editor/FieldItem'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
-import addProductField from 'src/products/template-editor/queries/addProductField'
-
-const ITEMS_PER_PAGE = 100
+import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
+import deleteProductField from 'src/products/template-editor/mutations/deleteProductField'
 
 const TemplatEditorList = () => {
+  const [delProductFieldMutation] = useMutation(deleteProductField)
+  const [addProductFieldMutation] = useMutation(addUpdateProductField)
   const pagination = usePagination()
-  const [editorFields, setEditorFields] = useState([])
+  const [editorFields, setEditorFields] = useState<any>([])
   const [fVis, setFVis] = useState(true)
   const [currentField, setCurrnetField] = useState(null)
 
   const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
     orderBy: { order: 'asc' },
-    skip: ITEMS_PER_PAGE * pagination.page,
-    take: ITEMS_PER_PAGE,
+    skip: 0 * pagination.page,
+    take: 100,
   })
 
   useEffect(() => {
     setEditorFields(fields)
   }, [])
-  console.log(editorFields)
 
   function arrayMove(arr, oldindex, newindex) {
     if (newindex >= arr.length) {
@@ -55,17 +56,17 @@ const TemplatEditorList = () => {
     console.log(editorFields)
 
     editorFields.map((field) => {
-      if (field.id != editorFields.indexOf(field) + 1) {
+      if (field.order != editorFields.indexOf(field) + 1) {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         updateIdRecord(field, editorFields.indexOf(field) + 1)
-        console.log('АЙди ' + field.id + ' на позицию ' + (editorFields.indexOf(field) + 1))
+        console.log('АЙди ' + field.order + ' на позицию ' + (editorFields.indexOf(field) + 1))
       }
     })
     const updateState = async () => {
       setEditorFields((prevState) => {
         const newState = prevState.map((obj) => {
-          if (obj.id != prevState.indexOf(obj) + 1) {
-            console.log('obj.id=' + obj.id + ' index=' + (prevState.indexOf(obj) + 1))
+          if (obj.order != prevState.indexOf(obj) + 1) {
+            console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
             return {
               ...obj,
               id: prevState.indexOf(obj) + 1,
@@ -80,24 +81,26 @@ const TemplatEditorList = () => {
     updateState()
   }
 
-  const updateItem = (field, oldVar) => {
-    console.log(JSON.stringify(field) + ' ' + oldVar)
-    updateRecord(field, oldVar)
+  const updateItem = async (id: any, oldVar) => {
+    console.log(JSON.stringify(id) + ' ' + oldVar)
+    await addProductFieldMutation({ variable: id.var, name: id.name, oldVar })
   }
 
   const saveItem = async (id) => {
-    const variable = toString(id.var)
-    const name = toString(id.name)
-    await addProductField(variable, name)
+    const variable = id.var
+    const name = id.name
+    console.log(variable + ' ' + name)
+    await addProductFieldMutation({ variable, name, oldVar: variable })
   }
 
-  const delItem = (id) => {
+  const delItem = async (id: string) => {
     let arr = [...editorFields]
-    arr = arr.filter((item) => item.sqlVar !== id)
+    arr = arr.filter((item) => item.var !== id)
     setEditorFields([...arr])
-
     if (id != '') {
-      dropColumn(id)
+      console.log('на удаление уходт ' + id)
+
+      await delProductFieldMutation({ id: id })
     }
   }
 
@@ -111,13 +114,14 @@ const TemplatEditorList = () => {
       },
     ])
   }
+
   return (
     <>
       <Container centerContent>
-        {editorFields.map((fields) => (
+        {editorFields.map((fields: any) => (
           <FieldItem
             key={fields.var}
-            id={fields.id}
+            id={fields.order}
             name={fields}
             dragStartHandler={dragStartHandler}
             onDragEndHandler={onDragEndHandler}
