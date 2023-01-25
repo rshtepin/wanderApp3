@@ -1,13 +1,15 @@
 import { Suspense } from 'react'
 import Head from 'next/head'
-import { useQuery, usePaginatedQuery } from '@blitzjs/rpc'
+import { useQuery, usePaginatedQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { ProductPropEditField } from 'src/products/components/ProductPropEditField'
+import addUpdateFieldValue from 'src/products/mutations/addUpdateFieldValue'
 
 export const Product = () => {
+  const [addUpdateProductFieldMutation] = useMutation(addUpdateFieldValue)
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
   //console.log(Product)
@@ -43,7 +45,13 @@ export const Product = () => {
             <div className="table-product-props-container">
               <div className="description-part-title">Тип системы</div>
               {fields.map((item) => (
-                <ProductPropEditField key={item.id} field={item} value={getValue(item.id)} />
+                <ProductPropEditField
+                  key={item.id}
+                  product={Product}
+                  field={item}
+                  value={getValue(item.id)}
+                  save={addUpdateProductFieldMutation}
+                />
               ))}
             </div>
           </div>
