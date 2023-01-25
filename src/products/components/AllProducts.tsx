@@ -2,9 +2,8 @@ import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Suspense, useState } from 'react'
 import getProducts from '../queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
-import { Routes } from '@blitzjs/next'
 import ProductItem from './ProductItem'
-import { Wrap, WrapItem } from '@chakra-ui/react'
+import { Box, Wrap, WrapItem } from '@chakra-ui/react'
 import { useSession } from '@blitzjs/auth'
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -62,13 +61,17 @@ const AdminBlock = () => {
   if (role == 'ADMIN')
     return (
       <>
-        <Link href={'/products/template-editor'}>
-          <Button colorScheme="yellow">Редактор шаблона продукта</Button>
-        </Link>
-        <Button colorScheme="red" onClick={() => setShow(true)}>
-          Добавить продукт
-        </Button>
-        <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
+        <Box mt={5}>
+          <Link href={'/products/template-editor'}>
+            <Button mr={2} mt={2} colorScheme="yellow">
+              Редактор шаблона продукта
+            </Button>
+          </Link>
+          <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
+            Добавить продукт
+          </Button>
+          <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
+        </Box>
       </>
     )
 }
@@ -77,10 +80,12 @@ const AdminBlock = () => {
 const AllProducts = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Wrap spacing="30px">
-        <GetProductsDB />
-      </Wrap>
-      <AdminBlock />
+      <div className="products-container">
+        <Wrap spacing="30px">
+          <GetProductsDB />
+        </Wrap>
+        <AdminBlock />
+      </div>
     </Suspense>
   )
 }
