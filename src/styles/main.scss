@@ -23,7 +23,7 @@ body {
   a,
   span {
     color: gray(90);
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Tilda Sans', sans-serif;
     font-weight: 400;
     margin: 0px;
     padding: 0px;
@@ -37,7 +37,13 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
   background-repeat: no-repeat;
   background-size: cover;
 }
+$backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_blue_aqua_906099281.jpg?';
 
+.background-image2 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 #tab-group {
   box-sizing: border-box;
   display: flex;
@@ -122,17 +128,129 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
 .ml10e {
   margin-left: 10em;
 }
+.products-container {
+  display: flexbox;
+  width: 1300px;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 18px 20px;
+  gap: 11px;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 18px 20px;
+  gap: 11px;
+  border: solid 1px;
+  border-color: rgba(255, 255, 255, 0.4);
+
+  position: relative;
+  width: 590px;
+  height: 300px;
+  box-shadow: 2px 2px 2px rgba(rgb(70, 70, 70), 0.1);
+
+  backdrop-filter: blur(4px);
+  background-color: rgba(rgb(255, 255, 255), 0.9);
+  border-radius: 7px;
+}
+
+.card-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 0px 12px;
+
+  width: 560px;
+  height: 197px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.card-title {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 10px 0px;
+  gap: 11px;
+
+  min-width: 570px;
+  height: 63px;
+  /* Inside auto layout */
+  font-family: 'Tilda Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 43px;
+
+  color: #001d00;
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.card-description {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 560px;
+  height: 122px;
+
+  /* Inside auto layout */
+  font-family: 'Tilda Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.card-button {
+  box-sizing: border-box;
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 8px;
+  gap: 6px;
+
+  width: 125px;
+  height: 29px;
+
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 2;
+  flex-grow: 0;
+}
 
 .button-clear {
   backdrop-filter: blur(3px);
-  background-color: rgba(rgb(0, 0, 0), 0.1);
+  background-color: rgba(rgb(0, 0, 0), 0.91);
   border: 1px solid rgba(white, 0.75);
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(black, 0.1);
   height: 30px;
 
   &:hover {
-    background-color: #fff;
+    background-color: rgb(173, 30, 30);
     transition: 300ms;
   }
 }
@@ -385,7 +503,24 @@ $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/161
 
   &.logged-in {
   }
+  #app-background2 {
+    height: 100%;
+    left: 0px;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
 
+    #app-background-image2 {
+      background-image: url($backgroundImageProduct);
+      height: 100%;
+      transition: filter 450ms, transform 450ms;
+      width: 100%;
+    }
+  }
   #app-background {
     height: 100%;
     left: 0px;

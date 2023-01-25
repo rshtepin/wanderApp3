@@ -1,11 +1,13 @@
 import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from '@blitzjs/next'
 import { AuthenticationError, AuthorizationError } from 'blitz'
 import React from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, theme } from '@chakra-ui/react'
 import { withBlitz } from 'src/blitz-client'
 import 'src/styles/globals.css'
 import 'src/styles/main.scss'
-
+import AppTheme from 'src/styles/theme'
+import { Fonts } from '../styles/fonts'
+import './../../public/fonts/tildasans/stylesheet.css'
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
     return <div>Error: You are not authenticated</div>
@@ -29,7 +31,7 @@ function RootErrorFallback({ error }: ErrorFallbackProps) {
 function MyApp({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={AppTheme}>
       <ErrorBoundary FallbackComponent={RootErrorFallback}>
         {getLayout(<Component {...pageProps} />)}
       </ErrorBoundary>
