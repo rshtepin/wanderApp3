@@ -82,9 +82,9 @@ model Product_variable {
 
 model Variable_value {
   id          Int              @id @default(autoincrement())
-  variable    Product_variable @relation(fields: [id_variable], references: [id])
+  variable    Product_variable @relation(fields: [id_variable], references: [id], onDelete: Cascade)
   id_variable Int
-  product     Product          @relation(fields: [id_product], references: [id])
+  product     Product          @relation(fields: [id_product], references: [id], onDelete: Cascade)
   id_product  Int
   value       String?
   order       Int              @default(autoincrement())

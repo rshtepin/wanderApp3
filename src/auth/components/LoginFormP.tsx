@@ -166,22 +166,6 @@ export const LoginFormP = (props: LoginFormProps) => {
                 <LabeledTextField name="email" placeholder="Почта" type="email" size="40" />
                 <LabeledTextField name="password" placeholder="Пароль" type="password" size="40" />
               </Form>
-              {/* <input
-                  name="email"
-                  label="Email"
-                  placeholder="Почта"
-                  className="input-field"
-                  type="email"
-                  size="40"
-                ></input>
-                <input
-                  name="password"
-                  label="Password"
-                  placeholder="Пароль"
-                  className="input-field"
-                  type="password"
-                  size="40"
-                ></input> */}
             </div>
             <div id="registering-inputs" className={getStatusClass()}>
               <Form

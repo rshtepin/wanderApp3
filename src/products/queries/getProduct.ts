@@ -13,14 +13,10 @@ export default resolver.pipe(
   // resolver.authorize(),
   async ({ id }) => {
     const product = await db.product.findUnique({
-      where: { id: 1 },
+      where: { id: id },
       include: { Variable_value: { include: { variable: true } } },
     })
-
-    console.log(JSON.parse(JSON.stringify(product.Variable_value)))
-
     if (!product) throw new NotFoundError()
-
     return product
   }
 )

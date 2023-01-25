@@ -95,13 +95,13 @@ const TemplatEditorList = () => {
     await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
   }
 
-  const delItem = async (id: string) => {
+  const delItem = async (id: number) => {
     console.log('DELETE ' + id)
     let arr = [...editorFields]
-    arr = arr.filter((item) => item.var !== id)
+    arr = arr.filter((item) => item.id !== id)
     setEditorFields([...arr])
     if (id != undefined) {
-      await delProductFieldMutation({ variable: id })
+      await delProductFieldMutation({ id: id })
     }
 
     await updateState()

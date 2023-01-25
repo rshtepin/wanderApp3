@@ -23,9 +23,11 @@ const AdminBlock = (prop) => {
   if (role == 'ADMIN')
     return (
       <>
-        <Button mr={2} colorScheme="yellow">
-          Редактировать
-        </Button>
+        <Link href={Routes.EditProductPage({ productId: product.id })}>
+          <Button mr={2} colorScheme="yellow">
+            Редактировать
+          </Button>
+        </Link>
         <Button colorScheme="red" onClick={() => onDelete({ id: product.id })}>
           Удалить
         </Button>
@@ -37,16 +39,18 @@ const AdminBlock = (prop) => {
 const ProductItem = ({ product, onDelete }) => {
   const [checked, setChecked] = useState(false)
   return (
-    <div className="card-container ">
+    <div className="card-container">
       <div className="card-text-container">
-        <div>
-          <div className="card-title">
-            <Stack>
+        <div className="card-title">
+          <Stack>
+            <Link href={Routes.ShowProductPage({ productId: product.id })}>
               <Heading>{product.title}</Heading>
-            </Stack>
-          </div>
-          <div className="card-description">
-            <Stack>
+            </Link>
+          </Stack>
+        </div>
+        <div className="card-description">
+          <Stack>
+            <Link href={Routes.ShowProductPage({ productId: product.id })}>
               <Text>
                 DLP-система нового поколения с искусственным интеллектом. Защищает данные
                 организации от утечек и обеспечивает соответствие требованиям регуляторов. InfoWatch
@@ -54,18 +58,17 @@ const ProductItem = ({ product, onDelete }) => {
                 информационных систем организации, помогает определять риски, занимается
                 профилактикой инцидентов ИБ и контролирует рабочую активность сотрудников.
               </Text>
-            </Stack>
-          </div>
-
-          <div>
-            <Checkbox size="lg" mr={180} colorScheme="green" defaultChecked>
-              Сравнить
-            </Checkbox>
-            <Suspense fallback="Проверяем права...">
-              <AdminBlock onDelete={onDelete} product={product} />
-            </Suspense>
-          </div>
+            </Link>
+          </Stack>
         </div>
+      </div>
+      <div className="card-buttons">
+        <Checkbox size="lg" mr={180} colorScheme="green" defaultChecked={false}>
+          Сравнить
+        </Checkbox>
+        <Suspense fallback="Проверяем права...">
+          <AdminBlock onDelete={onDelete} product={product} />
+        </Suspense>
       </div>
     </div>
   )

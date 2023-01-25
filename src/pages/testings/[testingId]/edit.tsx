@@ -12,6 +12,7 @@ import updateTesting from 'src/testings/mutations/updateTesting'
 import { TestingForm, FORM_ERROR } from 'src/testings/components/TestingForm'
 
 const EditTestingPage = () => {
+  const productId = useParam('productId', 'number')
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>scd</Suspense>

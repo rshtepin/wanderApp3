@@ -32,9 +32,7 @@ const GetProductsDB = () => {
   return (
     <>
       {products.map((item) => (
-        <WrapItem key={item.id}>
-          <ProductItem key={item.id} product={item} onDelete={delProductMutation} />
-        </WrapItem>
+        <ProductItem key={item.id} product={item} onDelete={delProductMutation} />
       ))}
     </>
   )
@@ -80,12 +78,11 @@ const AdminBlock = () => {
 const AllProducts = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="products-container">
-        <Wrap spacing="30px">
-          <GetProductsDB />
-        </Wrap>
-        <AdminBlock />
-      </div>
+      <Wrap className="products-container" spacing="16px" justify="center" align={'center'}>
+        <GetProductsDB />
+      </Wrap>
+
+      <AdminBlock />
     </Suspense>
   )
 }
