@@ -7,9 +7,12 @@ import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { ProductPropEditField } from 'src/products/components/ProductPropEditField'
 import addUpdateFieldValue from 'src/products/mutations/addUpdateFieldValue'
+import { FormControl, FormLabel, HStack, Image, Img, Input, Textarea } from '@chakra-ui/react'
+import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 
 export const Product = () => {
-  const [addUpdateProductFieldMutation] = useMutation(addUpdateFieldValue)
+  const [addUpdateProductFieldValueMutation] = useMutation(addUpdateFieldValue)
+  const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
   //console.log(Product)
@@ -35,12 +38,68 @@ export const Product = () => {
       <div className="product-main-body">
         <div className="content-product-container">
           <div className="header-product-container">
-            <div className="one-product-page-header">{Product.title}</div>
-            <div className="one-product-page-subtitle">
-              Специализированное программное обеспечение, предназначенное для защиты компании от
-              утечек информации от компании InfoWatch
+            <div className="one-product-page-header">
+              <HStack spacing="24px">
+                <Img
+                  height="100px"
+                  objectFit="cover"
+                  src="https://bit.ly/dan-abramov"
+                  alt="Dan Abramov"
+                />
+                <Input
+                  type="text"
+                  placeholder="Название продукта"
+                  fontSize={24}
+                  onBlur={(e) =>
+                    addUpdateProductFieldMutation({
+                      title: e.target.value,
+
+                      id: Product.id,
+                    })
+                  }
+                  defaultValue={Product.title}
+                  width={'100%'}
+                />
+              </HStack>
             </div>
+            <FormControl>
+              <div className="one-product-page-subtitle">
+                <FormLabel mb="0px">Короткое описание видно внутри карточки продукта</FormLabel>
+                <Textarea
+                  type="text"
+                  onBlur={(e) =>
+                    addUpdateProductFieldMutation({
+                      title: Product.title,
+                      shortdesc: e.target.value,
+                      id: Product.id,
+                    })
+                  }
+                  defaultValue={Product.shortdesc}
+                  width={'100%'}
+                />
+              </div>
+              <div className="one-product-page-subtitle">
+                <FormLabel paddingTop={5} mb="0px">
+                  Длинное описание видно на странице со всеми продуктами
+                </FormLabel>
+                <Textarea
+                  type="text"
+                  resize={'vertical'}
+                  height={100}
+                  onBlur={(e) =>
+                    addUpdateProductFieldMutation({
+                      title: Product.title,
+                      longdesc: e.target.value,
+                      id: Product.id,
+                    })
+                  }
+                  defaultValue={Product.longdesc}
+                  width={'100%'}
+                />
+              </div>
+            </FormControl>
           </div>
+
           <div className="description-block">
             <div className="table-product-props-container">
               <div className="description-part-title">Тип системы</div>
@@ -50,7 +109,7 @@ export const Product = () => {
                   product={Product}
                   field={item}
                   value={getValue(item.id)}
-                  save={addUpdateProductFieldMutation}
+                  save={addUpdateProductFieldValueMutation}
                 />
               ))}
             </div>

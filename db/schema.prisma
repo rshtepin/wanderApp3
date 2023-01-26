@@ -69,6 +69,8 @@ model Product {
   title          String
   logo           String?
   order          Int              @default(autoincrement())
+  longdesc       String?
+  shortdesc      String?
   Variable_value Variable_value[]
 }
 

@@ -13,10 +13,6 @@ import Link from 'next/link'
 const ITEMS_PER_PAGE = 30
 import delProduct from '../mutations/delProduct'
 
-const deleteProduct = async (item) => {
-  console.log('УДАЛЯЕМ: ' + item)
-}
-
 const GetProductsDB = () => {
   const [delProductMutation] = useMutation(delProduct)
   const router = useRouter()

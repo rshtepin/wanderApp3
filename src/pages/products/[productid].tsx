@@ -37,10 +37,7 @@ export const Product = () => {
         <div className="content-product-container">
           <div className="header-product-container">
             <div className="one-product-page-header">{Product.title}</div>
-            <div className="one-product-page-subtitle">
-              Специализированное программное обеспечение, предназначенное для защиты компании от
-              утечек информации от компании InfoWatch
-            </div>
+            <div className="one-product-page-subtitle">{Product.shortdesc}</div>
           </div>
           <div className="description-block">
             <div className="table-product-props-container">

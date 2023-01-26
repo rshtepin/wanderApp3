@@ -51,13 +51,7 @@ const ProductItem = ({ product, onDelete }) => {
         <div className="card-description">
           <Stack>
             <Link href={Routes.ShowProductPage({ productId: product.id })}>
-              <Text>
-                DLP-система нового поколения с искусственным интеллектом. Защищает данные
-                организации от утечек и обеспечивает соответствие требованиям регуляторов. InfoWatch
-                Traffic Monitor предотвращает передачу конфиденциальной информации за пределы
-                информационных систем организации, помогает определять риски, занимается
-                профилактикой инцидентов ИБ и контролирует рабочую активность сотрудников.
-              </Text>
+              <Text noOfLines={7}>{product.longdesc}</Text>
             </Link>
           </Stack>
         </div>
