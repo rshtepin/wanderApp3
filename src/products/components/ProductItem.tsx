@@ -28,7 +28,12 @@ const AdminBlock = (prop) => {
             Редактировать
           </Button>
         </Link>
-        <Button colorScheme="red" onClick={() => onDelete({ id: product.id })}>
+        <Button
+          colorScheme="red"
+          onClick={() => {
+            if (confirm('Удалить продукт ' + product.title + ' ?')) onDelete({ id: product.id })
+          }}
+        >
           Удалить
         </Button>
       </>

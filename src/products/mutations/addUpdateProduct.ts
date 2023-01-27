@@ -22,7 +22,6 @@ export default resolver.pipe(
     })
 
     if (!product) throw new NotFoundError()
-
     return product
   }
 )

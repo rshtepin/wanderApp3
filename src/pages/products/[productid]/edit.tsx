@@ -7,15 +7,32 @@ import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { ProductPropEditField } from 'src/products/components/ProductPropEditField'
 import addUpdateFieldValue from 'src/products/mutations/addUpdateFieldValue'
-import { FormControl, FormLabel, HStack, Image, Img, Input, Textarea } from '@chakra-ui/react'
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  HStack,
+  Image,
+  Img,
+  Input,
+  Textarea,
+} from '@chakra-ui/react'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
+import uploadImageFile from 'src/products/helpers/uploadImageLogo'
 
 export const Product = () => {
   const [addUpdateProductFieldValueMutation] = useMutation(addUpdateFieldValue)
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
-  //console.log(Product)
+
+  const uploadToClient = async (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0]
+      const f = await uploadImageFile(i, Product.id)
+    }
+  }
+
   const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
     orderBy: { order: 'asc' },
     skip: 0,
@@ -43,8 +60,13 @@ export const Product = () => {
                 <Img
                   height="100px"
                   objectFit="cover"
-                  src="https://bit.ly/dan-abramov"
-                  alt="Dan Abramov"
+                  src={'/media/images/productlogo/' + Product.logo}
+                  alt={'Logo ' + Product.title}
+                />
+                <input
+                  type="file"
+                  accept="image/png, image/gif, image/jpeg, image/svg+xml"
+                  onChange={uploadToClient}
                 />
                 <Input
                   type="text"

@@ -153,7 +153,7 @@ const FieldItem = (prop) => {
               colorScheme="red"
               size="sm"
               onClick={() => {
-                delItem(name.id)
+                delItem(name.id, name.name)
               }}
             >
               Удалить
