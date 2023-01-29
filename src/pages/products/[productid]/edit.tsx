@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useQuery, usePaginatedQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
@@ -19,17 +19,44 @@ import {
 } from '@chakra-ui/react'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import uploadImageFile from 'src/products/helpers/uploadImageLogo'
+const uuid = require('uuid')
 
 export const Product = () => {
   const [addUpdateProductFieldValueMutation] = useMutation(addUpdateFieldValue)
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
+  const [Avatar, SetAvatar] = useState<String>('')
+  const [objUrl, setObjUrl] = useState<string | undefined>()
+
+  async function fetchImageBlob(): Promise<Blob> {
+    const response = await fetch('http://localhost:3000/media/images/productlogo/' + Product.logo)
+    if (!response.ok) throw new Error('Response not OK')
+    return response.blob()
+  }
+
+  useEffect(
+    () =>
+      void (async () => {
+        if (objUrl) return
+        const blob = await fetchImageBlob()
+        const oUrl = URL.createObjectURL(blob)
+        setObjUrl(oUrl)
+      })(),
+    [objUrl]
+  )
+  const pass = async (i) => {
+    console.log('TEST: ')
+    const oUrl = URL.createObjectURL(i)
+    setObjUrl(oUrl)
+  }
 
   const uploadToClient = async (event) => {
     if (event.target.files && event.target.files[0]) {
+      let passFlag: boolean = false
       const i = event.target.files[0]
-      const f = await uploadImageFile(i, Product.id)
+      const f = await uploadImageFile(i, Product.id, Product.title, Product.logo, { pass })
+      console.log(f)
     }
   }
 
@@ -52,21 +79,19 @@ export const Product = () => {
       <Head>
         <title>{Product.title}</title>
       </Head>
+
       <div className="product-main-body">
         <div className="content-product-container">
           <div className="header-product-container">
             <div className="one-product-page-header">
               <HStack spacing="24px">
-                <Img
-                  height="100px"
-                  objectFit="cover"
-                  src={'/media/images/productlogo/' + Product.logo}
-                  alt={'Logo ' + Product.title}
-                />
-                <input
+                <Img height="50px" objectFit="cover" src={objUrl} alt={'Logo ' + Product.title} />
+
+                <Input
                   type="file"
+                  color={'red'}
                   accept="image/png, image/gif, image/jpeg, image/svg+xml"
-                  onChange={uploadToClient}
+                  onChange={uploadToClient} // Выбор файла
                 />
                 <Input
                   type="text"
@@ -75,7 +100,6 @@ export const Product = () => {
                   onBlur={(e) =>
                     addUpdateProductFieldMutation({
                       title: e.target.value,
-
                       id: Product.id,
                     })
                   }

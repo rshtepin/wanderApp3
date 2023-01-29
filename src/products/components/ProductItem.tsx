@@ -49,6 +49,16 @@ const ProductItem = ({ product, onDelete }) => {
         <div className="card-title">
           <Stack>
             <Link href={Routes.ShowProductPage({ productId: product.id })}>
+              <Image
+                height="30px"
+                objectFit="cover"
+                src={
+                  process.env.NEXT_PUBLIC_APP_URL +
+                  process.env.NEXT_PUBLIC_PRODUCT_LOGODIR +
+                  product.logo
+                }
+                alt={'Logo ' + product.title}
+              />
               <Heading>{product.title}</Heading>
             </Link>
           </Stack>
@@ -56,7 +66,7 @@ const ProductItem = ({ product, onDelete }) => {
         <div className="card-description">
           <Stack>
             <Link href={Routes.ShowProductPage({ productId: product.id })}>
-              <Text noOfLines={7}>{product.longdesc}</Text>
+              <Text noOfLines={6}>{product.longdesc}</Text>
             </Link>
           </Stack>
         </div>

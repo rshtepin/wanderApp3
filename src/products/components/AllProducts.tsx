@@ -23,8 +23,8 @@ const GetProductsDB = () => {
     take: ITEMS_PER_PAGE,
   })
 
-  const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
-  const goToNextPage = () => router.push({ query: { page: page + 1 } })
+  //const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
+  //const goToNextPage = () => router.push({ query: { page: page + 1 } })
   return (
     <>
       {products.map((item) => (

@@ -7,6 +7,7 @@ import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { ProductPropField } from 'src/products/components/ProductPropField'
+import { Image } from '@chakra-ui/react'
 
 export const Product = () => {
   const productId = useParam('productId', 'number')
@@ -36,6 +37,16 @@ export const Product = () => {
       <div className="product-main-body">
         <div className="content-product-container">
           <div className="header-product-container">
+            <Image
+              height="50px"
+              objectFit="cover"
+              src={
+                process.env.NEXT_PUBLIC_APP_URL +
+                process.env.NEXT_PUBLIC_PRODUCT_LOGODIR +
+                Product.logo
+              }
+              alt={'Logo ' + Product.title}
+            />
             <div className="one-product-page-header">{Product.title}</div>
             <div className="one-product-page-subtitle">{Product.shortdesc}</div>
           </div>
