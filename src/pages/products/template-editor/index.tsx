@@ -126,7 +126,7 @@ const TemplatEditorList = () => {
         {editorFields.map((fields: any) => (
           <FieldItem
             key={fields.id}
-            id={fields.order}
+            order={fields.order}
             name={fields}
             dragStartHandler={dragStartHandler}
             onDragEndHandler={onDragEndHandler}
