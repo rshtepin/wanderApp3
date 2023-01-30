@@ -115,6 +115,7 @@ const FieldItem = (prop) => {
               placeholder="SQL переменная одним словом (ENG)"
               size="sm"
               width="auto"
+              autoFocus
             />
           </FormControl>
         </Center>

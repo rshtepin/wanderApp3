@@ -13,6 +13,7 @@ import addUpdateProductField from 'src/products/template-editor/mutations/addUpd
 import delProductField from 'src/products/template-editor/mutations/delProductField'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { A } from 'vitest/dist/index-9f5bc072'
+import next from 'next'
 
 const TemplatEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductField)
@@ -184,9 +185,7 @@ const TemplatEditorList = () => {
     setFVis(false)
     setFieldGroups((prev) => [
       ...prev.map((group) => {
-        if (group.id === 1) {
-          group.fields.push({ id_group: 1 })
-        }
+        group.id === 1 ? group.fields.push({ id_group: 1 }) : next
         return group
       }),
     ])
@@ -201,22 +200,22 @@ const TemplatEditorList = () => {
   return (
     <>
       <Container centerContent>
-        {fieldGroups.map((grp) => (
+        {fieldGroups.map((group) => (
           <div
             className="group-title"
-            key={grp.id}
+            key={group.id}
             draggable={true}
             //onDragStart={(e) => dragStartHandlerGroup(e, group)}
-            onDrop={(e) => dropHandlerGroup(e, grp)}
+            onDrop={(e) => dropHandlerGroup(e, group)}
             onDragOver={(e) => onDragOverHandler(e)}
           >
-            <div>{grp.name}</div>
-            {grp.fields.map((field) => (
+            <div>{group.name}</div>
+            {group.fields.map((field) => (
               <FieldItem
                 key={field.var}
                 order={field.order}
                 name={field}
-                group={grp}
+                group={group}
                 dragStartHandler={dragStartHandler}
                 onDragEndHandler={onDragEndHandler}
                 onDragOverHandler={onDragOverHandler}
