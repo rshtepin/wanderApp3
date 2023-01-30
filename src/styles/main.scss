@@ -267,7 +267,14 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   padding: 0px;
   width: 100%;
 }
-
+.group-title {
+  min-height: 40px;
+  min-width: 100%;
+  border: solid 1px;
+  border-color: rgb(208, 255, 212);
+  border-radius: 5px;
+  overflow: hidden;
+}
 .card-container {
   display: flexbox;
   flex-direction: column;

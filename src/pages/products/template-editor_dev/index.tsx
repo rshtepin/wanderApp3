@@ -90,15 +90,15 @@ const TemplatEditorList = () => {
     setCurrnetGroup(group)
   }
   function onDragEndHandler(e) {}
-  function onDragOverHandler(e, name, order) {
+  function onDragOverHandler(e) {
     e.preventDefault()
   }
-  async function dropHandler(e, name, order, groupDropped) {
+
+  async function dropHandler(e, name, order, group) {
     e.preventDefault()
     console.log('Name в dropHandler: ' + JSON.stringify(name))
     const currentIndex = currentGroup.fields.indexOf(currentField)
-    const dropIndex = groupDropped.fields.indexOf(name)
-
+    const dropIndex = group.fields.indexOf(name)
     console.log('currentIndex: ' + currentIndex)
     currentGroup.fields.splice(currentIndex, 1)
     console.log('dropIndex: ' + dropIndex)
@@ -106,19 +106,15 @@ const TemplatEditorList = () => {
       'Бросили в поле с именем: ' +
         name.name +
         ' из группы: ' +
-        groupDropped.name +
+        group.name +
         ' Порядковый нормер: ' +
         dropIndex
     )
-    groupDropped.fields.splice(dropIndex + 1, 0, currentField)
-
-    console.log('group')
-    console.log(groupDropped)
-
+    group.fields.splice(dropIndex + 1, 0, currentField)
     setFieldGroups(
       fieldGroups.map((b) => {
-        if (b.id === groupDropped.id) {
-          return groupDropped
+        if (b.id === group.id) {
+          return group
         }
         if (b.id === currentGroup.id) {
           return currentGroup
@@ -146,6 +142,24 @@ const TemplatEditorList = () => {
 
     // await updateState()
   }
+  async function dropHandlerGroup(e, group) {
+    console.log(e)
+    group.fields.push(currentField)
+    const currentIndex = currentGroup.fields.indexOf(currentField)
+    currentGroup.fields.splice(currentIndex, 1)
+    console.log(group)
+    setFieldGroups(
+      fieldGroups.map((b) => {
+        if (b.id === group.id) {
+          return group
+        }
+        if (b.id === currentGroup.id) {
+          return currentGroup
+        }
+        return b
+      })
+    )
+  }
   const updateItem = async (id: any, oldVar) => {
     console.log(JSON.stringify(id) + ' ' + oldVar)
     await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar })
@@ -168,6 +182,14 @@ const TemplatEditorList = () => {
   }
   const addItem = () => {
     setFVis(false)
+    setFieldGroups((prev) => [
+      ...prev.map((group) => {
+        if (group.id === 1) {
+          group.fields.push({ id_group: 1 })
+        }
+        return group
+      }),
+    ])
     setEditorFields((prevVals) => [
       ...prevVals,
       {
@@ -180,7 +202,14 @@ const TemplatEditorList = () => {
     <>
       <Container centerContent>
         {fieldGroups.map((grp) => (
-          <div key={grp.id}>
+          <div
+            className="group-title"
+            key={grp.id}
+            draggable={true}
+            //onDragStart={(e) => dragStartHandlerGroup(e, group)}
+            onDrop={(e) => dropHandlerGroup(e, grp)}
+            onDragOver={(e) => onDragOverHandler(e)}
+          >
             <div>{grp.name}</div>
             {grp.fields.map((field) => (
               <FieldItem
