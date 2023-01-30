@@ -11,7 +11,6 @@ generator client {
 }
 
 // --------------------------------------
-
 model User {
   id             Int      @id @default(autoincrement())
   createdAt      DateTime @default(now())
@@ -63,7 +62,6 @@ model Token {
 // enum TokenType {
 //   RESET_PASSWORD
 // }
-
 model Product {
   id             Int              @id @default(autoincrement())
   title          String
@@ -78,6 +76,8 @@ model Product_variable {
   id             Int              @id @default(autoincrement())
   var            String           @unique
   name           String
+  group          Field_group      @relation(fields: [id_group], references: [id])
+  id_group       Int              @default(1)
   order          Int              @default(autoincrement())
   Variable_value Variable_value[]
 }
@@ -92,4 +92,12 @@ model Variable_value {
   order       Int              @default(autoincrement())
 
   @@unique([id_product, id_variable])
+}
+
+model Field_group {
+  id               Int                @id @default(autoincrement())
+  var              String             @unique
+  name             String
+  order            Int                @default(autoincrement())
+  Product_variable Product_variable[]
 }

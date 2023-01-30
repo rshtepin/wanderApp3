@@ -1,4 +1,14 @@
-import { Button, FormControl, Input, Flex, Center, ButtonGroup } from '@chakra-ui/react'
+import {
+  Button,
+  FormControl,
+  Input,
+  Fle,
+  Flexx,
+  Flex,
+  Center,
+  ButtonGroup,
+  Select,
+} from '@chakra-ui/react'
 import React, { useState, useRef, Suspense } from 'react'
 
 const FieldItem = (prop) => {
@@ -15,8 +25,7 @@ const FieldItem = (prop) => {
     onDragEndHandler,
     onDragOverHandler,
     dropHandler,
-    group,
-    order,
+    id,
   } = prop
 
   const [disabledEdit, setDisabledEdit] = useState(btnPLusFlag)
@@ -93,11 +102,11 @@ const FieldItem = (prop) => {
         p={1}
         borderColor="lightgrey"
         draggable={true}
-        onDragStart={(e) => dragStartHandler(e, name, order, group)}
+        onDragStart={(e) => dragStartHandler(e, name.var, id)}
         onDragLeave={(e) => onDragEndHandler(e)}
         onDragEnd={(e) => onDragEndHandler(e)}
-        onDragOver={(e) => onDragOverHandler(e)}
-        onDrop={(e) => dropHandler(e, name, order, group)}
+        onDragOver={(e) => onDragOverHandler(e, name.var, id)}
+        onDrop={(e) => dropHandler(e, name.var, id)}
         gap={3}
       >
         <Center>
@@ -138,7 +147,6 @@ const FieldItem = (prop) => {
             />
           </FormControl>
         </Center>
-
         <ButtonGroup>
           <Button
             isDisabled={disabledSave}

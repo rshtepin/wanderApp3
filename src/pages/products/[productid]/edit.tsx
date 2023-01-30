@@ -31,7 +31,7 @@ export const Product = () => {
 
   async function fetchImageBlob(): Promise<Blob> {
     const response = await fetch('http://localhost:3000/media/images/productlogo/' + Product.logo)
-    if (!response.ok) throw new Error('Response not OK')
+    // if (!response.ok) throw new Error('Response not OK')
     return response.blob()
   }
 

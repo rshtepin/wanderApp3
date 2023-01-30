@@ -3,7 +3,7 @@ import db from 'db'
 import { z } from 'zod'
 import { NotFoundError } from 'blitz'
 
-const updateProductField = z.object({
+const updateProductGroupField = z.object({
   variable: z.string(),
   name: z.string(),
   oldVar: z.string(),
@@ -11,11 +11,11 @@ const updateProductField = z.object({
 })
 
 export default resolver.pipe(
-  resolver.zod(updateProductField),
+  resolver.zod(updateProductGroupField),
   // resolver.authorize(),
   async ({ variable, name, oldVar, order }) => {
-    const count = await db.product_variable.count()
-    const field = await db.product_variable.upsert({
+    const count = await db.field_group.count()
+    const field = await db.field_group.upsert({
       where: { var: oldVar },
       update: { var: variable, name: name, order: order },
       create: { var: variable, name: name, order: count + 1 },
