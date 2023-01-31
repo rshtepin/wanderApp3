@@ -3,22 +3,22 @@ import { useMutation, useQuery } from '@blitzjs/rpc'
 import Head from 'next/head'
 import Layout from 'src/core/layouts/Layout'
 import { Button, Container, Flex } from '@chakra-ui/react'
-import FieldItem from 'src/products/template-editor/FieldItem'
-import getAllFields from 'src/products/template-editor/queries/getAllFields'
+import GroupFieldItem from 'src/products/template-editor/groupseditor/GroupFieldItem'
+import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
-import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
-import delProductField from 'src/products/template-editor/mutations/delProductField'
-
+import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
+import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
+delProductGroupField
 const TemplatEditorList = () => {
-  const [delProductFieldMutation] = useMutation(delProductField)
-  const [addUpdateProductFieldMutation] = useMutation(addUpdateProductField)
+  const [delProductFieldMutation] = useMutation(delProductGroupField)
+  const [addUpdateProductGroupFieldMutation] = useMutation(addUpdateProductGroupField)
   const pagination = usePagination()
   const [editorFields, setEditorFields] = useState<any>([])
   const [fVis, setFVis] = useState(true)
   const [currentField, setCurrnetField] = useState(null)
 
-  const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
@@ -26,7 +26,8 @@ const TemplatEditorList = () => {
 
   useEffect(() => {
     console.log('Установка ФИЛД СТЕЙТА')
-    setEditorFields(fields)
+    setEditorFields(groups)
+    console.log(groups)
   }, [])
 
   const updateState = async () => {
@@ -73,7 +74,7 @@ const TemplatEditorList = () => {
       {
         if (field.order != editorFields.indexOf(field) + 1) {
           console.log('Такое дело: ' + field.order)
-          await addUpdateProductFieldMutation({
+          await addUpdateProductGroupFieldMutation({
             variable: field.var,
             name: field.name,
             oldVar: field.var,
@@ -88,11 +89,11 @@ const TemplatEditorList = () => {
 
   const updateItem = async (id: any, oldVar) => {
     console.log(JSON.stringify(id) + ' ' + oldVar)
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar })
+    await addUpdateProductGroupFieldMutation({ variable: id.var, name: id.name, oldVar })
   }
 
   const saveItem = async (id) => {
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
+    await addUpdateProductGroupFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
   }
 
   const delItem = async (id: number, name: string) => {
@@ -124,7 +125,7 @@ const TemplatEditorList = () => {
     <>
       <Container centerContent>
         {editorFields.map((fields: any) => (
-          <FieldItem
+          <GroupFieldItem
             key={fields.id}
             id={fields.order}
             name={fields}
@@ -154,7 +155,7 @@ const TemplatEditorPage = () => {
   return (
     <Layout>
       <Head>
-        <title>TEMPLATE</title>
+        <title>GROUPS TEMPLATE</title>
       </Head>
 
       <div>

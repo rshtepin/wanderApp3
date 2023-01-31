@@ -10,6 +10,8 @@ import {
   Box,
   Stack,
   Text,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { Routes } from '@blitzjs/next'
@@ -23,19 +25,25 @@ const AdminBlock = (prop) => {
   if (role == 'ADMIN')
     return (
       <>
-        <Link href={Routes.EditProductPage({ productId: product.id })}>
-          <Button mr={2} colorScheme="yellow">
-            Редактировать
-          </Button>
-        </Link>
-        <Button
-          colorScheme="red"
-          onClick={() => {
-            if (confirm('Удалить продукт ' + product.title + ' ?')) onDelete({ id: product.id })
-          }}
-        >
-          Удалить
-        </Button>
+        <Grid mt={2} templateColumns="repeat(5, 1fr)" gap={4}>
+          <GridItem colSpan={2}>
+            <Link href={Routes.EditProductPage({ productId: product.id })}>
+              <Button mr={2} colorScheme="yellow">
+                Редактировать
+              </Button>
+            </Link>
+          </GridItem>
+          <GridItem colStart={4} colEnd={6}>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                if (confirm('Удалить продукт ' + product.title + ' ?')) onDelete({ id: product.id })
+              }}
+            >
+              Удалить
+            </Button>
+          </GridItem>
+        </Grid>
       </>
     )
 }
@@ -50,7 +58,7 @@ const ProductItem = ({ product, onDelete }) => {
           <Stack>
             <Link href={Routes.ShowProductPage({ productId: product.id })}>
               <Image
-                height="30px"
+                height="20px"
                 objectFit="cover"
                 src={
                   process.env.NEXT_PUBLIC_APP_URL +
@@ -72,7 +80,7 @@ const ProductItem = ({ product, onDelete }) => {
         </div>
       </div>
       <div className="card-buttons">
-        <Checkbox size="lg" mr={180} colorScheme="green" defaultChecked={false}>
+        <Checkbox size="lg" mr="5%" colorScheme="green" defaultChecked={false}>
           Сравнить
         </Checkbox>
         <Suspense fallback="Проверяем права...">

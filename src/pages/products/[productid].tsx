@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useQuery, useMutation, usePaginatedQuery } from '@blitzjs/rpc'
@@ -8,16 +8,37 @@ import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { ProductPropField } from 'src/products/components/ProductPropField'
 import { Image } from '@chakra-ui/react'
+import { usePagination } from 'src/core/hooks/usePagination'
+import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 
 export const Product = () => {
+  const [fieldGroups, setFieldGroups] = useState<any>([])
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
-  //console.log(Product)
+  const pagination = usePagination()
   const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
     orderBy: { order: 'asc' },
-    skip: 0,
+    skip: 0 * pagination.page,
     take: 100,
   })
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+    orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
+  })
+  console.log(Product)
+  useEffect(() => {
+    let mystate = []
+    groups.map((itemG: any) => {
+      const addFileds = []
+      fields.map((itemF) => {
+        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+      })
+      mystate.push({ ...itemG, fields: addFileds })
+    })
+    setFieldGroups(mystate)
+  }, [])
+
   const getValue = (id_variable) => {
     let res = ''
     var result = Product.Variable_value.filter(function (item) {
@@ -51,12 +72,17 @@ export const Product = () => {
             <div className="one-product-page-subtitle">{Product.shortdesc}</div>
           </div>
           <div className="description-block">
-            <div className="table-product-props-container">
-              <div className="description-part-title">Тип системы</div>
-              {fields.map((item) => (
-                <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
-              ))}
-            </div>
+            {fieldGroups.map((group) => {
+              if (group.id != 1)
+                return (
+                  <div key={group.var} className="table-product-props-container">
+                    <div className="description-part-title">{group.name}</div>
+                    {group.fields.map((item) => (
+                      <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
+                    ))}
+                  </div>
+                )
+            })}
           </div>
         </div>
       </div>

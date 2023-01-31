@@ -74,7 +74,7 @@ const AdminBlock = () => {
 const AllProducts = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Wrap className="products-container" spacing="16px" justify="center" align={'center'}>
+      <Wrap width="85vw" spacing="16px" justify="center" align={'center'}>
         <GetProductsDB />
       </Wrap>
 

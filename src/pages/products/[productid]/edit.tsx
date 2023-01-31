@@ -19,6 +19,8 @@ import {
 } from '@chakra-ui/react'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import uploadImageFile from 'src/products/helpers/uploadImageLogo'
+import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import { usePagination } from 'src/core/hooks/usePagination'
 const uuid = require('uuid')
 
 export const Product = () => {
@@ -26,15 +28,24 @@ export const Product = () => {
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
-  const [Avatar, SetAvatar] = useState<String>('')
+  const [fieldGroups, setFieldGroups] = useState<any>([])
   const [objUrl, setObjUrl] = useState<string | undefined>()
-
+  const pagination = usePagination()
   async function fetchImageBlob(): Promise<Blob> {
     const response = await fetch('http://localhost:3000/media/images/productlogo/' + Product.logo)
     // if (!response.ok) throw new Error('Response not OK')
     return response.blob()
   }
-
+  const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
+    orderBy: { order: 'asc' },
+    skip: 0,
+    take: 100,
+  })
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+    orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
+  })
   useEffect(
     () =>
       void (async () => {
@@ -45,6 +56,17 @@ export const Product = () => {
       })(),
     [objUrl]
   )
+  useEffect(() => {
+    let mystate = []
+    groups.map((itemG: any) => {
+      const addFileds = []
+      fields.map((itemF) => {
+        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+      })
+      mystate.push({ ...itemG, fields: addFileds })
+    })
+    setFieldGroups(mystate)
+  }, [])
   const pass = async (i) => {
     console.log('TEST: ')
     const oUrl = URL.createObjectURL(i)
@@ -60,11 +82,6 @@ export const Product = () => {
     }
   }
 
-  const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
-    orderBy: { order: 'asc' },
-    skip: 0,
-    take: 100,
-  })
   const getValue = (id_variable) => {
     let res = ''
     let result = Product.Variable_value.filter((item) => item.id_variable === id_variable)
@@ -147,18 +164,23 @@ export const Product = () => {
           </div>
 
           <div className="description-block">
-            <div className="table-product-props-container">
-              <div className="description-part-title">Тип системы</div>
-              {fields.map((item) => (
-                <ProductPropEditField
-                  key={item.id}
-                  product={Product}
-                  field={item}
-                  value={getValue(item.id)}
-                  save={addUpdateProductFieldValueMutation}
-                />
-              ))}
-            </div>
+            {fieldGroups.map((group) => {
+              if (group.id != 1)
+                return (
+                  <div key={group.var} className="table-product-props-container">
+                    <div className="description-part-title">{group.name}</div>
+                    {group.fields.map((item) => (
+                      <ProductPropEditField
+                        key={item.id}
+                        product={Product}
+                        field={item}
+                        value={getValue(item.id)}
+                        save={addUpdateProductFieldValueMutation}
+                      />
+                    ))}
+                  </div>
+                )
+            })}
           </div>
         </div>
       </div>

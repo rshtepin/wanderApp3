@@ -24,7 +24,7 @@ const FieldItem = (prop) => {
   const [inputValueVar, setinputValueVar] = useState(name.var)
   const [inputValueShowVar, setinputValueShowVar] = useState(name.name)
   const [btnEditFlag, setBtnEditFlag] = useState(btnPLusFlag)
-
+  const [draggble, setDraggble] = useState(true)
   const saveButton = () => {
     if (btnEditFlag) {
       console.log('UPDATE')
@@ -47,7 +47,7 @@ const FieldItem = (prop) => {
 
   const onBlurVar = (val) => {
     if (val == '' && !btnEditFlag) {
-      delItem(name.var)
+      delItem({ id: name.id, flag: true, group: group })
     }
     if (val == '' && btnEditFlag) {
       colomnInputVar.current.value = inputValueVar
@@ -61,7 +61,7 @@ const FieldItem = (prop) => {
   }
   const onBlurShowVar = (val) => {
     if (val == '' && !btnEditFlag) {
-      delItem(name.name)
+      delItem({ id: name.id, flag: true, group: group })
     }
     if ((val == '' && btnEditFlag) || name.var == '') {
       colomnInputVar.current.value = inputValueVar
@@ -75,16 +75,19 @@ const FieldItem = (prop) => {
   }
 
   const onChangeInputVar = (val) => {
+    setDraggble(false)
     name.var = val
     val == '' ? setDisabledSave(true) : setDisabledSave(false)
   }
   const onChangeInputShow = (val) => {
+    setDraggble(false)
     name.name = val
     val == '' ? setDisabledSave(true) : setDisabledSave(false)
   }
   return (
     <>
       <Flex
+        draggable={draggble}
         minWidth="max-content"
         alignItems="center"
         mt={2}
@@ -92,7 +95,6 @@ const FieldItem = (prop) => {
         borderRadius="4px"
         p={1}
         borderColor="lightgrey"
-        draggable={true}
         onDragStart={(e) => dragStartHandler(e, name, order, group)}
         onDragLeave={(e) => onDragEndHandler(e)}
         onDragEnd={(e) => onDragEndHandler(e)}
@@ -156,7 +158,7 @@ const FieldItem = (prop) => {
               colorScheme="red"
               size="sm"
               onClick={() => {
-                delItem(name.id, name.name)
+                delItem({ id: name.id, name: name.name, group: group })
               }}
             >
               Удалить

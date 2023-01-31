@@ -86,6 +86,7 @@ const FieldItem = (prop) => {
   const onChangeInputVar = (val) => {
     name.var = val
     val == '' ? setDisabledSave(true) : setDisabledSave(false)
+    name.id == 1 ? (name.var = 'default') : (name.var = val)
   }
   const onChangeInputShow = (val) => {
     name.name = val
@@ -124,6 +125,7 @@ const FieldItem = (prop) => {
               placeholder="SQL переменная одним словом (ENG)"
               size="sm"
               width="auto"
+              autoFocus
             />
           </FormControl>
         </Center>
@@ -160,6 +162,7 @@ const FieldItem = (prop) => {
 
           <Suspense>
             <Button
+              isDisabled={name.id == 1 ? true : false}
               colorScheme="red"
               size="sm"
               onClick={() => {

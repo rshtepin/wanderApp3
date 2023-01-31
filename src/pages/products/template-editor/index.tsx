@@ -2,38 +2,52 @@ import { Suspense, useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@blitzjs/rpc'
 import Head from 'next/head'
 import Layout from 'src/core/layouts/Layout'
-import { Button, Container, Flex } from '@chakra-ui/react'
+import { Button, Container, Flex, Select, VStack } from '@chakra-ui/react'
 import FieldItem from 'src/products/template-editor/FieldItem'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
 import delProductField from 'src/products/template-editor/mutations/delProductField'
+import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import next from 'next'
+import Link from 'next/link'
 
 const TemplatEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductField)
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProductField)
   const pagination = usePagination()
-  const [editorFields, setEditorFields] = useState<any>([])
-  const [fVis, setFVis] = useState(true)
-  const [currentField, setCurrnetField] = useState(null)
+  const [fVis, setFVis] = useState<boolean>(true)
+  const [currentField, setCurrnetField] = useState<any>(null)
+  const [currentGroup, setCurrnetGroup] = useState<any>(null)
+  const [fieldGroups, setFieldGroups] = useState<any>([])
 
   const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
   })
-
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+    orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
+  })
   useEffect(() => {
-    console.log('Установка ФИЛД СТЕЙТА')
-    setEditorFields(fields)
+    let mystate = []
+    groups.map((itemG: any) => {
+      const addFileds = []
+      fields.map((itemF) => {
+        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+      })
+      mystate.push({ ...itemG, fields: addFileds })
+    })
+    setFieldGroups(mystate)
   }, [])
 
   const updateState = async () => {
-    setEditorFields((prevState) => {
+    setFieldGroups((prevState) => {
       const newState = prevState.map((obj) => {
         if (obj.order != prevState.indexOf(obj) + 1) {
-          console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
           return {
             ...obj,
             order: prevState.indexOf(obj) + 1,
@@ -41,7 +55,6 @@ const TemplatEditorList = () => {
         }
         return obj
       })
-      console.log(newState)
       return newState
     })
   }
@@ -55,94 +68,175 @@ const TemplatEditorList = () => {
     arr.splice(newindex, 0, arr.splice(oldindex, 1)[0])
     return arr
   }
-
-  function dragStartHandler(e, name, id) {
-    console.log('drag ' + name + ' id: ' + id)
-    setCurrnetField(id)
+  function dragStartHandler(e, name, order, group) {
+    setCurrnetField(name)
+    setCurrnetGroup(group)
   }
-
   function onDragEndHandler(e) {}
-
-  function onDragOverHandler(e, name, id) {
+  function onDragOverHandler(e) {
     e.preventDefault()
   }
-  async function dropHandler(e, name, id) {
+
+  async function dropHandler(e, name, order, group) {
     e.preventDefault()
-    setEditorFields([...arrayMove(editorFields, currentField - 1, id - 1)])
-    await editorFields.map(async (field) => {
-      {
-        if (field.order != editorFields.indexOf(field) + 1) {
-          console.log('Такое дело: ' + field.order)
-          await addUpdateProductFieldMutation({
-            variable: field.var,
-            name: field.name,
-            oldVar: field.var,
-            order: editorFields.indexOf(field) + 1,
-          })
-        }
-      }
+    const currentIndex = currentGroup.fields.indexOf(currentField)
+    const dropIndex = group.fields.indexOf(name)
+    currentGroup.fields.splice(currentIndex, 1)
+    group.fields.splice(dropIndex + 1, 0, currentField)
+    await addUpdateProductFieldMutation({
+      oldVar: currentField.var,
+      variable: currentField.var,
+      name: currentField.name,
+      id_group: group.id,
+      order: dropIndex + 1,
     })
-
-    await updateState()
+    group.fields.map(
+      async (f, index) =>
+        await addUpdateProductFieldMutation({
+          oldVar: f.var,
+          variable: f.var,
+          name: f.name,
+          order: index + 1,
+        })
+    )
+    setFieldGroups(
+      fieldGroups.map((b) => {
+        if (b.id === group.id) {
+          return group
+        }
+        if (b.id === currentGroup.id) {
+          return currentGroup
+        }
+        return b
+      })
+    )
   }
+  // async function dragStartHandlerGroup(e, group) {
+  //    e.preventDefault()
+  // }
 
+  async function dropHandlerGroup(e, group) {
+    if (group.fields.length < 1) {
+      group.fields.push(currentField)
+      const currentIndex = currentGroup.fields.indexOf(currentField)
+      currentGroup.fields.splice(currentIndex, 1)
+      await addUpdateProductFieldMutation({
+        oldVar: currentField.var,
+        variable: currentField.var,
+        name: currentField.name,
+        id_group: group.id,
+      })
+      group.fields.map(
+        async (f, index) =>
+          await addUpdateProductFieldMutation({
+            oldVar: f.var,
+            variable: f.var,
+            name: f.name,
+            order: index + 1,
+          })
+      )
+      setFieldGroups(
+        fieldGroups.map((b) => {
+          if (b.id === group.id) {
+            return group
+          }
+          if (b.id === currentGroup.id) {
+            return currentGroup
+          }
+          return b
+        })
+      )
+    }
+  }
   const updateItem = async (id: any, oldVar) => {
-    console.log(JSON.stringify(id) + ' ' + oldVar)
     await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar })
   }
-
   const saveItem = async (id) => {
     await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
   }
-
-  const delItem = async (id: number, name: string) => {
-    let isDel = confirm('Удалить поле ' + name + ' ?')
+  const delItem = async ({ id, name, flag, group }) => {
+    let isDel: boolean
+    flag ? (isDel = true) : (isDel = confirm('Удалить поле ' + name + ' ?'))
     if (isDel) {
-      console.log('DELETE ' + id)
-      let arr = [...editorFields]
-      arr = arr.filter((item) => item.id !== id)
-      setEditorFields([...arr])
-      if (id != undefined) {
+      let arr = [...fieldGroups]
+      arr = arr.map((item) => {
+        if (item.id == group.id) {
+          const nf = item.fields.filter((i) => i.id !== id)
+          return { ...item, fields: nf }
+        }
+        return item
+      })
+      setFieldGroups([...arr])
+
+      if (name != undefined) {
         await delProductFieldMutation({ id: id })
       }
     }
-    await updateState()
   }
-
   const addItem = () => {
     setFVis(false)
-    setEditorFields((prevVals) => [
-      ...prevVals,
-      {
-        sqlVar: '',
-        showVar: '',
-      },
+    setFieldGroups((prev) => [
+      ...prev.map((group) => {
+        group.id === 1
+          ? group.fields.push({
+              id: group.fields.length + 1,
+              var: '',
+              name: '',
+              id_group: 1,
+              order: group.fields.length + 1,
+            })
+          : next
+        return group
+      }),
     ])
   }
-
   return (
     <>
       <Container centerContent>
-        {editorFields.map((fields: any) => (
-          <FieldItem
-            key={fields.id}
-            order={fields.order}
-            name={fields}
-            dragStartHandler={dragStartHandler}
-            onDragEndHandler={onDragEndHandler}
-            onDragOverHandler={onDragOverHandler}
-            dropHandler={dropHandler}
-            delItem={delItem}
-            saveItem={saveItem}
-            updateItem={updateItem}
-            btnPLusFlag={fVis}
-          />
+        {fieldGroups.map((group) => (
+          <VStack
+            p={2}
+            border="1px"
+            borderRadius="5px"
+            borderColor="#FFFFF0"
+            boxShadow="base"
+            minH={20}
+            mt={4}
+            key={group.id}
+            draggable={true}
+            // onDragStart={(e) => dragStartHandlerGroup(e, group)}
+            onDrop={(e) => dropHandlerGroup(e, group)}
+            onDragOver={(e) => onDragOverHandler(e)}
+          >
+            <div>{group.name}</div>
+            {group.fields.map((field) => (
+              <FieldItem
+                key={field.var}
+                order={field.order}
+                name={field}
+                group={group}
+                dragStartHandler={dragStartHandler}
+                onDragEndHandler={onDragEndHandler}
+                onDragOverHandler={onDragOverHandler}
+                dropHandler={dropHandler}
+                delItem={delItem}
+                saveItem={saveItem}
+                updateItem={updateItem}
+                btnPLusFlag={fVis}
+              />
+            ))}
+          </VStack>
         ))}
         <Container>
           <Flex>
             <Button mt={2} onClick={addItem}>
-              +
+              Добавить новое поле
             </Button>
+            <Link href="template-editor/groupseditor">
+              <Button mt={2} ml={2}>
+                Редактор групп
+              </Button>
+            </Link>
           </Flex>
         </Container>
       </Container>
