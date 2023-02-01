@@ -15,7 +15,7 @@ const form = new IncomingForm({ multiples: true })
 export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   // Запись файла на сервер
   console.log('Не смогли удалить файл')
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     //console.log(JSON.stringify({ fields, files }, null, 2))
     if (files.file.originalFilename.match(/\.(svg|jpg|jpeg|png)$/i)) {
       const obj = JSON.parse(JSON.stringify({ fields, files }, null, 2))
@@ -31,7 +31,7 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       mv(oldPath, newPath, () => {})
 
       // Запись в базу и удаление старого файла
-      addUpdateProduct({ id: idproduct, title: title, logo: fileName }, ctx)
+      await addUpdateProduct({ id: idproduct, title: title, logo: fileName }, ctx)
       try {
         fs.unlinkSync(path + oldFileName)
         console.log('Файл ' + oldFileName + ' удален.')
@@ -41,7 +41,7 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       console.log('Новый файл: ' + fileName)
     }
   })
-  res.status(200).end(OK)
+  res.status(200).end(JSON.stringify({ value: 1 }))
 })
 export const config = {
   api: {

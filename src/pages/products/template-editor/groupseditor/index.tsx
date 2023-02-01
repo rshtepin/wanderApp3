@@ -10,7 +10,7 @@ import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
 import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
 delProductGroupField
-const TemplatEditorList = () => {
+const TemplatGroupEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductGroupField)
   const [addUpdateProductGroupFieldMutation] = useMutation(addUpdateProductGroupField)
   const pagination = usePagination()
@@ -73,7 +73,6 @@ const TemplatEditorList = () => {
     await editorFields.map(async (field) => {
       {
         if (field.order != editorFields.indexOf(field) + 1) {
-          console.log('Такое дело: ' + field.order)
           await addUpdateProductGroupFieldMutation({
             variable: field.var,
             name: field.name,
@@ -151,7 +150,7 @@ const TemplatEditorList = () => {
   )
 }
 
-const TemplatEditorPage = () => {
+const TemplateEditorGroupPage = () => {
   return (
     <Layout>
       <Head>
@@ -160,11 +159,11 @@ const TemplatEditorPage = () => {
 
       <div>
         <Suspense fallback={<div>Loading...</div>}>
-          <TemplatEditorList />
+          <TemplatGroupEditorList />
         </Suspense>
       </div>
     </Layout>
   )
 }
 
-export default TemplatEditorPage
+export default TemplateEditorGroupPage

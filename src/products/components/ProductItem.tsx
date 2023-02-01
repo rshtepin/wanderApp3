@@ -12,13 +12,14 @@ import {
   Text,
   Grid,
   GridItem,
+  useBoolean,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { Routes } from '@blitzjs/next'
 import { useSession } from '@blitzjs/auth'
 
 const AdminBlock = (prop) => {
-  const { product, onDelete } = prop
+  const { product, onDelete, checked } = prop
   const session = useSession()
   const role = session.role
 
@@ -50,6 +51,7 @@ const AdminBlock = (prop) => {
 ///////////////////
 
 const ProductItem = ({ product, onDelete }) => {
+  const [flag, setFlag] = useBoolean()
   const [checked, setChecked] = useState(false)
   return (
     <div className="card-container">
@@ -80,9 +82,35 @@ const ProductItem = ({ product, onDelete }) => {
         </div>
       </div>
       <div className="card-buttons">
-        <Checkbox size="lg" mr="5%" colorScheme="green" defaultChecked={false}>
-          Сравнить
-        </Checkbox>
+        <Box
+          defaultChecked
+          _selected={{
+            width: '110px',
+            bg: '#B2A1FF',
+            border: '0px',
+          }}
+          font-weight="400"
+          line-height="17px"
+          height="30px"
+          width="90px"
+          borderColor="#CCCCCC"
+          borderRadius="3px"
+          border="1px"
+          color="#001D00"
+          transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+          _hover={{ bg: '#999999' }}
+          _active={{
+            width: '110px',
+            bg: '#B2A1FF',
+            border: '0px',
+          }}
+          _focus={{
+            boxShadow: '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+          }}
+          onClick={setFlag.toggle}
+        >
+          {flag ? 'В Сравнении' : 'Сравнить'}
+        </Box>
         <Suspense fallback="Проверяем права...">
           <AdminBlock onDelete={onDelete} product={product} />
         </Suspense>

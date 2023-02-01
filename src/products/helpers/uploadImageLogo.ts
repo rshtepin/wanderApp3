@@ -44,9 +44,8 @@ const uploadImageFile = async (
           method: 'POST',
 
           body,
-        }).then((res) => {
-          console.log('Ответ: ' + JSON.stringify(res.json()))
-        })
+        }).then((res) => {})
+        console.log(response)
       } else
         alert(
           'Неподходящее изображение. Размер файла должен быть не больше ' +

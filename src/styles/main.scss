@@ -486,14 +486,12 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 #enter-form {
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
   gap: 10px;
   position: absolute;
-  width: fit-content;
   left: 50%;
 
   transform: translate(-50%, 60%);
@@ -533,8 +531,8 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
     }
 
     #form-enter-inputs {
-      opacity: 0;
-      margin-top: 10%;
+      opacity: 0.01;
+      margin-top: 50%;
     }
 
     #app-background {
@@ -563,13 +561,13 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 
     #form-enter-inputs {
       opacity: 1;
+      margin-top: 10%;
       transition: (450ms);
       transition-delay: 200ms;
     }
 
     #registering-inputs {
-      display: none;
-      opacity: 0;
+      opacity: 0.01;
     }
 
     #app-background {
