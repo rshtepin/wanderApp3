@@ -1,4 +1,4 @@
-import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
+import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
 import { Suspense, useState } from 'react'
 import getProducts from '../queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
@@ -10,31 +10,45 @@ import { useRouter } from 'next/router'
 import addUpdateProduct from '../mutations/addUpdateProduct'
 import ModalAddProductProp from './ModalAddProductProp'
 import Link from 'next/link'
-const ITEMS_PER_PAGE = 30
 import delProduct from '../mutations/delProduct'
+import { Routes } from '@blitzjs/next'
+
+const ITEMS_PER_PAGE = 30
 
 const GetProductsDB = () => {
   const [delProductMutation] = useMutation(delProduct)
+
   const router = useRouter()
   const pagination = usePagination()
+  const [toCompare, setToCompare] = useState<any>([])
   const [{ products, hasMore }] = usePaginatedQuery(getProducts, {
     orderBy: { order: 'asc' },
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
 
+  const compare = async ({ id, flag }) => {
+    console.log('id: ' + id)
+    console.log('flag: ' + flag)
+    flag
+      ? await setToCompare((prev) => [...prev, id])
+      : await setToCompare(toCompare.filter((item) => item !== id))
+
+    console.log(toCompare)
+  }
+
   //const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   //const goToNextPage = () => router.push({ query: { page: page + 1 } })
   return (
     <>
       {products.map((item) => (
-        <ProductItem key={item.id} product={item} onDelete={delProductMutation} />
+        <ProductItem key={item.id} product={item} onDelete={delProductMutation} compare={compare} />
       ))}
     </>
   )
 }
 // Блок администратора
-const AdminBlock = () => {
+const AdminBlock: any = () => {
   const session = useSession()
   const role = session.role
   const [show, setShow] = useState(false)
@@ -52,31 +66,31 @@ const AdminBlock = () => {
     await addProductMutation({ title: item, id: -1 })
   }
 
-  if (role == 'ADMIN')
-    return (
-      <>
-        <Box mt={5}>
-          <Link href={'/products/template-editor'}>
-            <Button mr={2} mt={2} colorScheme="yellow">
-              Редактор шаблона продукта
-            </Button>
-          </Link>
-          <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
-            Добавить продукт
+  role == 'ADMIN' && (
+    <>
+      <Box mt={5}>
+        <Link href={Routes.TemplatEditorPage()}>
+          <Button mr={2} mt={2} colorScheme="yellow">
+            Редактор шаблона продукта
           </Button>
-          <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
-        </Box>
-      </>
-    )
+        </Link>
+        <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
+          Добавить продукт
+        </Button>
+        <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
+      </Box>
+    </>
+  )
 }
 ///////////////////
 
 const AllProducts = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Wrap width="85vw" spacing="16px" justify="center" align={'center'}>
+      <Wrap width="85vw" spacing="16px" justify="center" align={'center'} mt={6}>
         <GetProductsDB />
       </Wrap>
+      <Button mt={5}>Сравнить</Button>
 
       <AdminBlock />
     </Suspense>

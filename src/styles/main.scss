@@ -4,6 +4,7 @@ body {
   padding: 0px;
 
   &::-webkit-scrollbar-track {
+
     background-color: gray(30);
   }
 
@@ -33,6 +34,7 @@ body {
 $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/1612743094_124-p-fon-na-android-goluboi-144.jpg';
 
 .background-image {
+
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -291,7 +293,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   width: 45%;
   min-width: 450px;
   max-width: 620px;
-  min-height: 370px;
+  min-height: 340px;
 
   box-shadow: 2px 2px 2px rgba(rgb(70, 70, 70), 0.1);
   backdrop-filter: blur(4px);
@@ -349,11 +351,15 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 .card-buttons {
+  white-space: nowrap;
   box-sizing: border-box;
-  display: flexbox;
+  display: flex;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
   flex-direction: row;
   width: 100%;
-  gap: 6px;
+  padding: 6px 16px;
 }
 
 .button-clear {
@@ -521,6 +527,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   align-items: center;
   background-color: gray(30);
 
+
   &.logged-out {
     #image-logo {
       cursor: pointer;
@@ -619,6 +626,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   }
 
   #app-background2 {
+
     height: 100%;
     left: 0px;
     overflow: hidden;
@@ -627,9 +635,11 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
     width: 100%;
     top: 0;
     left: 0;
+
     z-index: -1;
 
     #app-background-image2 {
+
       background-image: url($backgroundImageProduct);
       height: 100%;
       transition: filter 450ms, transform 450ms;
