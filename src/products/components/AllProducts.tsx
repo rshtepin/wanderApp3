@@ -27,6 +27,7 @@ const GetProductsDB = ({ compare }) => {
     take: ITEMS_PER_PAGE,
   })
 
+  console.log(products)
   //const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   //const goToNextPage = () => router.push({ query: { page: page + 1 } })
   return (
