@@ -52,7 +52,6 @@ const AdminBlock: any = () => {
     setShow(false)
   }
   const onSave = async (item) => {
-    console.log('Сейвим продукт ' + item)
     await addProductMutation({ title: item, id: -1 })
   }
 
@@ -78,13 +77,10 @@ const AdminBlock: any = () => {
 const AllProducts = () => {
   const [toCompare, setToCompare] = useState<any>([])
   const compare = async ({ id, flag }) => {
-    console.log('id: ' + id)
-    console.log('flag: ' + flag)
     flag
       ? await setToCompare((prev) => [...prev, id])
       : await setToCompare(toCompare.filter((item) => item !== id))
   }
-
   return (
     <Suspense
       fallback={
@@ -101,7 +97,6 @@ const AllProducts = () => {
           Сравнить
         </Button>
       </Link>
-
       <AdminBlock />
     </Suspense>
   )

@@ -1,6 +1,5 @@
 import { BlitzPage, useRouterQuery } from '@blitzjs/next'
-
-import { Box, Center, Container, Img, Spinner } from '@chakra-ui/react'
+import { Center, Container, Img, Spinner, Tfoot } from '@chakra-ui/react'
 import { Suspense, useEffect, useState } from 'react'
 import { Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer } from '@chakra-ui/react'
 import Layout from 'src/core/layouts/Layout'
@@ -57,14 +56,11 @@ const CompareTable: any = () => {
           else differentFields.push(itemF)
         }
       })
-
       mystate.push({ ...itemG, differentFields: differentFields, samefields: sameFields })
     })
     setFieldGroups(mystate)
   }, [])
 
-  console.log('FieldGroups')
-  console.log(FieldGroups)
   return (
     <TableContainer>
       <Table variant="striped" size="sm">
@@ -72,7 +68,7 @@ const CompareTable: any = () => {
           <Tr>
             <Th></Th>
             {productsArr.map((item: any) => (
-              <Th key={item.id} align="center" textAlign="center">
+              <Th key={item.title} align="center" textAlign="center">
                 <Center>
                   <Img
                     height="20px"
@@ -93,21 +89,19 @@ const CompareTable: any = () => {
           (group) =>
             group.id !== 1 && (
               <>
-                <Thead key={group.name} fontWeight="600">
+                <Thead fontWeight="600" key={group.name}>
                   {group.name}
                 </Thead>
                 <Tbody>
                   {group.samefields.map((field) => (
-                    <>
-                      <Tr key={field.name}>
-                        <Td color="green">{field.name}</Td>
-                        {productsArr.map((product) => (
-                          <Td key={product.id} textAlign="center">
-                            {getValue(field.id, product)}
-                          </Td>
-                        ))}
-                      </Tr>
-                    </>
+                    <Tr key={field.name}>
+                      <Td color="green">{field.name}</Td>
+                      {productsArr.map((product) => (
+                        <Td key={product.id} textAlign="center">
+                          {getValue(field.id, product)}
+                        </Td>
+                      ))}
+                    </Tr>
                   ))}
                   {group.differentFields.map((field) => (
                     <>
