@@ -1,6 +1,6 @@
 import { BlitzPage, useRouterQuery } from '@blitzjs/next'
 
-import { Box, Center, Container, Img } from '@chakra-ui/react'
+import { Box, Center, Container, Img, Spinner } from '@chakra-ui/react'
 import { Suspense, useEffect, useState } from 'react'
 import { Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer } from '@chakra-ui/react'
 import Layout from 'src/core/layouts/Layout'
@@ -8,9 +8,10 @@ import { usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import getProducts from 'src/products/queries/getProducts'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import getAllFields from 'src/products/template-editor/queries/getAllFields'
+import next from 'next'
 
 const CompareTable: any = () => {
-  const [fieldGroups, setFieldGroups] = useState<any>([])
+  const [FieldGroups, setFieldGroups] = useState<any>([])
   let { id } = useRouterQuery()
   if (typeof id !== 'undefined') id = id.map(Number)
 
@@ -42,19 +43,31 @@ const CompareTable: any = () => {
   }
 
   useEffect(() => {
-    let mystate = []
+    let mystate: any = []
     groups.map((itemG: any) => {
-      const addFileds = []
+      const sameFields: any = []
+      const differentFields: any = []
       fields.map((itemF) => {
-        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+        if (itemF.id_group == itemG.id) {
+          const res = products.every((i) => {
+            if (getValue(itemF.id, i) !== getValue(itemF.id, products[0])) return false
+            else return true
+          })
+          if (res) sameFields.push(itemF)
+          else differentFields.push(itemF)
+        }
       })
-      mystate.push({ ...itemG, fields: addFileds })
+
+      mystate.push({ ...itemG, differentFields: differentFields, samefields: sameFields })
     })
     setFieldGroups(mystate)
   }, [])
+
+  console.log('FieldGroups')
+  console.log(FieldGroups)
   return (
     <TableContainer>
-      <Table variant="striped" colorScheme="green" size="sm">
+      <Table variant="striped" size="sm">
         <Thead>
           <Tr>
             <Th></Th>
@@ -62,7 +75,7 @@ const CompareTable: any = () => {
               <Th key={item.id} align="center" textAlign="center">
                 <Center>
                   <Img
-                    height="15px"
+                    height="20px"
                     src={
                       process.env.NEXT_PUBLIC_APP_URL! +
                       process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! +
@@ -76,18 +89,30 @@ const CompareTable: any = () => {
             ))}
           </Tr>
         </Thead>
-        {fieldGroups.map(
+        {FieldGroups.map(
           (group) =>
             group.id !== 1 && (
               <>
-                <Thead key={group.id} fontWeight="600">
+                <Thead key={group.name} fontWeight="600">
                   {group.name}
                 </Thead>
                 <Tbody>
-                  {group.fields.map((field) => (
+                  {group.samefields.map((field) => (
                     <>
-                      <Tr key={field.id}>
-                        <Td>{field.name}</Td>
+                      <Tr key={field.name}>
+                        <Td color="green">{field.name}</Td>
+                        {productsArr.map((product) => (
+                          <Td key={product.id} textAlign="center">
+                            {getValue(field.id, product)}
+                          </Td>
+                        ))}
+                      </Tr>
+                    </>
+                  ))}
+                  {group.differentFields.map((field) => (
+                    <>
+                      <Tr key={field.name}>
+                        <Td color="red">{field.name}</Td>
                         {productsArr.map((product) => (
                           <Td key={product.id} textAlign="center">
                             {getValue(field.id, product)}
@@ -108,7 +133,19 @@ const CompareTable: any = () => {
 const CompareProducts: BlitzPage = () => {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <Center height={'100vh'}>
+            <Spinner
+              thickness="4px"
+              speed="0.45s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Center>
+        }
+      >
         <Container maxW="3xl" centerContent>
           <CompareTable />
         </Container>

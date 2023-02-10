@@ -3,7 +3,7 @@ import { Suspense, useState } from 'react'
 import getProducts from '../queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
 import ProductItem from './ProductItem'
-import { Box, Wrap } from '@chakra-ui/react'
+import { Box, Center, Spinner, Wrap } from '@chakra-ui/react'
 import { useSession } from '@blitzjs/auth'
 import { Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
@@ -56,21 +56,22 @@ const AdminBlock: any = () => {
     await addProductMutation({ title: item, id: -1 })
   }
 
-  role == 'ADMIN' && (
-    <>
-      <Box mt={5}>
-        <Link href={Routes.TemplatEditorPage()}>
-          <Button mr={2} mt={2} colorScheme="yellow">
-            Редактор шаблона продукта
+  if (role == 'ADMIN')
+    return (
+      <>
+        <Box mt={5}>
+          <Link href={Routes.TemplatEditorPage()}>
+            <Button mr={2} mt={2} colorScheme="yellow">
+              Редактор шаблона продукта
+            </Button>
+          </Link>
+          <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
+            Добавить продукт
           </Button>
-        </Link>
-        <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
-          Добавить продукт
-        </Button>
-        <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
-      </Box>
-    </>
-  )
+          <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
+        </Box>
+      </>
+    )
 }
 ///////////////////
 
@@ -85,7 +86,13 @@ const AllProducts = () => {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <Center height={'100vh'}>
+          <Spinner thickness="4px" speed="0.45s" emptyColor="gray.200" color="blue.500" size="xl" />
+        </Center>
+      }
+    >
       <Wrap width="85vw" spacing="16px" justify="center" align={'center'} mt={6}>
         <GetProductsDB compare={compare} />
       </Wrap>
@@ -94,7 +101,7 @@ const AllProducts = () => {
           Сравнить
         </Button>
       </Link>
-      <div>{JSON.stringify(toCompare)}</div>
+
       <AdminBlock />
     </Suspense>
   )
