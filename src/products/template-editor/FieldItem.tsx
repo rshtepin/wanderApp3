@@ -25,19 +25,21 @@ const FieldItem = (prop) => {
   const [inputValueShowVar, setinputValueShowVar] = useState(name.name)
   const [btnEditFlag, setBtnEditFlag] = useState(btnPLusFlag)
   const [draggble, setDraggble] = useState(true)
-  const saveButton = () => {
+  const saveButton = async () => {
     if (btnEditFlag) {
       console.log('UPDATE')
-      setDisabledEdit(true)
-      setinputValueVar(name.var)
-      setinputValueShowVar(name.name)
-      updateItem(name, inputValueVar)
+      await setDisabledEdit(true)
+      await setDisabledSave(false)
+      await setinputValueVar(name.var)
+      await setinputValueShowVar(name.name)
+      await updateItem(name, inputValueVar)
     } else {
       console.log('SAVING')
-      setDisabledEdit(true)
-      setinputValueVar(name.var)
-      setinputValueShowVar(name.name)
-      saveItem(name)
+      await setDisabledEdit(true)
+      await setDisabledSave(false)
+      await setinputValueVar(name.var)
+      await setinputValueShowVar(name.name)
+      await saveItem(name)
     }
   }
   const editClick = () => {
@@ -50,6 +52,7 @@ const FieldItem = (prop) => {
       delItem({ id: name.id, flag: true, group: group })
     }
     if (val == '' && btnEditFlag) {
+      console.log('onBlurVar')
       colomnInputVar.current.value = inputValueVar
       colomnInputShow.current.value = inputValueShowVar
       name.var = inputValueVar
@@ -64,13 +67,13 @@ const FieldItem = (prop) => {
       delItem({ id: name.id, flag: true, group: group })
     }
     if ((val == '' && btnEditFlag) || name.var == '') {
+      console.log('onBlurShowVar')
       colomnInputVar.current.value = inputValueVar
       colomnInputShow.current.value = inputValueShowVar
       name.name = inputValueShowVar
       setDisabledEdit(true)
       setDisabledSave(false)
     } else {
-      // setDisabledEdit(true)
     }
   }
 
@@ -143,17 +146,17 @@ const FieldItem = (prop) => {
         </Center>
 
         <ButtonGroup>
-          <Button
-            isDisabled={disabledSave}
-            width={'150px'}
-            colorScheme={disabledEdit ? 'yellow' : 'blue'}
-            size="sm"
-            onClick={disabledEdit ? () => editClick() : () => saveButton()}
-          >
-            {disabledEdit ? 'Редактировать' : 'Сохранить'}
-          </Button>
-
           <Suspense>
+            <Button
+              isDisabled={disabledSave}
+              width={'150px'}
+              colorScheme={disabledEdit ? 'yellow' : 'blue'}
+              size="sm"
+              onClick={disabledEdit ? () => editClick() : () => saveButton()}
+            >
+              {disabledEdit ? 'Редактировать' : 'Сохранить'}
+            </Button>
+
             <Button
               colorScheme="red"
               size="sm"

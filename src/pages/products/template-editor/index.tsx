@@ -149,10 +149,12 @@ const TemplatEditorList = () => {
     }
   }
   const updateItem = async (id: any, oldVar) => {
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar })
+    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: oldVar })
   }
   const saveItem = async (id) => {
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var })
+    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var }).then(
+      setFVis(true)
+    )
   }
   const delItem = async ({ id, name, flag, group }) => {
     let isDel: boolean
@@ -173,8 +175,8 @@ const TemplatEditorList = () => {
       }
     }
   }
-  const addItem = () => {
-    setFVis(false)
+  const addItem = async () => {
+    await setFVis(false)
     setFieldGroups((prev) => [
       ...prev.map((group) => {
         group.id === 1
