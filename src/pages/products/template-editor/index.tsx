@@ -10,6 +10,7 @@ import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
 import delProductField from 'src/products/template-editor/mutations/delProductField'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import { ProductType } from '@prisma/client'
 import next from 'next'
 import Link from 'next/link'
 
