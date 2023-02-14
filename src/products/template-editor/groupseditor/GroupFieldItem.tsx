@@ -162,7 +162,7 @@ const FieldItem = (prop) => {
 
           <Suspense>
             <Button
-              isDisabled={name.id == 1 ? true : false}
+              isDisabled={name.name == 'default' ? true : false}
               colorScheme="red"
               size="sm"
               onClick={() => {

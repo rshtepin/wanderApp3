@@ -2,13 +2,14 @@ import { Suspense, useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@blitzjs/rpc'
 import Head from 'next/head'
 import Layout from 'src/core/layouts/Layout'
-import { Button, Container, Flex } from '@chakra-ui/react'
+import { Button, Container, Flex, Select } from '@chakra-ui/react'
 import GroupFieldItem from 'src/products/template-editor/groupseditor/GroupFieldItem'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
 import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
+import { ProductType } from '@prisma/client'
 delProductGroupField
 const TemplatGroupEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductGroupField)
@@ -18,7 +19,9 @@ const TemplatGroupEditorList = () => {
   const [fVis, setFVis] = useState(true)
   const [currentField, setCurrnetField] = useState(null)
 
+  const productTypes = Object.keys(ProductType)
   const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+    productType: ProductType.PAM,
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
@@ -122,6 +125,15 @@ const TemplatGroupEditorList = () => {
 
   return (
     <>
+      <Select id="type" placeholder="Выберите тип продукта" defaultValue={productTypes[0]}>
+        {productTypes.map((i) => {
+          return (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          )
+        })}
+      </Select>
       <Container centerContent>
         {editorFields.map((fields: any) => (
           <GroupFieldItem

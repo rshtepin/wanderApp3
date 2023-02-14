@@ -22,11 +22,12 @@ export const Product = () => {
     take: 100,
   })
   const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+    productType: Product.type,
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
   })
-  console.log(Product)
+  console.log(groups)
   useEffect(() => {
     let mystate = []
     groups.map((itemG: any) => {
@@ -73,7 +74,7 @@ export const Product = () => {
           </div>
           <div className="description-block">
             {fieldGroups.map((group) => {
-              if (group.id != 1)
+              if (group.name != 'default')
                 return (
                   <div key={group.var} className="table-product-props-container">
                     <div className="description-part-title">{group.name}</div>

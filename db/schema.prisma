@@ -69,6 +69,7 @@ model Product {
   order          Int              @default(autoincrement())
   longdesc       String?
   shortdesc      String?
+  type           ProductType?
   Variable_value Variable_value[]
 }
 
@@ -79,6 +80,7 @@ model Product_variable {
   group          Field_group      @relation(fields: [id_group], references: [id])
   id_group       Int              @default(1)
   order          Int              @default(autoincrement())
+  productType    ProductType
   Variable_value Variable_value[]
 }
 
@@ -99,5 +101,11 @@ model Field_group {
   var              String             @unique
   name             String
   order            Int                @default(autoincrement())
+  productType      ProductType
   Product_variable Product_variable[]
+}
+
+enum ProductType {
+  PAM
+  DLP
 }

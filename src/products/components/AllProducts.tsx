@@ -1,4 +1,4 @@
-import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
+import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Suspense, useState } from 'react'
 import getProducts from '../queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
@@ -12,6 +12,7 @@ import ModalAddProductProp from './ModalAddProductProp'
 import Link from 'next/link'
 import delProduct from '../mutations/delProduct'
 import { Routes } from '@blitzjs/next'
+import { ProductType } from '@prisma/client'
 
 const ITEMS_PER_PAGE = 30
 
@@ -42,8 +43,10 @@ const GetProductsDB = ({ compare }) => {
 const AdminBlock: any = () => {
   const session = useSession()
   const role = session.role
+
   const [show, setShow] = useState(false)
   const [addProductMutation] = useMutation(addUpdateProduct)
+
   const onHide = () => {
     setShow(false)
   }
@@ -52,7 +55,7 @@ const AdminBlock: any = () => {
     setShow(false)
   }
   const onSave = async (item) => {
-    await addProductMutation({ title: item, id: -1 })
+    await addProductMutation({ title: item.title, type: item.type, id: -1 })
   }
 
   if (role == 'ADMIN')
@@ -67,7 +70,13 @@ const AdminBlock: any = () => {
           <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
             Добавить продукт
           </Button>
-          <ModalAddProductProp show={show} onHide={onHide} onClose={onClose} onSave={onSave} />
+          <ModalAddProductProp
+            show={show}
+            onHide={onHide}
+            onClose={onClose}
+            onSave={onSave}
+            productTypes={ProductType}
+          />
         </Box>
       </>
     )

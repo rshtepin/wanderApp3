@@ -14,7 +14,7 @@ const form = new IncomingForm({ multiples: true })
 
 export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
   // Запись файла на сервер
-  console.log('Не смогли удалить файл')
+
   form.parse(req, async (err, fields, files) => {
     //console.log(JSON.stringify({ fields, files }, null, 2))
     if (files.file.originalFilename.match(/\.(svg|jpg|jpeg|png)$/i)) {

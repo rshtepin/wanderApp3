@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "ProductType" AS ENUM ('PAM', 'DLP');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -47,6 +50,9 @@ CREATE TABLE "Product" (
     "title" TEXT NOT NULL,
     "logo" TEXT,
     "order" SERIAL NOT NULL,
+    "longdesc" TEXT,
+    "shortdesc" TEXT,
+    "type" "ProductType" NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -56,7 +62,9 @@ CREATE TABLE "Product_variable" (
     "id" SERIAL NOT NULL,
     "var" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "id_group" INTEGER NOT NULL DEFAULT 1,
     "order" SERIAL NOT NULL,
+    "productType" "ProductType" NOT NULL,
 
     CONSTRAINT "Product_variable_pkey" PRIMARY KEY ("id")
 );
@@ -70,6 +78,17 @@ CREATE TABLE "Variable_value" (
     "order" SERIAL NOT NULL,
 
     CONSTRAINT "Variable_value_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Field_group" (
+    "id" SERIAL NOT NULL,
+    "var" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "order" SERIAL NOT NULL,
+    "productType" "ProductType" NOT NULL,
+
+    CONSTRAINT "Field_group_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -87,6 +106,9 @@ CREATE UNIQUE INDEX "Product_variable_var_key" ON "Product_variable"("var");
 -- CreateIndex
 CREATE UNIQUE INDEX "Variable_value_id_product_id_variable_key" ON "Variable_value"("id_product", "id_variable");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Field_group_var_key" ON "Field_group"("var");
+
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -94,7 +116,10 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_variable_fkey" FOREIGN KEY ("id_variable") REFERENCES "Product_variable"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Product_variable" ADD CONSTRAINT "Product_variable_id_group_fkey" FOREIGN KEY ("id_group") REFERENCES "Field_group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_product_fkey" FOREIGN KEY ("id_product") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_variable_fkey" FOREIGN KEY ("id_variable") REFERENCES "Product_variable"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_product_fkey" FOREIGN KEY ("id_product") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
