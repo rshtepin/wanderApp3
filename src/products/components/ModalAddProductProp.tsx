@@ -13,10 +13,9 @@ import {
 import React, { useState } from 'react'
 
 const ModalAddProductProp = (prop) => {
-  const { show, onHide, onSave, onClose, productTypes } = prop
+  const { show, onHide, onSave, onClose } = prop
   const [modVars, setModVars] = useState({ title: '', type: '' })
   const [disabledBtn, setDisabledBtn] = useState(true)
-  const productType = Object.keys(productTypes)
 
   const handleSave = () => {
     console.log(modVars)
@@ -57,13 +56,13 @@ const ModalAddProductProp = (prop) => {
                 console.log(modVars.type)
               }}
             >
-              {productType.map((i) => {
+              {/* {productType.map((i) => {
                 return (
                   <option key={i} value={i}>
                     {i}
                   </option>
                 )
-              })}
+              })} */}
             </Select>
           </ModalBody>
 

@@ -9,7 +9,10 @@ import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
 import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
-import { ProductType } from '@prisma/client'
+import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import getTypes from 'src/products/queries/getTypes'
+import { IProductGroups, IProductTypes } from 'src/types'
+
 delProductGroupField
 const TemplatGroupEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductGroupField)
@@ -19,19 +22,26 @@ const TemplatGroupEditorList = () => {
   const [fVis, setFVis] = useState(true)
   const [currentField, setCurrnetField] = useState(null)
 
-  const productTypes = Object.keys(ProductType)
-  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
-    productType: ProductType.PAM,
-    orderBy: { order: 'asc' },
-    skip: 0 * pagination.page,
-    take: 100,
+  const [{ types }]: IProductTypes[] = usePaginatedQuery(getTypes, {
+    where: {},
   })
+  const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0])
+
+  const [{ groups }]: IProductGroups[] = usePaginatedQuery(getAllGroupFields, {
+    orderBy: { order: 'asc' },
+  })
+  const tabsChange = async ({ tabName }) => {
+    await SetCurrnetTab(tabName)
+  }
 
   useEffect(() => {
-    console.log('Установка ФИЛД СТЕЙТА')
-    setEditorFields(groups)
-    console.log(groups)
-  }, [])
+    let groupArr: IProductGroups[] = []
+    groups.map((group) => {
+      group.typeId === currentTab.id && groupArr.push(group)
+    })
+
+    return setEditorFields(groupArr)
+  }, [currentTab, groups])
 
   const updateState = async () => {
     setEditorFields((prevState) => {
@@ -125,15 +135,10 @@ const TemplatGroupEditorList = () => {
 
   return (
     <>
-      <Select id="type" placeholder="Выберите тип продукта" defaultValue={productTypes[0]}>
-        {productTypes.map((i) => {
-          return (
-            <option key={i} value={i}>
-              {i}
-            </option>
-          )
-        })}
-      </Select>
+      <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
+        <ProductTypesMenu type={types} onChange={tabsChange} />
+      </div>
+
       <Container centerContent>
         {editorFields.map((fields: any) => (
           <GroupFieldItem

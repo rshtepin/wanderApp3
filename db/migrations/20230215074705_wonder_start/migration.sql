@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "ProductType" AS ENUM ('PAM', 'DLP');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -48,23 +45,31 @@ CREATE TABLE "Token" (
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "typeId" INTEGER NOT NULL,
     "logo" TEXT,
     "order" SERIAL NOT NULL,
     "longdesc" TEXT,
     "shortdesc" TEXT,
-    "type" "ProductType" NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
+CREATE TABLE "ProductType" (
+    "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "order" SERIAL NOT NULL,
+
+    CONSTRAINT "ProductType_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Product_variable" (
     "id" SERIAL NOT NULL,
-    "var" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "id_group" INTEGER NOT NULL DEFAULT 1,
+    "unit" TEXT NOT NULL DEFAULT '',
     "order" SERIAL NOT NULL,
-    "productType" "ProductType" NOT NULL,
 
     CONSTRAINT "Product_variable_pkey" PRIMARY KEY ("id")
 );
@@ -83,10 +88,9 @@ CREATE TABLE "Variable_value" (
 -- CreateTable
 CREATE TABLE "Field_group" (
     "id" SERIAL NOT NULL,
-    "var" TEXT NOT NULL,
+    "typeId" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "order" SERIAL NOT NULL,
-    "productType" "ProductType" NOT NULL,
 
     CONSTRAINT "Field_group_pkey" PRIMARY KEY ("id")
 );
@@ -101,19 +105,16 @@ CREATE UNIQUE INDEX "Session_handle_key" ON "Session"("handle");
 CREATE UNIQUE INDEX "Token_hashedToken_type_key" ON "Token"("hashedToken", "type");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_variable_var_key" ON "Product_variable"("var");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Variable_value_id_product_id_variable_key" ON "Variable_value"("id_product", "id_variable");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Field_group_var_key" ON "Field_group"("var");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "ProductType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Product_variable" ADD CONSTRAINT "Product_variable_id_group_fkey" FOREIGN KEY ("id_group") REFERENCES "Field_group"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -123,3 +124,6 @@ ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_variable_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "Variable_value" ADD CONSTRAINT "Variable_value_id_product_fkey" FOREIGN KEY ("id_product") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Field_group" ADD CONSTRAINT "Field_group_typeId_fkey" FOREIGN KEY ("typeId") REFERENCES "ProductType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

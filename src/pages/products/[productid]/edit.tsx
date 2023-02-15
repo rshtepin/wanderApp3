@@ -32,7 +32,9 @@ export const Product = () => {
   const [objUrl, setObjUrl] = useState<string | undefined>()
   const pagination = usePagination()
   async function fetchImageBlob(): Promise<Blob> {
-    const response = await fetch('http://localhost:3000/media/images/productlogo/' + Product.logo)
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL! + process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + Product.logo
+    )
     // if (!response.ok) throw new Error('Response not OK')
     return response.blob()
   }

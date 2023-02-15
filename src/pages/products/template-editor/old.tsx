@@ -13,9 +13,6 @@ import getAllGroupFields from 'src/products/template-editor/groupseditor/queries
 import { ProductType } from '@prisma/client'
 import next from 'next'
 import Link from 'next/link'
-import getTypes from 'src/products/queries/getTypes'
-import { IProductFields, IProductGroups, IProductTypes } from 'src/types'
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
 
 const TemplatEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductField)
@@ -24,46 +21,29 @@ const TemplatEditorList = () => {
   const [fVis, setFVis] = useState<boolean>(true)
   const [currentField, setCurrnetField] = useState<any>(null)
   const [currentGroup, setCurrnetGroup] = useState<any>(null)
-  const [fieldGroups, setFieldGroups] = useState<IProductGroups[]>([])
-
-  const [{ types }]: IProductTypes[] = usePaginatedQuery(getTypes, {
-    where: {},
-  })
-  const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0])
+  const [fieldGroups, setFieldGroups] = useState<any>([])
 
   const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
     orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
   })
-
-  const [{ groups }]: IProductGroups[] = usePaginatedQuery(getAllGroupFields, {
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
     orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
   })
-
-  useEffect(() => {
-    let groupArr: IProductGroups[] = []
-    groups.map((group) => {
-      group.typeId === currentTab.id && groupArr.push(group)
-    })
-    console.log('fieldGroups')
-    console.log(fieldGroups)
-    return setFieldGroups(groupArr)
-  }, [currentTab, groups])
-
   useEffect(() => {
     let mystate = []
-    groups.map((itemG: IProductGroups) => {
+    groups.map((itemG: any) => {
       const addFileds = []
-      fields.map((itemF: IProductFields) => {
+      fields.map((itemF) => {
         itemF.id_group == itemG.id ? addFileds.push(itemF) : next
       })
       mystate.push({ ...itemG, fields: addFileds })
     })
     setFieldGroups(mystate)
   }, [])
-
-  const tabsChange = async ({ tabName }) => {
-    await SetCurrnetTab(tabName)
-  }
 
   const updateState = async () => {
     setFieldGroups((prevState) => {
@@ -215,9 +195,6 @@ const TemplatEditorList = () => {
   }
   return (
     <>
-      <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
-        <ProductTypesMenu type={types} onChange={tabsChange} />
-      </div>
       <Container centerContent>
         {fieldGroups.map((group) => (
           <VStack
@@ -272,21 +249,16 @@ const TemplatEditorList = () => {
 
 const TemplatEditorPage = () => {
   return (
-    <div id="app">
-      <Layout>
-        <Head>
-          <title>TEMPLATE</title>
-        </Head>
+    <Layout>
+      <Head>
+        <title>TEMPLATE</title>
+      </Head>
 
-        <div>
-          <Suspense fallback={<div>Loading...</div>}>
-            <div style={{ width: '50vw', padding: '4px 0 20px 0' }}></div>
-            <TemplatEditorList />
-          </Suspense>
-        </div>
-      </Layout>
-    </div>
+      <div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <TemplatEditorList />
+        </Suspense>
+      </div>
+    </Layout>
   )
 }
-
-export default TemplatEditorPage
