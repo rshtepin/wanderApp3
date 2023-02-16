@@ -14,9 +14,9 @@ export interface IProduct {
   Variable_value?: []
 }
 export interface IProductTypes {
-  id: Number
-  title: String
-  order?: Number
+  id: number
+  title: string
+  order?: number
 }
 
 export interface IProductGroups {

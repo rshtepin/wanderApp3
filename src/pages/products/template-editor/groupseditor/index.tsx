@@ -13,7 +13,6 @@ import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductGroups, IProductTypes } from 'src/types'
 
-delProductGroupField
 const TemplatGroupEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductGroupField)
   const [addUpdateProductGroupFieldMutation] = useMutation(addUpdateProductGroupField)

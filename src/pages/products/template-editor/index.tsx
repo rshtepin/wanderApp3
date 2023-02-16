@@ -35,7 +35,7 @@ const TemplatEditorList = () => {
     orderBy: { order: 'asc' },
   })
 
-  const [{ groups }]: IProductGroups[] = usePaginatedQuery(getAllGroupFields, {
+  const [{ groups }] = usePaginatedQuery<IProductGroups[]>(getAllGroupFields, {
     orderBy: { order: 'asc' },
   })
 
