@@ -87,7 +87,7 @@ model ProductType {
 
 model Product_variable {
   id       Int         @id @default(autoincrement())
-  name     String
+  title    String
   group    Field_group @relation(fields: [id_group], references: [id])
   id_group Int         @default(1)
   unit     String      @default("")
@@ -112,7 +112,7 @@ model Field_group {
   id     Int         @id @default(autoincrement())
   type   ProductType @relation(fields: [typeId], references: [id])
   typeId Int
-  name   String
+  title  String
   order  Int         @default(autoincrement())
 
   Product_variable Product_variable[]

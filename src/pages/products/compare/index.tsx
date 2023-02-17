@@ -6,7 +6,7 @@ import Layout from 'src/core/layouts/Layout'
 import { usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import getProducts from 'src/products/queries/getProducts'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
-import getAllFields from 'src/products/template-editor/queries/getAllFields'
+import getAllFields from 'src/products/template-editor/queries/_getAllFields'
 import next from 'next'
 
 const CompareTable: any = () => {

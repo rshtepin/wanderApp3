@@ -4,10 +4,10 @@ import Head from 'next/head'
 import Layout from 'src/core/layouts/Layout'
 import { Button, Container, Flex, Select, VStack } from '@chakra-ui/react'
 import FieldItem from 'src/products/template-editor/FieldItem'
-import getAllFields from 'src/products/template-editor/queries/getAllFields'
+import getAllFields from 'src/products/template-editor/queries/_getAllFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
-import addUpdateProductField from 'src/products/template-editor/mutations/addUpdateProductField'
+import addUpdateProductField from 'src/products/template-editor/mutations/_addUpdateProductField'
 import delProductField from 'src/products/template-editor/mutations/delProductField'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { ProductType } from '@prisma/client'
@@ -61,8 +61,8 @@ const TemplatEditorList = () => {
     setFieldGroups(mystate)
   }, [])
 
-  const tabsChange = async ({ tabName }) => {
-    await SetCurrnetTab(tabName)
+  const tabsChange = async ({ tabtitle }) => {
+    await SetCurrnetTab(tabtitle)
   }
 
   const updateState = async () => {
@@ -89,8 +89,8 @@ const TemplatEditorList = () => {
     arr.splice(newindex, 0, arr.splice(oldindex, 1)[0])
     return arr
   }
-  function dragStartHandler(e, name, order, group) {
-    setCurrnetField(name)
+  function dragStartHandler(e, title, order, group) {
+    setCurrnetField(title)
     setCurrnetGroup(group)
   }
   function onDragEndHandler(e) {}
@@ -98,16 +98,16 @@ const TemplatEditorList = () => {
     e.preventDefault()
   }
 
-  async function dropHandler(e, name, order, group) {
+  async function dropHandler(e, title, order, group) {
     e.preventDefault()
     const currentIndex = currentGroup.fields.indexOf(currentField)
-    const dropIndex = group.fields.indexOf(name)
+    const dropIndex = group.fields.indexOf(title)
     currentGroup.fields.splice(currentIndex, 1)
     group.fields.splice(dropIndex + 1, 0, currentField)
     await addUpdateProductFieldMutation({
       oldVar: currentField.var,
       variable: currentField.var,
-      name: currentField.name,
+      title: currentField.title,
       id_group: group.id,
       order: dropIndex + 1,
     })
@@ -116,7 +116,7 @@ const TemplatEditorList = () => {
         await addUpdateProductFieldMutation({
           oldVar: f.var,
           variable: f.var,
-          name: f.name,
+          title: f.title,
           order: index + 1,
         })
     )
@@ -144,7 +144,7 @@ const TemplatEditorList = () => {
       await addUpdateProductFieldMutation({
         oldVar: currentField.var,
         variable: currentField.var,
-        name: currentField.name,
+        title: currentField.title,
         id_group: group.id,
       })
       group.fields.map(
@@ -152,7 +152,7 @@ const TemplatEditorList = () => {
           await addUpdateProductFieldMutation({
             oldVar: f.var,
             variable: f.var,
-            name: f.name,
+            title: f.title,
             order: index + 1,
           })
       )
@@ -170,16 +170,16 @@ const TemplatEditorList = () => {
     }
   }
   const updateItem = async (id: any, oldVar) => {
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: oldVar })
+    await addUpdateProductFieldMutation({ variable: id.var, title: id.title, oldVar: oldVar })
   }
   const saveItem = async (id) => {
-    await addUpdateProductFieldMutation({ variable: id.var, name: id.name, oldVar: id.var }).then(
+    await addUpdateProductFieldMutation({ variable: id.var, title: id.title, oldVar: id.var }).then(
       setFVis(true)
     )
   }
-  const delItem = async ({ id, name, flag, group }) => {
+  const delItem = async ({ id, title, flag, group }) => {
     let isDel: boolean
-    flag ? (isDel = true) : (isDel = confirm('Удалить поле ' + name + ' ?'))
+    flag ? (isDel = true) : (isDel = confirm('Удалить поле ' + title + ' ?'))
     if (isDel) {
       let arr = [...fieldGroups]
       arr = arr.map((item) => {
@@ -191,7 +191,7 @@ const TemplatEditorList = () => {
       })
       setFieldGroups([...arr])
 
-      if (name != undefined) {
+      if (title != undefined) {
         await delProductFieldMutation({ id: id })
       }
     }
@@ -204,7 +204,7 @@ const TemplatEditorList = () => {
           ? group.fields.push({
               id: group.fields.length + 1,
               var: '',
-              name: '',
+              title: '',
               id_group: 1,
               order: group.fields.length + 1,
             })
@@ -234,12 +234,12 @@ const TemplatEditorList = () => {
             onDrop={(e) => dropHandlerGroup(e, group)}
             onDragOver={(e) => onDragOverHandler(e)}
           >
-            <div>{group.name}</div>
+            <div>{group.title}</div>
             {group.fields.map((field) => (
               <FieldItem
                 key={field.var}
                 order={field.order}
-                name={field}
+                title={field}
                 group={group}
                 dragStartHandler={dragStartHandler}
                 onDragEndHandler={onDragEndHandler}

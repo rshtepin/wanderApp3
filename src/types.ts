@@ -20,17 +20,18 @@ export interface IProductTypes {
 }
 
 export interface IProductGroups {
-  id: Number
+  id: number
   typeId: Number
   order?: Number
-  name: String
+  title: String
+  fields?: IProductFields[]
 }
 export interface IProductFields {
   id: Number
-  id_group: Number
+  id_group: number
   order?: Number
-  name: String
-  unit: String
+  title: String
+  unit?: String
 }
 
 declare module '@blitzjs/auth' {

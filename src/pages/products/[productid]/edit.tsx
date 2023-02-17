@@ -4,7 +4,7 @@ import { useQuery, usePaginatedQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
-import getAllFields from 'src/products/template-editor/queries/getAllFields'
+import getAllFields from 'src/products/template-editor/queries/_getAllFields'
 import { ProductPropEditField } from 'src/products/components/ProductPropEditField'
 import addUpdateFieldValue from 'src/products/mutations/addUpdateFieldValue'
 import {

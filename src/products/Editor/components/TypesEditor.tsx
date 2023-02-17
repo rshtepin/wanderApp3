@@ -1,8 +1,6 @@
 import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
 import { Button, Container, Flex, Heading, Spacer } from '@chakra-ui/react'
-import { title } from 'process'
-
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductTypes } from 'src/types'
 import addUpdateProductType from '../mutations/addUpdateProductType'
@@ -10,7 +8,7 @@ import delProductType from '../mutations/delProductType'
 import FieldItemUI from './FieldItemUI'
 
 function TypesEditor() {
-  const [{ types }]: IProductTypes[] = usePaginatedQuery(getTypes, {
+  const [{ types }] = usePaginatedQuery(getTypes, {
     where: {},
   })
 
@@ -25,32 +23,14 @@ function TypesEditor() {
   const [addUpdateProductTypeMutation] = useMutation(addUpdateProductType)
   const [delProductTypeMutation] = useMutation(delProductType)
 
-  const updateItem = async (id, title) => {
-    console.log(title)
+  const updateItem = async (id: number, title: string) => {
     await addUpdateProductTypeMutation({ id: id, title: title })
-  }
-  const addItem = async () => {
-    await setFVis(false)
-    setEditorTypes((prevVals: IProductTypes[]) => [
-      ...prevVals,
-      { id: editorTypes.length + 1, title: '', order: editorTypes.length + 1 },
-    ])
-
-    await updateState()
-  }
-
-  const saveItem = async (title) => {
-    await addUpdateProductTypeMutation({ id: -1, title: title })
-    await updateState()
-  }
-  const updateState = async () => {
     setEditorTypes((prevState) => {
       const newState = prevState.map((obj) => {
-        if (obj.order != prevState.indexOf(obj) + 1) {
-          console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
+        if (obj.id == id) {
           return {
             ...obj,
-            order: prevState.indexOf(obj) + 1,
+            title: title,
           }
         }
         return obj
@@ -59,21 +39,55 @@ function TypesEditor() {
       return newState
     })
   }
-  function arrayMove(arr, oldindex, newindex) {
-    if (newindex >= arr.length) {
-      let k = newindex - arr.length + 1
+
+  const addItem = async () => {
+    await setFVis(false)
+    const newField: IProductTypes = await addUpdateProductTypeMutation({
+      id: -1,
+      title: '',
+      order: editorTypes.length + 1,
+    })
+    setEditorTypes((prevVals: IProductTypes[]) => [
+      ...prevVals,
+      { id: newField.id, title: newField.title, order: newField.order },
+    ])
+  }
+
+  const saveItem = async (title) => {
+    await addUpdateProductTypeMutation({ id: -1, title: title })
+    await updateStateOrder()
+  }
+
+  const updateStateOrder = async () => {
+    setEditorTypes((prevState) => {
+      const newState = prevState.map((obj) => {
+        if (obj.order != prevState.indexOf(obj) + 1) {
+          // console.log('obj.order=' + obj.order + ' index=' + (prevState.indexOf(obj) + 1))
+          return {
+            ...obj,
+            order: prevState.indexOf(obj) + 1,
+          }
+        }
+        return obj
+      })
+      return newState
+    })
+  }
+
+  function arrayMove(arr, oldIndex: number, newIndex: number) {
+    if (newIndex >= arr.length) {
+      let k = newIndex - arr.length + 1
       while (k--) {
         arr.push(undefined)
       }
     }
-    arr.splice(newindex, 0, arr.splice(oldindex, 1)[0])
+    arr.splice(newIndex, 0, arr.splice(oldIndex, 1)[0])
     return arr
   }
 
   const delItem = async (id: number, title: string) => {
     let isDel = confirm('Удалить поле ' + title + ' ?')
     if (isDel) {
-      console.log('DELETE ' + id)
       let arr = [...editorTypes]
       arr = arr.filter((item) => item.id !== id)
       setEditorTypes([...arr])
@@ -81,14 +95,16 @@ function TypesEditor() {
         await delProductTypeMutation({ id: id })
       }
     }
-    await updateState()
+    await updateStateOrder()
   }
-  function dragStartHandler(e, name, id) {
-    console.log('drag ' + name + ' id: ' + id)
+
+  function dragStartHandler(id) {
     setCurrnetField(id)
   }
+
   function onDragEndHandler(e) {}
-  function onDragOverHandler(e, name, id) {
+
+  function onDragOverHandler(e) {
     e.preventDefault()
   }
 
@@ -107,7 +123,7 @@ function TypesEditor() {
       }
     })
 
-    await updateState()
+    await updateStateOrder()
   }
 
   return (

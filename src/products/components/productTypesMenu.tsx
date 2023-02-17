@@ -4,7 +4,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 interface ProductTypesProps {
   type: IProductTypes[]
-  onChange: ({ tabName }) => void
+  onChange: (type: IProductTypes) => void
 }
 export function ProductTypesMenu({ type, onChange }: ProductTypesProps) {
   return (
@@ -13,7 +13,7 @@ export function ProductTypesMenu({ type, onChange }: ProductTypesProps) {
       w={'100%'}
       borderRadius={6}
       overflow={'hidden'}
-      onChange={(e) => onChange({ tabName: type[e] })}
+      onChange={(e) => onChange(type[e])}
     >
       <TabList>
         {type.map((tab, index) => (

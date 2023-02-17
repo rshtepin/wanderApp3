@@ -66,7 +66,7 @@ CREATE TABLE "ProductType" (
 -- CreateTable
 CREATE TABLE "Product_variable" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "id_group" INTEGER NOT NULL DEFAULT 1,
     "unit" TEXT NOT NULL DEFAULT '',
     "order" SERIAL NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE "Variable_value" (
 CREATE TABLE "Field_group" (
     "id" SERIAL NOT NULL,
     "typeId" INTEGER NOT NULL,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "order" SERIAL NOT NULL,
 
     CONSTRAINT "Field_group_pkey" PRIMARY KEY ("id")

@@ -2,11 +2,11 @@ import { Button, ButtonGroup, Center, Flex, FormControl, Input, Spacer } from '@
 import { Suspense, useRef, useState } from 'react'
 
 interface IFieldItemUI {
-  id: number
-  title: string
-  order: number
-  group?: number
-  btnPLusFlag: boolean
+  id: Number
+  title: String
+  order: Number
+  group?: Number
+  btnPLusFlag: Boolean
   saveItem: (title: string) => void
   updateItem: (id: number, title: string) => void
   delItem: (id: number, title: string, flag?: boolean) => void
@@ -50,7 +50,7 @@ function FieldItemUI({
       await setDisabledSave(false)
 
       await setinputValueShowVar(title)
-      await saveItem(inputValueShowVar)
+      await updateItem(id, inputValueShowVar)
     }
   }
 
@@ -59,6 +59,7 @@ function FieldItemUI({
     setBtnEditFlag(true)
   }
   const onChangeInputShow = (val) => {
+    title = val
     setDraggble(false)
     setinputValueShowVar(val)
     val == '' ? setDisabledSave(true) : setDisabledSave(false)
@@ -92,7 +93,7 @@ function FieldItemUI({
       onDragLeave={(e) => onDragEndHandler(e)}
       onDragEnd={(e) => onDragEndHandler(e)}
       onDragOver={(e) => onDragOverHandler(e)}
-      onDrop={(e) => dropHandler(e, name, order, group)}
+      onDrop={(e) => dropHandler(e, title, order, group)}
     >
       <Center>
         <FormControl
