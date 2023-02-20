@@ -11,7 +11,7 @@ export interface IEditorUI {
 
 export interface IEditorTab extends IProductTypes {
   isDisabled?: boolean
-  group?: IEditorGroup[]
+  group: IEditorGroup[]
   add?: () => void
   del?: () => void
   upd?: () => void

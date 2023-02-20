@@ -16,6 +16,7 @@ export function EditorTypesMenu({ upd, add, del, currentTab, onChange, type }: E
       <Button size={'xs'} mt={2} onClick={add}>
         +
       </Button>
+
       {type.map((tab: IEditorTab, index) => (
         <Center
           key={tab.id}

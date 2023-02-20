@@ -20,7 +20,6 @@ function EditorUI() {
 
   useEffect(() => {
     //sort groups to tabs
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     EditorTab = types.map((v: IEditorTab, i) => {
       EditorTab[i] = v
       EditorTab[i]!['group'] = []
@@ -33,7 +32,6 @@ function EditorUI() {
               EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
           })
         }
-
         console.log('USEEFECT_EditorTab')
         console.log(EditorTab)
       })
@@ -87,9 +85,6 @@ function EditorUI() {
     tabsChange(Editor.tab[0])
   }
   const updTab = (tab: IEditorTab) => {
-    console.log('upd')
-    console.log(tab)
-
     Editor.tab.map((_tab, i) => {
       if (_tab.id == tab.id) Editor.tab[i] = tab
     })
@@ -105,16 +100,19 @@ function EditorUI() {
       typeId: currentTab.id,
       field: [],
     }
+
     Editor.tab[Editor.tab.indexOf(currentTab)]!.group!.push(newGroup)
     console.log('interfaceState')
     console.log(interfaceState)
     // setInterfaceState((()))
     setInterfaceState({ ...Editor })
   }
+
   const delGroup = (group: IEditorGroup) => {
     console.log('del group')
     console.log(group)
     const currentTabIndex = Editor.tab.indexOf(currentTab)
+    //
     delete Editor.tab[currentTabIndex]!.group![
       Editor.tab[currentTabIndex]!.group!.indexOf(
         Editor.tab[currentTabIndex]!.group![Editor.tab[currentTabIndex]!.group!.indexOf(group)]!
@@ -126,6 +124,7 @@ function EditorUI() {
     Editor.tab[currentTabIndex].group = arr
     setInterfaceState({ ...Editor })
   }
+
   const updGroup = (group: IEditorGroup) => {
     console.log('UPD group')
     console.log(group)
@@ -136,6 +135,7 @@ function EditorUI() {
     })
     setInterfaceState({ ...Editor })
   }
+
   const updField = (field: IEditorItem) => {
     console.log('UPD field')
     const currnetTabIndex = Editor.tab.indexOf(currentTab)
@@ -175,9 +175,6 @@ function EditorUI() {
   }
 
   const delField = (field: IEditorItem) => {
-    console.log('delField')
-    console.log(field)
-
     const currnetTabIndex = Editor.tab.indexOf(currentTab)
 
     let currnetGroupIndex
@@ -195,7 +192,6 @@ function EditorUI() {
   return (
     <>
       <Heading size={'xm'}>{interfaceState.title}</Heading>
-
       <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
         <EditorTypesMenu
           type={interfaceState.tab}
@@ -215,12 +211,12 @@ function EditorUI() {
           addField={addField}
           delField={delField}
         />
-        <div>
+        {/* <div>
           <b>STATE:</b> {JSON.stringify(interfaceState)}
         </div>
         <div>
           <b>TS OBJECT:</b> {JSON.stringify(Editor)}
-        </div>
+        </div> */}
       </div>
     </>
   )
