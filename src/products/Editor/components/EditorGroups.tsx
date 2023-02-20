@@ -1,5 +1,8 @@
+import { Box, Button, Center, Heading, Spinner, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { IEditorGroup, IEditorTab } from 'src/types'
+import EditorGroup from './EditorGroup'
+import FieldItemUI from './FieldItemUI'
 
 interface EditorGroupsProps {
   currentTab: IEditorTab
@@ -7,15 +10,38 @@ interface EditorGroupsProps {
   add?: React.MouseEventHandler<HTMLButtonElement>
   onChange?: (tab: IEditorTab) => void
   del?: () => void
-  upd?: (tab: IEditorTab) => void
+  upd?: () => void
+  addField?: () => void
+  updField?: () => void
+  delField?: () => void
 }
 
-function EditorGroups({ currentTab, groups }: EditorGroupsProps) {
+function EditorGroups({ groups, add, del, upd, addField, delField, updField }: EditorGroupsProps) {
   return (
-    <div>
-      {currentTab.title}
-      {/* <div>{groups.map((group) => group.title)}</div> */}
-    </div>
+    <>
+      {groups != undefined ? (
+        <Box mt={2}>
+          {groups.map((group) => (
+            <Center key={group.id}>
+              <EditorGroup
+                group={group}
+                isDisabled={group.isDisabled}
+                del={del}
+                upd={upd}
+                addField={addField}
+                updField={updField}
+                delField={delField}
+              />
+            </Center>
+          ))}
+        </Box>
+      ) : (
+        <Spinner />
+      )}
+      <Button size={'xs'} mt={2} onClick={add}>
+        +
+      </Button>
+    </>
   )
 }
 

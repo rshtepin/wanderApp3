@@ -7,7 +7,7 @@ interface EditorTypesProps {
   currentTab: IEditorTab
   add?: React.MouseEventHandler<HTMLButtonElement>
   onChange: (tab: IEditorTab) => void
-  del: () => void
+  del: (tab: IEditorTab) => void
   upd: (tab: IEditorTab) => void
 }
 export function EditorTypesMenu({ upd, add, del, currentTab, onChange, type }: EditorTypesProps) {
@@ -26,6 +26,7 @@ export function EditorTypesMenu({ upd, add, del, currentTab, onChange, type }: E
           onClick={() => {
             onChange(tab)
           }}
+          zIndex={0}
         >
           <Center>
             <EditorTabInput

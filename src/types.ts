@@ -1,5 +1,5 @@
 import { SimpleRolesIsAuthorized } from '@blitzjs/auth'
-import { User } from 'db'
+import { Field_group, User } from 'db'
 
 export type Role = 'ADMIN' | 'USER'
 
@@ -9,36 +9,24 @@ export interface IEditorUI {
   tab: IEditorTab[]
 }
 
-export interface IEditorTab {
-  id: number
-  title: string
-  order: number
-  add?: () => void
-  del?: () => void
-  upd?: () => void
+export interface IEditorTab extends IProductTypes {
   isDisabled?: boolean
   group?: IEditorGroup[]
-}
-export interface IEditorGroup {
-  id: number
-  title: string
-  order: number
-  typeId: Number
   add?: () => void
   del?: () => void
   upd?: () => void
-  group?: IEditorGroup[]
-  item?: IEditorItem[]
 }
-export interface IEditorItem {
-  id: number
-  title: string
-  order: number
+export interface IEditorGroup extends Field_group {
+  field: IEditorItem[]
   add?: () => void
   del?: () => void
   upd?: () => void
-  group?: IEditorGroup[]
-  item?: IEditorItem[]
+}
+export interface IEditorItem extends IProductFields {
+  isDisabled?: boolean
+  add?: () => void
+  del?: () => void
+  upd?: () => void
 }
 export interface IProduct {
   id: Number
@@ -60,7 +48,7 @@ export interface IProductGroups {
   id: number
   typeId: Number
   order?: Number
-  title: String
+  title: string
   fields?: IProductFields[]
 }
 export interface IProductFields {

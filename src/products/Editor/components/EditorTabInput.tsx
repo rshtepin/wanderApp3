@@ -51,6 +51,7 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
           del(tab)
         }}
         colorScheme={'red'}
+        zIndex={1000}
       >
         D
       </Button>
