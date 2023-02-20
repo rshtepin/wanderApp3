@@ -1,85 +1,107 @@
-import { Button, Grid, GridItem, Heading } from '@chakra-ui/react'
-import GroupsEditor from 'src/products/Editor/components/GroupsEditor'
-import FieldsEditor from 'src/products/Editor/components/FieldsEditor'
-import TypesEditor from 'src/products/Editor/components/TypesEditor'
-import React, { useState } from 'react'
+import { usePaginatedQuery, useQuery } from '@blitzjs/rpc'
+import { Button, Heading } from '@chakra-ui/react'
+import { render } from '@testing-library/react'
+import { group } from 'console'
 
-interface IEditorUIProps {
-  menubuttons: any
-}
+import React, { Suspense, useEffect, useState } from 'react'
+import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
+import getAllFields from 'src/products/queries/getAllFields'
+import getProductGroups from 'src/products/queries/getProductGroups'
 
-function EditorUI({ menubuttons }: IEditorUIProps) {
-  const [currentComponent, setCurrentComponent] = useState<String>('fields')
+import getTypes from 'src/products/queries/getTypes'
+import { IEditorGroup, IEditorTab, IEditorUI, IProductTypes } from 'src/types'
+import EditorGroups from './EditorGroups'
 
-  function Main() {
-    switch (currentComponent) {
-      case 'types':
-        return <TypesEditor />
-      case 'groups':
-        return <GroupsEditor />
-      case 'fields':
-        return <FieldsEditor />
-      default:
-        return <FieldsEditor />
+function EditorUI() {
+  const [{ types }] = usePaginatedQuery(getTypes, {})
+  const groups = useQuery(getProductGroups, {})
+  const [{ fields }] = usePaginatedQuery(getAllFields, { orderBy: { order: 'asc' } })
+
+  let EditorGroup: IEditorGroup[] = groups[0].map((v: IEditorGroup, i) => v)
+  let EditorTab: IEditorTab[] = types.map((v: IEditorTab, i) => v)
+
+  const [interfaceState, setInterfaceState] = useState<IEditorUI>({
+    id: 1,
+    title: 'Редактор всего',
+    tab: EditorTab,
+  })
+  let Editor: IEditorUI = interfaceState
+  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(types[0])
+
+  useEffect(() => {
+    //sort groups to tabs
+    EditorTab.map((tab, i) => {
+      Editor.tab[i]['group'] = []
+      EditorGroup.map((group, k) => {
+        if (group.typeId == tab.id) Editor.tab[i]?.group.push(group)
+      })
+    })
+    console.log('arara')
+    console.log(EditorTab)
+    SetCurrnetTab(types[0])
+  }, [interfaceState])
+
+  const tabsChange = (tab: IEditorTab) => {
+    console.log('change to')
+    console.log(tab)
+    //if tab==[] console.log('EMPTY')
+    SetCurrnetTab(() => {
+      return tab
+    })
+  }
+
+  const addTab = async () => {
+    const newTab: IEditorTab = {
+      id: Math.random(10) * 1000000,
+      title: '',
+      order: Editor.tab.length + 1,
+      isDisabled: false,
     }
+    Editor.tab.push(newTab)
+    console.log('interfaceState')
+    console.log(interfaceState)
+    // setInterfaceState((()))
+    setInterfaceState({ ...Editor })
+  }
+
+  const delTab = (tab: IEditorTab) => {
+    console.log('del')
+    console.log(Editor.tab.indexOf(tab))
+    delete Editor.tab[Editor.tab.indexOf(tab)]
+    const arr = Editor.tab.filter(function () {
+      return true
+    })
+    Editor.tab = arr
+    console.log(Editor)
+    setInterfaceState({ ...Editor })
+  }
+  const updTab = (tab: IEditorTab) => {
+    console.log('upd')
+    console.log(tab)
+
+    Editor.tab.map((_tab: IEditorTab, i) => {
+      if (_tab.id == tab.id) Editor.tab[i] = tab
+    })
+    setInterfaceState({ ...Editor })
   }
 
   return (
-    <Grid
-      templateAreas={`"header header"
-                  "nav main"
-                  "nav footer"`}
-      gridTemplateRows={'50px 1fr 30px'}
-      gridTemplateColumns={'150px 1fr'}
-      h="100vh"
-      w="50vw"
-      gap="1"
-      color="blackAlpha.700"
-      fontWeight="bold"
-    >
-      <GridItem pl="2" area={'header'} textAlign="center">
-        Редактор
-      </GridItem>
-      <GridItem pl="2" bg="blackAlpha.100" textAlign="center" area={'nav'} borderRadius={10}>
-        <Heading mt={2} mb={2} size="md">
-          Меню
-        </Heading>
+    <>
+      <Heading size={'xm'}>{interfaceState.title}</Heading>
 
-        <Button
-          w="90%"
-          colorScheme="blue"
-          mb={2}
-          size="xs"
-          onClick={() => setCurrentComponent('types')}
-        >
-          Типы
-        </Button>
-        <Button
-          w="90%"
-          colorScheme="blue"
-          mb={2}
-          size="xs"
-          onClick={() => setCurrentComponent('groups')}
-        >
-          Группы
-        </Button>
-        <Button
-          w="90%"
-          colorScheme="blue"
-          mb={2}
-          size="xs"
-          onClick={() => setCurrentComponent('fields')}
-        >
-          Поля
-        </Button>
-      </GridItem>
-      <GridItem pl="2" area={'main'}>
-        <Main />
-      </GridItem>
-      <GridItem pl="2" bg="black" color="white" area={'footer'}>
-        Footer
-      </GridItem>
-    </Grid>
+      <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
+        <EditorTypesMenu
+          type={interfaceState.tab}
+          add={addTab}
+          del={delTab}
+          upd={updTab}
+          currentTab={currentTab}
+          onChange={tabsChange}
+        />
+        <EditorGroups currentTab={currentTab} groups={currentTab.group} />
+        {JSON.stringify(interfaceState)}
+      </div>
+    </>
   )
 }
 

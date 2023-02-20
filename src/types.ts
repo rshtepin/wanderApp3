@@ -3,6 +3,43 @@ import { User } from 'db'
 
 export type Role = 'ADMIN' | 'USER'
 
+export interface IEditorUI {
+  id: number
+  title: string
+  tab: IEditorTab[]
+}
+
+export interface IEditorTab {
+  id: number
+  title: string
+  order: number
+  add?: () => void
+  del?: () => void
+  upd?: () => void
+  isDisabled?: boolean
+  group?: IEditorGroup[]
+}
+export interface IEditorGroup {
+  id: number
+  title: string
+  order: number
+  typeId: Number
+  add?: () => void
+  del?: () => void
+  upd?: () => void
+  group?: IEditorGroup[]
+  item?: IEditorItem[]
+}
+export interface IEditorItem {
+  id: number
+  title: string
+  order: number
+  add?: () => void
+  del?: () => void
+  upd?: () => void
+  group?: IEditorGroup[]
+  item?: IEditorItem[]
+}
 export interface IProduct {
   id: Number
   logo?: String

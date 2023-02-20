@@ -8,14 +8,14 @@ import getAllFields from 'src/products/template-editor/queries/_getAllFields'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductField from 'src/products/template-editor/mutations/_addUpdateProductField'
-import delProductField from 'src/products/template-editor/mutations/delProductField'
+import delProductField from 'src/products/template-editor/mutations/_delProductField'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { ProductType } from '@prisma/client'
 import next from 'next'
 import Link from 'next/link'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductFields, IProductGroups, IProductTypes } from 'src/types'
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 
 const TemplatEditorList = () => {
   const [delProductFieldMutation] = useMutation(delProductField)

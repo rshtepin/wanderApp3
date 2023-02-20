@@ -5,7 +5,7 @@ import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
 import { Box, Button } from '@chakra-ui/react'
 
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'

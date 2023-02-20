@@ -1,14 +1,17 @@
 import { Button, ButtonGroup, Center, Flex, FormControl, Input, Spacer } from '@chakra-ui/react'
+import { group } from 'console'
 import { Suspense, useRef, useState } from 'react'
+import { IProductGroups } from 'src/types'
 
 interface IFieldItemUI {
   id: Number
   title: String
   order: Number
-  group?: Number
+  group?: IProductGroups
+  unit?: String
   btnPLusFlag: Boolean
   saveItem: (title: string) => void
-  updateItem: (id: number, title: string) => void
+  updateItem: (id: number, title: string, unit?: string, group?: IProductGroups) => void
   delItem: (id: number, title: string, flag?: boolean) => void
   dragStartHandler?: (e: DragEvent, id: number, order: number, group?: number) => void
   onDragEndHandler?: (e: DragEvent) => void
@@ -22,7 +25,6 @@ function FieldItemUI({
   group,
   btnPLusFlag,
   updateItem,
-  saveItem,
   delItem,
   dragStartHandler,
   onDragEndHandler,
@@ -43,14 +45,14 @@ function FieldItemUI({
       await setDisabledSave(false)
 
       await setinputValueShowVar(title)
-      await updateItem(id, inputValueShowVar)
+      await updateItem(id, inputValueShowVar, group)
     } else {
       console.log('SAVING')
       await setDisabledEdit(true)
       await setDisabledSave(false)
 
       await setinputValueShowVar(title)
-      await updateItem(id, inputValueShowVar)
+      await updateItem(id, inputValueShowVar, group)
     }
   }
 
@@ -108,7 +110,7 @@ function FieldItemUI({
             type="text"
             width="300px"
             placeholder="Введите название"
-            size="sm"
+            size="xs"
             autoFocus
           />
         </FormControl>
@@ -120,13 +122,13 @@ function FieldItemUI({
             isDisabled={disabledSave}
             width={'150px'}
             colorScheme={disabledEdit ? 'yellow' : 'blue'}
-            size="sm"
+            size="xs"
             onClick={disabledEdit ? () => editClick() : () => saveButton()}
           >
             {disabledEdit ? 'Редактировать' : 'Сохранить'}
           </Button>
 
-          <Button colorScheme="red" size="sm" onClick={() => delItem(id, title)}>
+          <Button colorScheme="red" size="xs" onClick={() => delItem(id, title, group)}>
             Удалить
           </Button>
         </Suspense>

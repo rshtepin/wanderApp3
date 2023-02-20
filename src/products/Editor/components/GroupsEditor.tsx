@@ -1,7 +1,7 @@
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Button, Container, Flex, Heading, Spacer } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getProductGroups from 'src/products/queries/getProductGroups'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductGroups, IProductTypes } from 'src/types'

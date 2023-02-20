@@ -1,14 +1,16 @@
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Button, Container, Flex, Heading, Spacer, VStack } from '@chakra-ui/react'
+import { group } from 'console'
 import { useEffect, useState } from 'react'
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getAllFields from 'src/products/queries/getAllFields'
 
 import getProductGroups from 'src/products/queries/getProductGroups'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductFields, IProductGroups, IProductTypes } from 'src/types'
 import addUpdateProductField from '../mutations/addUpdateProductField'
-import delProductType from '../mutations/delProductType'
+import delProductField from '../mutations/delProductField'
+
 import FieldItemUI from './FieldItemUI'
 
 function FieldsEditor() {
@@ -23,15 +25,15 @@ function FieldsEditor() {
   const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0])
 
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProductField)
-  const [delProductTypeMutation] = useMutation(delProductType)
+  const [delProductFieldMutation] = useMutation(delProductField)
 
   useEffect(() => {
-    let mystate = []
+    let mystate: IProductGroups[] = []
     groups[0].map((itemG: IProductGroups) => {
       if (itemG.typeId == currentTab.id) {
-        const addFileds = []
+        const addFileds: IProductFields[] = []
         fields.map((itemF: IProductFields) => {
-          itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+          itemF.id_group == itemG.id ? addFileds.push(itemF) : {}
         })
         mystate.push({ ...itemG, fields: addFileds })
       }
@@ -41,8 +43,8 @@ function FieldsEditor() {
     console.log(mystate)
   }, [currentTab])
 
-  const updateItem = async (id: number, title: string) => {
-    await addUpdateProductFieldMutation({ id: id, title: title, typeId: currentTab.id })
+  const updateItem = async (id: number, title: string, group: IProductGroups) => {
+    await addUpdateProductFieldMutation({ id: id, title: title, id_group: group.id })
     await setEditorGroups((prevState: IProductGroups) => {
       const newState = prevState.map((obj) => {
         if (obj.id == id) {
@@ -59,27 +61,36 @@ function FieldsEditor() {
     })
   }
 
-  const addItem = async (idGroup) => {
+  const addItem = async (group: IProductGroups) => {
     await setFVis(false)
     console.log('PLUS')
-    console.log(idGroup)
+    console.log(group)
 
-    // const newField: IProductFields = await addUpdateProductFieldMutation({
-    //   id: -1,
-    //   title: '',
-    //   id_group: editorGroups[0]!.id,
-    //   order: editorGroups[0]!.fields!.length + 1,
-    // })
-    // console.log(newField)
+    const newField: IProductFields = await addUpdateProductFieldMutation({
+      id: -1,
+      title: '',
+      id_group: group.id,
+      order: group!.fields!.length + 1,
+    })
+    console.log(newField)
+    setEditorGroups((prev) => [
+      ...prev.map((_group: IProductGroups) => {
+        _group.id === newField.id_group
+          ? _group.fields!.push({
+              id: _group.fields!.length + 1,
+              title: '',
+              id_group: newField.id_group,
+              order: _group.fields!.length + 1,
+            })
+          : {}
+        return _group
+      }),
+    ])
+
     // setEditorGroups((prevVals: IProductGroups[]) => [
     //   ...prevVals,
     //   { id: newField.id, title: newField.title, order: newField.order, typeId: newField.typeId },
     // ])
-  }
-
-  const saveItem = async (title) => {
-    await addUpdateProductFieldMutation({ id: -1, title: title, typeId: currentTab.id })
-    await updateStateOrder()
   }
 
   const updateStateOrder = async () => {
@@ -109,17 +120,39 @@ function FieldsEditor() {
     return arr
   }
 
-  const delItem = async (id: number, title: string) => {
+  const delItem = async (id: number, title: string, group: IProductGroups) => {
     let isDel = confirm('Удалить поле ' + title + ' ?')
     if (isDel) {
-      let arr = [...editorGroups]
-      arr = arr.filter((item) => item.id !== id)
-      setEditorGroups([...arr])
-      if (id != undefined) {
-        await delProductTypeMutation({ id: id })
+      let arr: JSON = []
+      arr = JSON.parse(JSON.stringify(editorGroups))
+      delProductFieldMutation({ id: id })
+
+      delete arr[editorGroups.indexOf(group)].fields[
+        editorGroups[editorGroups.indexOf(group)]?.fields?.findIndex(
+          (field: IProductFields, index) => field.id == id
+        )
+      ]
+      let room = {
+        number: 23,
       }
+
+      let meetup = {
+        title: 'Conference',
+        participants: [{ name: 'John' }, { name: 'Alice' }],
+        place: room, // meetup ссылается на room
+      }
+
+      room.occupiedBy = meetup // room ссылается на meetup
+
+      alert(
+        JSON.stringify(meetup, function replacer(key, value) {
+          alert(`${key}: ${value}`)
+          return key == 'occupiedBy' ? undefined : value
+        })
+      )
+      setEditorGroups(arr)
     }
-    await updateStateOrder()
+    // await updateStateOrder()
   }
 
   function dragStartHandler(id) {
@@ -135,7 +168,7 @@ function FieldsEditor() {
   async function dropHandler(e, name, id) {
     e.preventDefault()
     setEditorGroups([...arrayMove(editorGroups, currentField - 1, id - 1)])
-    await editorGroups.map(async (field) => {
+    editorGroups.map(async (field) => {
       {
         if (field.order != editorGroups.indexOf(field) + 1) {
           await addUpdateProductFieldMutation({
@@ -185,7 +218,8 @@ function FieldsEditor() {
               title={field.title}
               order={field.order}
               updateItem={updateItem}
-              saveItem={saveItem}
+              group={group}
+              unit="g"
               delItem={delItem}
               btnPLusFlag={fVis}
               dragStartHandler={dragStartHandler}
@@ -194,7 +228,7 @@ function FieldsEditor() {
               dropHandler={dropHandler}
             />
           ))}
-          <Button key={group.id} mt={2} onClick={() => addItem(group.id)}>
+          <Button key={group.id} mt={2} onClick={() => addItem(group)}>
             +
           </Button>
         </VStack>

@@ -1,9 +1,17 @@
 import { resolver } from '@blitzjs/rpc'
 import db, { Prisma } from 'db'
 import { paginate } from 'blitz'
+import { IProduct } from 'src/types'
 
 interface GetUsersInput
   extends Pick<Prisma.UserFindManyArgs, 'where' | 'orderBy' | 'skip' | 'take'> {}
+
+interface DbProduct {
+  items: IProduct
+  hasMore?: boolean
+  nextPage: Number
+  count: Number
+}
 
 export default resolver.pipe(
   // resolver.authorize(),
@@ -13,7 +21,7 @@ export default resolver.pipe(
       hasMore,
       nextPage,
       count,
-    } = await paginate({
+    } = await paginate<DbProduct>({
       skip,
       take,
       count: () => db.product.count({ where }),

@@ -9,7 +9,7 @@ import { usePagination } from 'src/core/hooks/usePagination'
 import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
 import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
-import { ProductTypesMenu } from 'src/products/components/productTypesMenu'
+import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getTypes from 'src/products/queries/getTypes'
 import { IProductGroups, IProductTypes } from 'src/types'
 
