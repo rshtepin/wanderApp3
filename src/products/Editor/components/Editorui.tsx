@@ -215,7 +215,12 @@ function EditorUI() {
           addField={addField}
           delField={delField}
         />
-        <div>{JSON.stringify(interfaceState)}</div>
+        <div>
+          <b>STATE:</b> {JSON.stringify(interfaceState)}
+        </div>
+        <div>
+          <b>TS OBJECT:</b> {JSON.stringify(Editor)}
+        </div>
       </div>
     </>
   )

@@ -49,6 +49,7 @@ function EditorGroupField({ field, isDisabled, upd, del }: EditorGroupFieldProps
         boxShadow="sm"
       >
         <Input
+          w={'400px'}
           variant="unstyled"
           bg="blackAlpha.0"
           borderRadius={5}

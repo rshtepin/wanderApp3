@@ -39,8 +39,8 @@ function EditorGroup({
         <Box>
           <Input
             variant="unstyled"
-            w={'80px'}
-            bg="blackAlpha.0"
+            w={'280px'}
+            bg="blackAlpha.100"
             borderRadius={5}
             textAlign="center"
             size="xs"
