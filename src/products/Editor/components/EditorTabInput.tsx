@@ -27,7 +27,7 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
         defaultValue={tab.title}
         onChange={(event) => (tab.title = event.target.value)}
         cursor="pointer"
-        zIndex={1}
+        zIndex={_isDisabled ? -1 : 1}
         isDisabled={_isDisabled}
         autoFocus
       ></Input>
@@ -37,7 +37,7 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
         size={'xs'}
         type="submit"
         onClick={(e) => {
-          upd(tab)
+          if (!_isDisabled) upd(tab)
           setIsDisabled(!_isDisabled)
         }}
         colorScheme={_isDisabled ? 'gray' : 'green'}
@@ -45,13 +45,14 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
         {_isDisabled ? 'E' : 'S'}
       </Button>
       <Button
+        isDisabled={tab.group.length > 0 ? true : false}
         ml={0.5}
         size={'xs'}
         onClick={() => {
           del(tab)
         }}
         colorScheme={'red'}
-        zIndex={1000}
+        zIndex={0}
       >
         D
       </Button>

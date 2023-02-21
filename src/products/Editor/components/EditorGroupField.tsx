@@ -5,10 +5,11 @@ import { IEditorItem } from 'src/types'
 interface EditorGroupFieldProps {
   field: IEditorItem
   isDisabled: boolean
+  isDragging: boolean
   upd: (field: IEditorItem) => void
   del: (field: IEditorItem) => void
 }
-function EditorGroupField({ field, isDisabled, upd, del }: EditorGroupFieldProps) {
+function EditorGroupField({ field, isDisabled, isDragging, upd, del }: EditorGroupFieldProps) {
   const [_isDisabled, setIsDisabled] = useState<boolean>(
     isDisabled != undefined ? isDisabled : true
   )
@@ -40,6 +41,8 @@ function EditorGroupField({ field, isDisabled, upd, del }: EditorGroupFieldProps
         </Button>
       </ButtonGroup>
       <Flex
+        cursor={'pointer'}
+        bg={isDragging ? 'lightblue' : 'whiteAlpha.0'}
         p={1}
         w={'90%'}
         border={'1px'}
@@ -49,9 +52,9 @@ function EditorGroupField({ field, isDisabled, upd, del }: EditorGroupFieldProps
         boxShadow="sm"
       >
         <Input
-          w={'400px'}
+          border={_isDisabled ? 0 : '1px'}
+          w={'100%'}
           variant="unstyled"
-          bg="blackAlpha.0"
           borderRadius={5}
           textAlign="left"
           size="xs"
@@ -59,7 +62,7 @@ function EditorGroupField({ field, isDisabled, upd, del }: EditorGroupFieldProps
           onChange={(event) => (field.title = event.target.value)}
           cursor="pointer"
           isDisabled={_isDisabled}
-          zIndex={1}
+          zIndex={_isDisabled && !isDragging ? -1 : 1}
           autoFocus
         ></Input>
 

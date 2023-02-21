@@ -3,35 +3,20 @@ import db from 'db'
 import { z } from 'zod'
 import { NotFoundError } from 'blitz'
 
-const deleteProductField = z.object({
+const deleteProductGroup = z.object({
   id: z.number(),
 })
 
-const reIdvarNames = async () => {
-  const fields = await db.field_group.findMany({ orderBy: [{ order: 'asc' }] })
-  fields.map(async (item, index) => {
-    if (index + 1 != item.order) {
-      const field = await db.field_group.update({
-        where: { id: item.id },
-        data: { order: index + 1 },
-      })
-    }
-  })
-}
-
 export default resolver.pipe(
-  resolver.zod(deleteProductField),
+  resolver.zod(deleteProductGroup),
   // resolver.authorize(),
   async ({ id }) => {
-    console.log('Имя: ' + id)
-    const field = await db.field_group.delete({
+    const group = await db.field_group.delete({
       where: {
         id: id,
       },
     })
-
-    if (!field) throw new NotFoundError()
-    return field
-  },
-  async () => reIdvarNames()
+    if (!group) throw new NotFoundError()
+    return group
+  }
 )

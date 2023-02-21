@@ -18,6 +18,7 @@ export interface IEditorTab extends IProductTypes {
 }
 export interface IEditorGroup extends Field_group {
   field: IEditorItem[]
+  isDisabled?: boolean
   add?: () => void
   del?: () => void
   upd?: () => void
@@ -52,11 +53,11 @@ export interface IProductGroups {
   fields?: IProductFields[]
 }
 export interface IProductFields {
-  id: Number
+  id: number
   id_group: number
-  order?: Number
-  title: String
-  unit?: String
+  order?: number
+  title: string
+  unit?: string
 }
 
 declare module '@blitzjs/auth' {

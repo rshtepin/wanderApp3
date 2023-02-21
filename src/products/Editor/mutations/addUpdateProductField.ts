@@ -16,7 +16,6 @@ export default resolver.pipe(
   resolver.zod(updateProductField),
   // resolver.authorizeid
   async ({ id, title, order, id_group, unit }) => {
-    console.log(id)
     const count = await db.product_variable.count({ where: { id_group: id_group } })
     const field: IProductFields = await db.product_variable.upsert({
       where: { id: id },

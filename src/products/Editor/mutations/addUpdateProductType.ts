@@ -13,14 +13,13 @@ export default resolver.pipe(
   resolver.zod(updateProductType),
   // resolver.authorize(),
   async ({ id, title, order }) => {
-    console.log(title)
     const count = await db.productType.count()
-    const field = await db.productType.upsert({
+    const type = await db.productType.upsert({
       where: { id },
       update: { order: order, title: title },
       create: { title: title, order: count + 1 },
     })
-    if (!field) throw new NotFoundError()
-    return field
+    if (!type) throw new NotFoundError()
+    return type
   }
 )
