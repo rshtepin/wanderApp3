@@ -46,20 +46,21 @@ function EditorGroup({
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEndFields}>
-      <Droppable droppableId="droppable">
+    <DragDropContext onDragEnd={onDragEndFields} mode="virtual">
+      <Droppable droppableId="droppableGroup">
         {(provided, snapshot) => (
           <Box
             {...provided.droppableProps}
-            bg={isDragging ? '#f9f9f9' : 'white'}
             ref={provided.innerRef}
+            bg={isDragging ? '#f9f9f9' : 'white'}
             w={'100%'}
+            //h={group.field.length * 35 + 110}
             border={'1px'}
             mb={2}
             borderRadius={4}
             borderColor="blackAlpha.200"
             boxShadow="sm"
-            zIndex={0}
+            zIndex={1}
           >
             <Flex p={1}>
               <Box w={'60px'}></Box>
@@ -78,7 +79,7 @@ function EditorGroup({
                   onChange={(event) => (group.title = event.target.value)}
                   cursor="pointer"
                   isDisabled={_isDisabled}
-                  zIndex={_isDisabled ? '-1' : 0}
+                  zIndex={_isDisabled ? '-1' : 1}
                   autoFocus
                 ></Input>
               </Box>
@@ -111,37 +112,38 @@ function EditorGroup({
                 </ButtonGroup>
               </Box>
             </Flex>
-            <Box>
-              {group.field != undefined ? (
-                <Box mt={2}>
-                  {group.field.map((field, index) => (
-                    <Draggable key={field.id} draggableId={field.id.toString()} index={index}>
-                      {(provided, snapshot) => (
-                        <Center
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <EditorGroupField
-                            isDragging={snapshot.isDragging}
-                            field={field}
-                            isDisabled={field.isDisabled}
-                            add={addField}
-                            upd={updField}
-                            del={delField}
-                          />
-                        </Center>
-                      )}
-                    </Draggable>
-                  ))}
-                  <Button size={'xs'} mt={2} onClick={() => addField(group)} m={1}>
-                    +
-                  </Button>
-                </Box>
-              ) : (
-                <Spinner />
-              )}
-            </Box>
+
+            {group.field != undefined ? (
+              <Box mt={2}>
+                {group.field.map((field, index) => (
+                  <Draggable key={field.id} draggableId={field.id.toString()} index={index}>
+                    {(provided, snapshot) => (
+                      <Center
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        zIndex={10000}
+                      >
+                        <EditorGroupField
+                          isDragging={snapshot.isDragging}
+                          field={field}
+                          isDisabled={field.isDisabled}
+                          add={addField}
+                          upd={updField}
+                          del={delField}
+                        />
+                      </Center>
+                    )}
+                  </Draggable>
+                ))}
+              </Box>
+            ) : (
+              <Spinner />
+            )}
+            {provided.placeholder}
+            <Button size={'xs'} mt={2} onClick={() => addField(group)} m={1}>
+              +
+            </Button>
           </Box>
         )}
       </Droppable>

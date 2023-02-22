@@ -15,7 +15,7 @@ function EditorGroupField({ field, isDisabled, isDragging, upd, del }: EditorGro
   )
 
   return (
-    <Flex w={'90%'} borderRadius={4} borderColor="blackAlpha.200">
+    <Flex w={'90%'} borderRadius={4} borderColor="blackAlpha.600">
       <ButtonGroup spacing="1" mr={1}>
         <Button
           size={'xs'}
@@ -45,6 +45,7 @@ function EditorGroupField({ field, isDisabled, isDragging, upd, del }: EditorGro
         bg={isDragging ? 'lightblue' : 'whiteAlpha.0'}
         p={1}
         w={'90%'}
+        h={'30px'}
         border={'1px'}
         mb={2}
         borderRadius={4}

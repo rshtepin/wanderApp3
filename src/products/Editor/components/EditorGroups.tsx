@@ -51,11 +51,11 @@ function EditorGroups({
     <>
       {groups != undefined ? (
         <DragDropContext onDragEnd={onDragEndGroups}>
-          <Droppable droppableId="droppable">
+          <Droppable droppableId="droppableEditor">
             {(provided, snapshot) => (
               <Box mt={2} {...provided.droppableProps} ref={provided.innerRef}>
                 {groups.map((group, index) => (
-                  <Draggable key={group.id} draggableId={group.id.toPrecision()} index={index}>
+                  <Draggable key={group.id} draggableId={group.id.toString()} index={index}>
                     {(provided, snapshot) => (
                       <Center
                         ref={provided.innerRef}
@@ -77,6 +77,7 @@ function EditorGroups({
                     )}
                   </Draggable>
                 ))}
+                {provided.placeholder}
               </Box>
             )}
           </Droppable>

@@ -98,10 +98,9 @@ function EditorUI() {
     const indxToChange = Editor.tab.indexOf(tab) - 1 > -1 ? Editor.tab.indexOf(tab) - 1 : 0
     tabsChange(Editor.tab[indxToChange])
     delete Editor.tab[Editor.tab.indexOf(tab)]
-    const arr = Editor.tab.filter(function () {
+    Editor.tab = Editor.tab.filter(function () {
       return true
     })
-    Editor.tab = arr
 
     setInterfaceState({ ...Editor })
     await delProductTypeMutation({ id: tab.id })
@@ -152,10 +151,9 @@ function EditorUI() {
       )
     ]
 
-    const arr = Editor.tab[currentTabIndex]!.group.filter(function () {
+    Editor.tab[currentTabIndex]!.group = Editor.tab[currentTabIndex]!.group.filter(function () {
       return true
     })
-    Editor.tab[currentTabIndex]!.group = arr
 
     setInterfaceState({ ...Editor })
     await deleteProductGroupMutation({ id: group.id })
@@ -223,10 +221,11 @@ function EditorUI() {
     delete Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field[
       Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field.indexOf(field)
     ]
-    const arr = Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field.filter(function () {
+    Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field = Editor.tab[
+      currentTabIndex
+    ]!.group[currentGroupIndex]!.field.filter(function () {
       return true
     })
-    Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field = arr
 
     Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field.map(async (field, i) => {
       Editor.tab[currentTabIndex]!.group[currentGroupIndex]!.field[i]!.order = i + 1
