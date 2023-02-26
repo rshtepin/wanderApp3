@@ -1,7 +1,7 @@
 import { IEditorTab } from 'src/types'
 import { Button, HStack, Center } from '@chakra-ui/react'
 import EditorTabInput from './EditorTabInput'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd'
 import arrayReorder from 'src/products/helpers/arrayReorder'
 interface EditorTypesProps {
   type: IEditorTab[]
@@ -21,6 +21,7 @@ export function EditorTypesMenu({
   onChange,
   type,
 }: EditorTypesProps) {
+  resetServerContext()
   const onDragEndTypes = (result) => {
     if (!result.destination) {
       return
@@ -35,7 +36,7 @@ export function EditorTypesMenu({
   }
   return (
     <DragDropContext onDragEnd={onDragEndTypes}>
-      <Droppable droppableId="droppable" direction="horizontal">
+      <Droppable droppableId="droppableTabs" direction="horizontal">
         {(provided, snapshot) => (
           <HStack spacing="24px" {...provided.droppableProps} ref={provided.innerRef}>
             <Button size={'xs'} mt={2} onClick={add}>

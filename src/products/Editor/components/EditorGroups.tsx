@@ -2,8 +2,8 @@ import { Box, Button, Center, Heading, Spinner, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { IEditorGroup, IEditorItem, IEditorTab } from 'src/types'
 import EditorGroup from './EditorGroup'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import Index from 'src/pages'
+import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd'
+
 import arrayReorder from 'src/products/helpers/arrayReorder'
 interface EditorGroupsProps {
   currentTab: IEditorTab
@@ -29,6 +29,8 @@ function EditorGroups({
   updField,
 }: EditorGroupsProps) {
   const onDragEndGroups = (result) => {
+    resetServerContext()
+
     if (!result.destination) {
       return
     }

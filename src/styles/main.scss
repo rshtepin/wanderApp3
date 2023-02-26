@@ -31,7 +31,23 @@ body {
 }
 
 $backgroundImage: 'https://catherineasquithgallery.com/uploads/posts/2021-02/1612743094_124-p-fon-na-android-goluboi-144.jpg';
+.img-desaturate {
+  filter: none;
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  cursor: pointer;
+}
 
+.img-desaturate:hover {
+  filter: none;
+  -webkit-filter: grayscale(0%);
+  -moz-filter: grayscale(0%);
+  -ms-filter: grayscale(0%);
+  -o-filter: grayscale(0%);
+  cursor: pointer;
+}
 .background-image {
   background-position: center;
   background-repeat: no-repeat;

@@ -1,12 +1,13 @@
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Heading } from '@chakra-ui/react'
+import { Console } from 'console'
 import React, { useEffect, useState } from 'react'
 
 import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
-import getAllFields from 'src/products/queries/getAllFields'
-import getProductGroups from 'src/products/queries/getProductGroups'
+import getAllFields from 'src/products/mutations/getAllFields'
+import getProductGroups from 'src/products/mutations/getProductGroups'
 
-import getTypes from 'src/products/queries/getTypes'
+import getTypes from 'src/products/mutations/getTypes'
 import {
   IEditorGroup,
   IEditorItem,
@@ -24,9 +25,9 @@ import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
 
 function EditorUI() {
-  const [{ types }] = usePaginatedQuery(getTypes, {})
-  const _groups = useQuery(getProductGroups, {})
-  const [{ fields }] = usePaginatedQuery(getAllFields, { orderBy: { order: 'asc' } })
+  const [getTypesMutation] = useMutation(getTypes)
+  const [getGroupsMutation] = useMutation(getProductGroups)
+  const [getFieldsMutation] = useMutation(getAllFields)
   const [updProductTypeMutation] = useMutation(addUpdateProductType)
   const [delProductTypeMutation] = useMutation(delProductType)
   const [updProductGroupMutation] = useMutation(addUpdateProductGroup)
@@ -36,27 +37,7 @@ function EditorUI() {
 
   let EditorTab: IEditorTab[] = []
 
-  useEffect(() => {
-    //sort groups to tabs
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    EditorTab = types.map((v: IEditorTab, i) => {
-      EditorTab[i] = v
-      EditorTab[i]!['group'] = []
-      _groups[0].map((group) => {
-        if (group.typeId == v.id) {
-          EditorTab[i]!.group!.push(group)
-          EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
-          fields.map((field) => {
-            if (field.id_group == group.id)
-              EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
-          })
-        }
-      })
-    })
-
-    //setInterfaceState({ ...Editor })
-  }, [])
-
+  const [currentTab, SetCurrnetTab] = useState<IEditorTab>({ id: 0, title: '', group: [] })
   const [interfaceState, setInterfaceState] = useState<IEditorUI>({
     id: 1,
     title: 'Редактор',
@@ -65,7 +46,33 @@ function EditorUI() {
 
   let Editor: IEditorUI = interfaceState
 
-  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(types[0])
+  useEffect(() => {
+    console.log('GET DATABASE')
+
+    getTypesMutation({ orderBy: { order: 'asc' } }).then((rT) => {
+      getGroupsMutation({ orderBy: { order: 'asc' } }).then((rG) => {
+        getFieldsMutation({ orderBy: { order: 'asc' } }).then((rF) => {
+          console.log('CONVERT BASE DATA TO INTERFACE OBJECT')
+          EditorTab = rT.types.map((tab: IEditorTab, i) => {
+            if (i == 0) SetCurrnetTab(tab)
+            EditorTab[i] = tab
+
+            EditorTab[i]!['group'] = []
+            rG.map((group) => {
+              if (group.typeId == tab.id) {
+                EditorTab[i]!.group!.push(group)
+                EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
+                rF.fields.map((field) => {
+                  if (field.id_group == group.id)
+                    EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
+                })
+              }
+            })
+          })
+        })
+      })
+    })
+  }, [])
 
   const reorderTypes = async (type: IEditorTab[]) => {
     Editor.tab = type

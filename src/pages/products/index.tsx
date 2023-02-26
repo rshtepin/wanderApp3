@@ -6,7 +6,7 @@ import { AllProducts } from 'src/products/components/AllProducts'
 import { Box, Button } from '@chakra-ui/react'
 
 import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
-import getTypes from 'src/products/queries/getTypes'
+import getTypes from 'src/products/mutations/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { useEffect, useState } from 'react'

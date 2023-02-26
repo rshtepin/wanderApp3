@@ -10,7 +10,7 @@ import { usePaginatedQuery } from '@blitzjs/rpc'
 import addUpdateProductGroupField from 'src/products/template-editor/groupseditor/mutations/addUpdateProductGroupField'
 import delProductGroupField from 'src/products/template-editor/groupseditor/mutations/delProductGroupField'
 import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
-import getTypes from 'src/products/queries/getTypes'
+import getTypes from 'src/products/mutations/getTypes'
 import { IProductGroups, IProductTypes } from 'src/types'
 
 const TemplatGroupEditorList = () => {
