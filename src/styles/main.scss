@@ -1,6 +1,7 @@
 body {
   margin: 0px;
   overflow-x: hidden;
+  overflow-y: scroll;
   padding: 0px;
   background-color: '#001d00';
   &::-webkit-scrollbar-track {
@@ -13,8 +14,8 @@ body {
   }
 
   &::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
+    height: 14px;
+    width: 14px;
   }
 
   input,

@@ -2,7 +2,6 @@ import { IncomingForm } from 'formidable'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { api } from 'src/blitz-server'
-import { OK } from 'zod'
 
 const path = './public/media/images/productlogo/'
 

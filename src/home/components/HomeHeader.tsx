@@ -24,14 +24,14 @@ const NavLink = ({ children, links }) => (
 )
 
 const HomeHeader = () => {
-  const Logo = 'media/images/landing/dw-03.svg'
+  const Logo = '/media/images/landing/dw-03.svg'
   return (
     <>
-      <Box px={4} bg={'#001d00'} color="white" mb={50} position={'sticky'}>
+      <Box bg={'#001d00'} color="white" mb={50} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Image src={Logo} h={7} alt="DW" />
+          <Image src={Logo} h={6} alt="DW" />
 
-          <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+          <HStack as={'nav'} spacing={1} display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
               <NavLink key={link.href} links={link.href}>
                 {link.title}

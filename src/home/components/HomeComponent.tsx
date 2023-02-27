@@ -1,23 +1,22 @@
-import Head from 'next/head'
+import Script from 'next/script'
 import { Box, Center, Text } from '@chakra-ui/react'
 import HomeBody from './HomeBody'
 import HomeFooter from './HomeFooter'
 import HomeHeader from './HomeHeader'
+import HomeContactForm from './HomeContactForm'
 const HomeComponent = () => {
   return (
     <>
-      <Head>
-        <script>
-          document.body.style.backgroundColor='#001d00'; document.body.style.color='#ffffff';
-        </script>
-      </Head>
+      <Script src="/bg.js"></Script>
+
       <Center>
-        <Box w={'60%'}>
+        <Box w={'75%'} maxW={'1200px'}>
           <HomeHeader />
           <HomeBody />
-          <HomeFooter />
         </Box>
       </Center>
+      <HomeContactForm />
+      <HomeFooter />
     </>
   )
 }
