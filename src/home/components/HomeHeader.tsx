@@ -27,7 +27,7 @@ const HomeHeader = () => {
   const Logo = '/media/images/landing/dw-03.svg'
   return (
     <>
-      <Box bg={'#001d00'} color="white" mb={50} position={'sticky'}>
+      <Box color="white" mb={50} position={'sticky'}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Image src={Logo} h={6} alt="DW" />
 

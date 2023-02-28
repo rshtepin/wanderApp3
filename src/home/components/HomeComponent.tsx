@@ -7,7 +7,7 @@ import HomeContactForm from './HomeContactForm'
 const HomeComponent = () => {
   return (
     <>
-      <Script src="/bg.js"></Script>
+      {/* <Script src="/bg.js"></Script> */}
 
       <Center>
         <Box w={'75%'} maxW={'1200px'}>

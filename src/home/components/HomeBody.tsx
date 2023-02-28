@@ -9,12 +9,12 @@ import {
   Center,
   HStack,
   VStack,
+  List,
+  ListItem,
+  UnorderedList,
   Wrap,
   WrapItem,
 } from '@chakra-ui/react'
-import { getAntiCSRFToken } from '@blitzjs/auth'
-import Emailer from '../../pages/api/nodemailer'
-import HomeContactForm from './HomeContactForm'
 
 const HomeBody = () => {
   const LogoText = 'media/images/landing/dw-04.svg'
@@ -26,41 +26,31 @@ const HomeBody = () => {
   const LogoDepoComp = '/media/images/landing/logo_depo.png'
   const LogoR7Office = '/media/images/landing/r7office_logo.png'
 
-  const [dimension, setDimension] = useState({ width: '', height: '' })
+  const hasWindow = typeof window !== 'undefined'
 
-  const sendMail = () => {
-    const body = new FormData()
-    body.append('email', 'info@wwon.ru')
-
-    const antiCSRFToken = getAntiCSRFToken()
-
-    const response = fetch('/api/nodemailer', {
-      headers: {
-        'anti-csrf': antiCSRFToken,
-      },
-      method: 'POST',
-
-      body,
-    }).then((res) => {})
+  const getWindowDimensions = () => {
+    const width = hasWindow ? window.innerWidth : null
+    const height = hasWindow ? window.innerHeight : null
+    return {
+      width,
+      height,
+    }
   }
 
-  useEffect(() => {
-    //sendMail()
-    function getWindowDimensions() {
-      console.log(dimension)
-      const { innerWidth: width, innerHeight: height } = window
-      function handleResize() {
-        window.removeEventListener('resize', handleResize)
-      }
-      window.addEventListener('resize', handleResize)
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
 
-      return {
-        width,
-        height,
+  useEffect(() => {
+    if (hasWindow) {
+      const handleResize = () => {
+        setWindowDimensions(getWindowDimensions())
       }
+
+      window.addEventListener('resize', handleResize)
+      return () => window.removeEventListener('resize', handleResize)
     }
-    setDimension(getWindowDimensions())
-  }, [])
+  }, [hasWindow])
+
+  const { height, width } = getWindowDimensions()
 
   return (
     <>
@@ -184,8 +174,103 @@ const HomeBody = () => {
             Мы предлагаем вашему бизнесу полный набор инструментов управления проектами продуктовой
             разработки
           </Text>
+        </Box>
+        <Box mb={16} textAlign="center">
+          <Text fontSize={'42px'} fontWeight={600} color={'rgb(0, 254, 95)'}>
+            DW ИНТЕГРАЦИЯ
+          </Text>
+          <Text fontSize={'24px'} fontWeight={300} lineHeight={1.5}>
+            Портфель DW содержит современные решения, применение которых обеспечивает комплексную
+            оптимизацию затрат на ИТ, а также снижение рисков, связанных с непрерывностью бизнеса
+          </Text>
+          <Center>
+            <List spacing={3}>
+              <Wrap spacing={'30px'}>
+                <WrapItem>
+                  <ListItem minW={'150px'} maxW={'380px'}>
+                    <Text
+                      textAlign={'left'}
+                      fontWeight={700}
+                      fontSize={'32px'}
+                      paddingTop={'8px'}
+                      paddingBottom={'6px'}
+                      marginRight={'20px'}
+                    >
+                      ИНЖЕНЕРНАЯ ИНФРАСТРУКТУРА
+                    </Text>
+                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                    <UnorderedList textAlign={'left'}>
+                      <ListItem>проектирование</ListItem>
+                      <ListItem>поставка надежных решений</ListItem>
+                      <ListItem>монтаж и пусконаладка</ListItem>
+                      <ListItem>
+                        Широкопрофильная и премиальная дистрибуция компьютеров, цифровых устройств и
+                        аксессуаров; телекоммуникационного, электротехнического и инженерного
+                        оборудования
+                      </ListItem>
+                    </UnorderedList>
+                  </ListItem>
+                </WrapItem>
+                <WrapItem>
+                  <ListItem minW={'150px'} maxW={'380px'}>
+                    <Text
+                      textAlign={'left'}
+                      fontWeight={700}
+                      fontSize={'32px'}
+                      paddingTop={'8px'}
+                      paddingBottom={'6px'}
+                      marginRight={'20px'}
+                    >
+                      ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
+                    </Text>
+                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                    <UnorderedList textAlign={'left'}>
+                      <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
+                      <ListItem>анализ защищенности приложений</ListItem>
+                      <ListItem>обучение персонала в области ИБ</ListItem>
+                      <ListItem>разработка стратегии развития ИБ</ListItem>
+                      <ListItem>приведение в соответствие требованиям законодательства</ListItem>
+                      <ListItem>импортозамещение средств ИБ</ListItem>
+                      <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
+                    </UnorderedList>
+                  </ListItem>
+                </WrapItem>
+                <WrapItem>
+                  <ListItem minW={'150px'} maxW={'380px'}>
+                    <Text
+                      textAlign={'left'}
+                      fontWeight={700}
+                      fontSize={'32px'}
+                      paddingTop={'8px'}
+                      paddingBottom={'6px'}
+                      marginRight={'20px'}
+                    >
+                      ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
+                    </Text>
+                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                    <UnorderedList textAlign={'left'}>
+                      <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
+                      <ListItem>анализ защищенности приложений</ListItem>
+                      <ListItem>обучение персонала в области ИБ</ListItem>
+                      <ListItem>разработка стратегии развития ИБ</ListItem>
+                      <ListItem>приведение в соответствие требованиям законодательства</ListItem>
+                      <ListItem>импортозамещение средств ИБ</ListItem>
+                      <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
+                    </UnorderedList>
+                  </ListItem>
+                </WrapItem>
+              </Wrap>
+            </List>
+          </Center>
+        </Box>
+      </Box>
+    </>
+  )
+}
 
-          <Wrap color={'black'} spacing="30px">
+export default HomeBody
+{
+  /* <Wrap color={'black'} spacing="30px">
             <WrapItem
               bg={'white'}
               borderRadius={9}
@@ -311,11 +396,5 @@ const HomeBody = () => {
                 </Text>
               </Box>
             </WrapItem>
-          </Wrap>
-        </Box>
-      </Box>
-    </>
-  )
+          </Wrap> */
 }
-
-export default HomeBody

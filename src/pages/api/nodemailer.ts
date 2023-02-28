@@ -1,15 +1,21 @@
 import * as nodemailer from 'nodemailer'
+import { IncomingForm } from 'formidable'
 import { MailOptions } from 'nodemailer/lib/json-transport'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { api } from 'src/blitz-server'
 
 export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
-  // console.log(req)
+  const data = await new Promise((resolve, reject) => {
+    const form = new IncomingForm({ multiples: true })
+
+    form.parse(req, (err, fields, files) => {
+      if (err) reject({ err })
+      resolve({ err, fields, files })
+    })
+  })
+  console.log(data.fields)
   class Emailer {
     private readonly transporter: nodemailer.Transporter
-
-    // accessToken:
-    //             'ya29.a0AVvZVsrbil7EWRfklicWjrB9lncsEnu696MXdYvmQvBPvHXgd9oZd11tMBx-dHjOT3FGHrwLbwAA8VdryfXuFjX7LT2kljrEfE1krWGudmZjiRNya4i1MR_QQTbg1t16zbLPCQuH0Or47Vxh4OuZmBI50QU1aCgYKAaASARISFQGbdwaI97-AhX_LtH0TXf35XUAgdA0163',
 
     constructor() {
       this.transporter = nodemailer.createTransport({
@@ -39,15 +45,26 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     return {
       from: 'Разработчик<info@wwon.ru>',
       to: email,
-      subject: 'Письмо с компьютера',
-      text: 'Welcome to the our website',
-      html: `
-      <h1>РАБОТАЕТ!!!!!!</h1>
-      <p>Поздравляю</p>
-      <p>Письмо ушло из программы!</p>
+      subject: 'Письмо от Wonder Digital',
+      text: '',
+      html:
+        `
+      <p>Имя отправителя: <b>` +
+        data.fields.name +
+        `</b></p>
+      <p>Email отправителя: <b>` +
+        data.fields.email +
+        `</b></p>
+        <p>Телефон отправителя: <b>` +
+        data.fields.tel +
+        `</b></p>
+        <p>Комментарий: <b>` +
+        data.fields.comment +
+        `</b></p>
     `,
     } as MailOptions
   }
+
   emailer.notifyUserForSignup('info@wwon.ru')
   res.status(200).end(JSON.stringify({ value: 1 }))
 })
