@@ -20,7 +20,7 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
       <Input
         variant="unstyled"
         w={'80px'}
-        bg={_isDisabled ? 'blackAlpha.0' : 'white'}
+        bg={_isDisabled ? '' : 'gray.100'}
         borderRadius={5}
         textAlign="center"
         size="xs"

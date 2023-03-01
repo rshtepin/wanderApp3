@@ -38,7 +38,12 @@ export function EditorTypesMenu({
     <DragDropContext onDragEnd={onDragEndTypes}>
       <Droppable droppableId="droppableTabs" direction="horizontal">
         {(provided, snapshot) => (
-          <HStack spacing="24px" {...provided.droppableProps} ref={provided.innerRef}>
+          <HStack
+            spacing="24px"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            color={'black'}
+          >
             <Button size={'xs'} mt={2} onClick={add}>
               +
             </Button>
@@ -53,10 +58,10 @@ export function EditorTypesMenu({
                     //key={tab.id}
                     w="160px"
                     h="45px"
-                    bg={currentTab.id == tab.id ? 'cyan.100' : 'blackAlpha.200'}
+                    bg={currentTab.id == tab.id ? 'cyan.600' : 'gray.100'}
                     borderRadius={5}
                     border={currentTab.id == tab.id ? '1px' : '0'}
-                    borderColor="blackAlpha.400"
+                    borderColor={'greenyellow'}
                     onClick={() => {
                       onChange(tab)
                     }}

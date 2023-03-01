@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import {
   Box,
   Stack,
@@ -14,7 +13,9 @@ import {
   UnorderedList,
   Wrap,
   WrapItem,
+  Link,
 } from '@chakra-ui/react'
+import useDeviceSize from '../helpers/useDeviceSize'
 
 const HomeBody = () => {
   const LogoText = 'media/images/landing/dw-04.svg'
@@ -25,32 +26,7 @@ const HomeBody = () => {
   const LogoRDW = 'media/images/landing/rdw_logo.svg'
   const LogoDepoComp = '/media/images/landing/logo_depo.png'
   const LogoR7Office = '/media/images/landing/r7office_logo.png'
-
-  const hasWindow = typeof window !== 'undefined'
-
-  const getWindowDimensions = () => {
-    const width = hasWindow ? window.innerWidth : null
-    const height = hasWindow ? window.innerHeight : null
-    return {
-      width,
-      height,
-    }
-  }
-
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
-
-  useEffect(() => {
-    if (hasWindow) {
-      const handleResize = () => {
-        setWindowDimensions(getWindowDimensions())
-      }
-
-      window.addEventListener('resize', handleResize)
-      return () => window.removeEventListener('resize', handleResize)
-    }
-  }, [hasWindow])
-
-  const { height, width } = getWindowDimensions()
+  const [width, height] = useDeviceSize()
 
   return (
     <>
@@ -71,34 +47,46 @@ const HomeBody = () => {
           </GridItem>
           <Grid templateColumns="repeat(3, 2fr)" gap={6} alignItems={'baseline'}>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoITBastion} className="img-desaturate" />
-              </Center>
+              <Link href="https://it-bastion.com/">
+                <Center>
+                  <Image w="50%" src={LogoITBastion} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoSearchInform} className="img-desaturate" />
-              </Center>
+              <Link href="https://searchinform.ru/">
+                <Center>
+                  <Image w="50%" src={LogoSearchInform} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoR7Office} className="img-desaturate" />
-              </Center>
+              <Link href="https://r7-office.ru/">
+                <Center>
+                  <Image w="50%" src={LogoR7Office} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoRDW} className="img-desaturate" />
-              </Center>
+              <Link href="https://rdwcomp.ru/">
+                <Center>
+                  <Image w="50%" src={LogoRDW} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoDepoComp} className="img-desaturate" />
-              </Center>
+              <Link href="https://www.depo.ru/">
+                <Center>
+                  <Image w="50%" src={LogoDepoComp} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
             <GridItem w="100%" h="10">
-              <Center>
-                <Image w="50%" src={LogoGraviton} className="img-desaturate" />
-              </Center>
+              <Link href="https://graviton.ru/">
+                <Center>
+                  <Image w="50%" src={LogoGraviton} className="img-desaturate" alt="" />
+                </Center>
+              </Link>
             </GridItem>
           </Grid>
         </Box>
@@ -175,94 +163,100 @@ const HomeBody = () => {
             разработки
           </Text>
         </Box>
-        <Box mb={16} textAlign="center">
-          <Text fontSize={'42px'} fontWeight={600} color={'rgb(0, 254, 95)'}>
-            DW ИНТЕГРАЦИЯ
-          </Text>
-          <Text fontSize={'24px'} fontWeight={300} lineHeight={1.5}>
-            Портфель DW содержит современные решения, применение которых обеспечивает комплексную
-            оптимизацию затрат на ИТ, а также снижение рисков, связанных с непрерывностью бизнеса
-          </Text>
-          <Center>
-            <List spacing={3}>
-              <Wrap spacing={'30px'}>
-                <WrapItem>
-                  <ListItem minW={'150px'} maxW={'380px'}>
-                    <Text
-                      textAlign={'left'}
-                      fontWeight={700}
-                      fontSize={'32px'}
-                      paddingTop={'8px'}
-                      paddingBottom={'6px'}
-                      marginRight={'20px'}
-                    >
-                      ИНЖЕНЕРНАЯ ИНФРАСТРУКТУРА
-                    </Text>
-                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
-                    <UnorderedList textAlign={'left'}>
-                      <ListItem>проектирование</ListItem>
-                      <ListItem>поставка надежных решений</ListItem>
-                      <ListItem>монтаж и пусконаладка</ListItem>
-                      <ListItem>
-                        Широкопрофильная и премиальная дистрибуция компьютеров, цифровых устройств и
-                        аксессуаров; телекоммуникационного, электротехнического и инженерного
-                        оборудования
-                      </ListItem>
-                    </UnorderedList>
-                  </ListItem>
-                </WrapItem>
-                <WrapItem>
-                  <ListItem minW={'150px'} maxW={'380px'}>
-                    <Text
-                      textAlign={'left'}
-                      fontWeight={700}
-                      fontSize={'32px'}
-                      paddingTop={'8px'}
-                      paddingBottom={'6px'}
-                      marginRight={'20px'}
-                    >
-                      ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
-                    </Text>
-                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
-                    <UnorderedList textAlign={'left'}>
-                      <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
-                      <ListItem>анализ защищенности приложений</ListItem>
-                      <ListItem>обучение персонала в области ИБ</ListItem>
-                      <ListItem>разработка стратегии развития ИБ</ListItem>
-                      <ListItem>приведение в соответствие требованиям законодательства</ListItem>
-                      <ListItem>импортозамещение средств ИБ</ListItem>
-                      <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
-                    </UnorderedList>
-                  </ListItem>
-                </WrapItem>
-                <WrapItem>
-                  <ListItem minW={'150px'} maxW={'380px'}>
-                    <Text
-                      textAlign={'left'}
-                      fontWeight={700}
-                      fontSize={'32px'}
-                      paddingTop={'8px'}
-                      paddingBottom={'6px'}
-                      marginRight={'20px'}
-                    >
-                      ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
-                    </Text>
-                    <Box h={'3px'} w={'100%'} bg={'white'}></Box>
-                    <UnorderedList textAlign={'left'}>
-                      <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
-                      <ListItem>анализ защищенности приложений</ListItem>
-                      <ListItem>обучение персонала в области ИБ</ListItem>
-                      <ListItem>разработка стратегии развития ИБ</ListItem>
-                      <ListItem>приведение в соответствие требованиям законодательства</ListItem>
-                      <ListItem>импортозамещение средств ИБ</ListItem>
-                      <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
-                    </UnorderedList>
-                  </ListItem>
-                </WrapItem>
+        <Center>
+          <Box mb={16} textAlign="center">
+            <Text
+              fontSize={width! > 800 ? '42px' : '36px'}
+              fontWeight={600}
+              color={'rgb(0, 254, 95)'}
+            >
+              DW ИНТЕГРАЦИЯ
+            </Text>
+            <Text
+              fontSize={width! > 800 ? '24px' : '20px'}
+              fontWeight={300}
+              lineHeight={1.5}
+              mb={4}
+            >
+              Портфель DW содержит современные решения, применение которых обеспечивает комплексную
+              оптимизацию затрат на ИТ, а также снижение рисков, связанных с непрерывностью бизнеса
+            </Text>
+
+            <List textAlign={'center'}>
+              <Wrap spacing={4} justify="center">
+                <ListItem minW={'150px'} maxW={'360px'}>
+                  <Text
+                    textAlign={'left'}
+                    fontWeight={700}
+                    fontSize={width! > 800 ? '32px' : '30px'}
+                    paddingTop={'8px'}
+                    paddingBottom={'6px'}
+                    marginRight={'20px'}
+                  >
+                    ИНЖЕНЕРНАЯ ИНФРАСТРУКТУРА
+                  </Text>
+                  <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                  <UnorderedList textAlign={'left'} fontSize={width! > 800 ? '18px' : '16px'}>
+                    <ListItem>проектирование</ListItem>
+                    <ListItem>поставка надежных решений</ListItem>
+                    <ListItem>монтаж и пусконаладка</ListItem>
+                    <ListItem>
+                      Широкопрофильная и премиальная дистрибуция компьютеров, цифровых устройств и
+                      аксессуаров; телекоммуникационного, электротехнического и инженерного
+                      оборудования
+                    </ListItem>
+                  </UnorderedList>
+                </ListItem>
+
+                <ListItem minW={'150px'} maxW={'360px'}>
+                  <Text
+                    textAlign={'left'}
+                    fontWeight={700}
+                    fontSize={width! > 800 ? '32px' : '30px'}
+                    paddingTop={'8px'}
+                    paddingBottom={'6px'}
+                    marginRight={'20px'}
+                  >
+                    ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
+                  </Text>
+                  <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                  <UnorderedList textAlign={'left'} fontSize={width! > 800 ? '18px' : '16px'}>
+                    <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
+                    <ListItem>анализ защищенности приложений</ListItem>
+                    <ListItem>обучение персонала в области ИБ</ListItem>
+                    <ListItem>разработка стратегии развития ИБ</ListItem>
+                    <ListItem>приведение в соответствие требованиям законодательства</ListItem>
+                    <ListItem>импортозамещение средств ИБ</ListItem>
+                    <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
+                  </UnorderedList>
+                </ListItem>
+
+                <ListItem minW={'150px'} maxW={'360px'}>
+                  <Text
+                    textAlign={'left'}
+                    fontWeight={700}
+                    fontSize={width! > 800 ? '32px' : '30px'}
+                    paddingTop={'8px'}
+                    paddingBottom={'6px'}
+                    marginRight={'20px'}
+                  >
+                    ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
+                  </Text>
+                  <Box h={'3px'} w={'100%'} bg={'white'}></Box>
+                  <UnorderedList textAlign={'left'} fontSize={width! > 800 ? '18px' : '16px'}>
+                    <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
+                    <ListItem>анализ защищенности приложений</ListItem>
+                    <ListItem>обучение персонала в области ИБ</ListItem>
+                    <ListItem>разработка стратегии развития ИБ</ListItem>
+                    <ListItem>приведение в соответствие требованиям законодательства</ListItem>
+                    <ListItem>импортозамещение средств ИБ</ListItem>
+                    <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
+                  </UnorderedList>
+                </ListItem>
               </Wrap>
             </List>
-          </Center>
-        </Box>
+          </Box>
+        </Center>
       </Box>
     </>
   )

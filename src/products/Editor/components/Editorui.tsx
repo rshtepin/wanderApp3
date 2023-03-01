@@ -1,7 +1,8 @@
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
-import { Heading } from '@chakra-ui/react'
+import { Box, Heading, VStack } from '@chakra-ui/react'
 import { Console } from 'console'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Layout from 'src/core/layouts/Layout'
 
 import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getAllFields from 'src/products/mutations/getAllFields'
@@ -40,19 +41,19 @@ function EditorUI() {
   const [currentTab, SetCurrnetTab] = useState<IEditorTab>({ id: 0, title: '', group: [] })
   const [interfaceState, setInterfaceState] = useState<IEditorUI>({
     id: 1,
-    title: 'Редактор',
+    title: 'Редактор ',
     tab: EditorTab,
   })
 
-  let Editor: IEditorUI = interfaceState
+  let Editor: IEditorUI = useRef(interfaceState)
 
   useEffect(() => {
     console.log('GET DATABASE')
-
-    getTypesMutation({ orderBy: { order: 'asc' } }).then((rT) => {
-      getGroupsMutation({ orderBy: { order: 'asc' } }).then((rG) => {
-        getFieldsMutation({ orderBy: { order: 'asc' } }).then((rF) => {
+    void getTypesMutation({ orderBy: { order: 'asc' } }).then((rT) => {
+      void getGroupsMutation({ orderBy: { order: 'asc' } }).then((rG) => {
+        void getFieldsMutation({ orderBy: { order: 'asc' } }).then((rF) => {
           console.log('CONVERT BASE DATA TO INTERFACE OBJECT')
+          // eslint-disable-next-line react-hooks/exhaustive-deps
           EditorTab = rT.types.map((tab: IEditorTab, i) => {
             if (i == 0) SetCurrnetTab(tab)
             EditorTab[i] = tab
@@ -103,7 +104,7 @@ function EditorUI() {
 
   const delTab = async (tab: IEditorTab) => {
     const indxToChange = Editor.tab.indexOf(tab) - 1 > -1 ? Editor.tab.indexOf(tab) - 1 : 0
-    tabsChange(Editor.tab[indxToChange])
+    tabsChange(Editor!.tab[indxToChange]!)
     delete Editor.tab[Editor.tab.indexOf(tab)]
     Editor.tab = Editor.tab.filter(function () {
       return true
@@ -245,35 +246,38 @@ function EditorUI() {
 
   return (
     <>
-      <Heading size={'xm'}>{interfaceState.title}</Heading>
-      <div>
-        <b> {currentTab.title}</b>
-      </div>
-      <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
-        <EditorTypesMenu
-          type={interfaceState.tab}
-          add={addTab}
-          del={delTab}
-          upd={updTab}
-          currentTab={currentTab}
-          reorderTypes={reorderTypes}
-          onChange={tabsChange}
-        />
-        <EditorGroups
-          currentTab={currentTab}
-          groups={currentTab.group!}
-          reorderGroups={reorderGroups}
-          add={addGroup}
-          del={delGroup}
-          upd={updGroup}
-          updField={updField}
-          addField={addField}
-          delField={delField}
-        />
+      <VStack>
+        <Heading size={'xm'}>{interfaceState.title}</Heading>
         <div>
-          <b>STATE:</b> {JSON.stringify(interfaceState)}
+          <b> {currentTab.title}</b>
         </div>
-      </div>
+
+        <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
+          <EditorTypesMenu
+            type={interfaceState.tab}
+            add={addTab}
+            del={delTab}
+            upd={updTab}
+            currentTab={currentTab}
+            reorderTypes={reorderTypes}
+            onChange={tabsChange}
+          />
+          <EditorGroups
+            currentTab={currentTab}
+            groups={currentTab.group!}
+            reorderGroups={reorderGroups}
+            add={addGroup}
+            del={delGroup}
+            upd={updGroup}
+            updField={updField}
+            addField={addField}
+            delField={delField}
+          />
+          {/* <div>
+          <b>STATE:</b> {JSON.stringify(interfaceState)}
+        </div> */}
+        </div>
+      </VStack>
     </>
   )
 }

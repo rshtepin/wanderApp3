@@ -55,7 +55,7 @@ function EditorGroups({
         <DragDropContext onDragEnd={onDragEndGroups}>
           <Droppable droppableId="droppableEditor">
             {(provided, snapshot) => (
-              <Box mt={2} {...provided.droppableProps} ref={provided.innerRef}>
+              <Box mt={2} {...provided.droppableProps} ref={provided.innerRef} color={'black'}>
                 {groups.map((group, index) => (
                   <Draggable key={group.id} draggableId={group.id.toString()} index={index}>
                     {(provided, snapshot) => (
@@ -87,7 +87,7 @@ function EditorGroups({
       ) : (
         <Spinner />
       )}
-      <Button size={'xs'} mt={2} onClick={add}>
+      <Button size={'xs'} mt={2} onClick={add} color={'black'}>
         +
       </Button>
     </>

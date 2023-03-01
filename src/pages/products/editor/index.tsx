@@ -1,17 +1,22 @@
+import { Box, Center } from '@chakra-ui/react'
 import { Suspense } from 'react'
+import HomeHeader from 'src/home/components/HomeHeader'
 import EditorUI from 'src/products/Editor/components/Editorui'
-
-const menubuttons = () => {
-  return <div>menubuttons</div>
-}
 
 const EditorPage = () => {
   return (
-    <div id="app">
-      <Suspense>
-        <EditorUI menubuttons={menubuttons} />
-      </Suspense>
-    </div>
+    <>
+      <Center>
+        <Suspense>
+          <Box w={'75%'} maxW={'1200px'}>
+            <HomeHeader />
+            <Center>
+              <EditorUI />
+            </Center>
+          </Box>
+        </Suspense>
+      </Center>
+    </>
   )
 }
 

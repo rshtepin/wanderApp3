@@ -21,6 +21,7 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
+import useDeviceSize from '../helpers/useDeviceSize'
 
 const HomeContactForm = () => {
   const [inputEmail, setInputEmail] = useState('')
@@ -36,6 +37,8 @@ const HomeContactForm = () => {
   const handleInputNameChange = (e) => setInputName(e.target.value)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [width, height] = useDeviceSize()
 
   const isErrorEmail = () => {
     return inputEmail.match(
@@ -96,7 +99,14 @@ const HomeContactForm = () => {
       </Modal>
       <Center>
         <Box w={'75%'} maxW={600}>
-          <Text fontSize={'lg'} fontWeight={500} color={'black'} textAlign={'center'} mt={8} mb={4}>
+          <Text
+            fontSize={width! > 800 ? '36px' : '19px'}
+            fontWeight={500}
+            color={'black'}
+            textAlign={'center'}
+            mt={8}
+            mb={4}
+          >
             Свяжитесь с нами и мы подберем инструменты для вашего бизнеса
           </Text>
           <FormControl isInvalid={!isErrorName()}>

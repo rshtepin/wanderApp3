@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg14"
+   viewBox="0 0 11737.32 2942.77"
+   style="clip-rule:evenodd;fill-rule:evenodd;image-rendering:optimizeQuality;shape-rendering:geometricPrecision;text-rendering:geometricPrecision"
+   version="1.1"
+   height="29.4277mm"
+   width="117.3732mm"
+   xml:space="preserve"><metadata
+     id="metadata18"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs4"><style
+       id="style2"
+       type="text/css"><![CDATA[
+    .fil2 {fill:#F27D00}
+    .fil0 {fill:white}
+    .fil1 {fill:#BA5205;fill-rule:nonzero}
+   ]]></style></defs><g
+     transform="translate(-4562.8,-12502.64)"
+     id="Слой_x0020_1"><metadata
+       id="CorelCorpID_0Corel-Layer" /><polygon
+       style="fill:#ffffff"
+       id="polygon7"
+       points="11811.33,12502.64 11274.86,13588.98 11266.67,13588.98 11266.67,12502.64 10362.05,12502.64 10362.05,14709.69 8666.1,14709.69 8666.1,12502.64 4719.54,12502.64 4562.8,13238.32 5574.32,13238.32 5574.32,15445.41 6490.42,15445.41 6490.42,13238.32 7749.37,13238.32 7749.97,15445.41 11266.67,15445.41 11266.67,14252.31 11274.86,14252.31 11832,15445.41 12933.76,15445.41 11997.03,13892.27 12847.08,12502.64 "
+       class="fil0" /><polygon
+       style="fill:#ba5205;fill-rule:nonzero"
+       id="polygon9"
+       points="13597.08,12502.64 14532.58,12502.64 13681.36,13894.18 14616.94,15445.41 13683.77,15445.41 12747.03,13892.27 "
+       class="fil1" /><polygon
+       style="fill:#f27d00"
+       id="polygon11"
+       points="14431.36,13894.18 15366.95,15445.41 16300.12,15445.41 15365.69,13896.09 16218.07,12502.64 15282.58,12502.64 "
+       class="fil2" /></g></svg>
