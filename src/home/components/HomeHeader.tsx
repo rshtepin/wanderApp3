@@ -3,9 +3,10 @@ import { Box, Flex, Link, Image, Button } from '@chakra-ui/react'
 import { useSession } from '@blitzjs/auth'
 import { useMutation } from '@blitzjs/rpc'
 import logout from 'src/auth/mutations/logout'
+import Layout from 'src/core/layouts/Layout'
 
 const HomeHeader = () => {
-  //const session = useSession()
+  const session = useSession()
   const [logoutMutation] = useMutation(logout)
   const Logo = '/media/images/landing/dw-03.svg'
 
@@ -43,8 +44,8 @@ const HomeHeader = () => {
             </NavLink>
           ))}
 
-          {/* {session.userId && (
-            <>
+          {session.userId && (
+            <Layout>
               <Link
                 px={2}
                 py={1}
@@ -71,8 +72,8 @@ const HomeHeader = () => {
               >
                 Выйти
               </Button>
-            </>
-          )} */}
+            </Layout>
+          )}
         </Box>
       </Flex>
     </Box>
