@@ -25,7 +25,7 @@ import delProductGroup from '../mutations/delProductGroup'
 import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
 
-function EditorUI() {
+const EditorUI = () => {
   const [getTypesMutation] = useMutation(getTypes)
   const [getGroupsMutation] = useMutation(getProductGroups)
   const [getFieldsMutation] = useMutation(getAllFields)
@@ -45,7 +45,7 @@ function EditorUI() {
     tab: EditorTab,
   })
 
-  let Editor: IEditorUI = useRef(interfaceState)
+  let Editor: IEditorUI = interfaceState
 
   useEffect(() => {
     console.log('GET DATABASE')

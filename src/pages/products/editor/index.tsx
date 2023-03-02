@@ -1,23 +1,27 @@
+import { BlitzPage, Routes } from '@blitzjs/next'
 import { Box, Center } from '@chakra-ui/react'
 import { Suspense } from 'react'
 import HomeHeader from 'src/home/components/HomeHeader'
 import EditorUI from 'src/products/Editor/components/Editorui'
 
-const EditorPage = () => {
+const EditorPage: BlitzPage = () => {
   return (
     <>
       <Center>
-        <Suspense>
-          <Box w={'75%'} maxW={'1200px'}>
+        <Box w={'75%'} maxW={'1200px'}>
+          <Suspense>
             <HomeHeader />
-            <Center>
+          </Suspense>
+          <Center>
+            <Suspense fallback={<div>Загружается</div>}>
               <EditorUI />
-            </Center>
-          </Box>
-        </Suspense>
+            </Suspense>
+          </Center>
+        </Box>
       </Center>
     </>
   )
 }
 
+EditorPage.authenticate = { redirectTo: Routes.HomePage() }
 export default EditorPage
