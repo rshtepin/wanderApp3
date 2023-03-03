@@ -6,7 +6,7 @@ import logout from 'src/auth/mutations/logout'
 import Layout from 'src/core/layouts/Layout'
 
 const HomeHeader = () => {
-  const session = useSession()
+  const session = useSession({ suspense: false })
   const [logoutMutation] = useMutation(logout)
   const Logo = '/media/images/landing/dw-03.svg'
 

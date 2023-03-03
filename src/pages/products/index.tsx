@@ -65,11 +65,7 @@ const ProductsPage: BlitzPage = () => {
   const [logoutMutation] = useMutation(logout)
   const pagination = usePagination()
 
-  const [{ types }]: IProductTypes[] = usePaginatedQuery(getTypes, {
-    where: {},
-    skip: ITEMS_PER_PAGE * pagination.page,
-    take: ITEMS_PER_PAGE,
-  })
+  const [{ types }]: IProductTypes[] = useMutation(getTypes, {})
 
   const [{ products }] = usePaginatedQuery(getProducts, {
     orderBy: { order: 'asc' },
