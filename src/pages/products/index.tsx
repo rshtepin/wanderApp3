@@ -3,18 +3,16 @@ import Layout from 'src/core/layouts/Layout'
 import logout from 'src/auth/mutations/logout'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
-import { Box, Button } from '@chakra-ui/react'
-
-import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
+import { Box, Button, Center } from '@chakra-ui/react'
 import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { IProduct, IProductTypes } from 'src/types'
-import Link from 'next/link'
 import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
+import HomeHeader from 'src/home/components/HomeHeader'
 
 // Блок администратора
 const AdminBlock: any = () => {
@@ -37,11 +35,6 @@ const AdminBlock: any = () => {
     return (
       <>
         <Box mt={5}>
-          <Link href={Routes.TemplatEditorPage()}>
-            <Button mr={2} mt={2} colorScheme="yellow">
-              Редактор шаблона продукта
-            </Button>
-          </Link>
           <Button mr={2} mt={2} colorScheme="messenger" onClick={() => setShow(true)}>
             Добавить продукт
           </Button>
@@ -88,8 +81,11 @@ const ProductsPage: BlitzPage = () => {
   }
 
   return (
-    <div id="app">
-      <Layout>
+    <Center>
+      <Box w={'75%'} maxW={'1200px'}>
+        <Suspense>
+          <HomeHeader />
+        </Suspense>
         <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
           {/* <ProductTypesMenu type={types} onChange={tabsChange} /> */}
         </div>
@@ -99,17 +95,10 @@ const ProductsPage: BlitzPage = () => {
           onDelete={onDelete}
           compare={compare}
         />
+
         <AdminBlock />
-        <Button
-          mt={2}
-          onClick={async () => {
-            await logoutMutation()
-          }}
-        >
-          Logout
-        </Button>
-      </Layout>
-    </div>
+      </Box>
+    </Center>
   )
 }
 

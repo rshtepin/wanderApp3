@@ -4,6 +4,7 @@ import ProductItemCard from './ProductItemCard'
 
 interface AllProductsProps {
   product: IProduct[]
+  type: IProductTypes
   onDelete: ({ product }) => void
   compare: ({ product, flag }) => void
 }
