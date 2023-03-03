@@ -1,12 +1,12 @@
 import { Routes, BlitzPage } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import logout from 'src/auth/mutations/logout'
-import { useMutation, usePaginatedQuery } from '@blitzjs/rpc'
+import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
 import { Box, Button } from '@chakra-ui/react'
 
 import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
-import getTypes from 'src/products/mutations/getTypes'
+import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { useEffect, useState } from 'react'
@@ -15,13 +15,6 @@ import Link from 'next/link'
 import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
-const Background: FC = () => {
-  return (
-    <div id="app-background2">
-      <div id="app-background-image2" className="background-image2" />
-    </div>
-  )
-}
 
 // Блок администратора
 const AdminBlock: any = () => {
@@ -65,7 +58,7 @@ const ProductsPage: BlitzPage = () => {
   const [logoutMutation] = useMutation(logout)
   const pagination = usePagination()
 
-  const [{ types }]: IProductTypes[] = useMutation(getTypes, {})
+  const [{ types }]: IProductTypes[] = useQuery(getTypes, {})
 
   const [{ products }] = usePaginatedQuery(getProducts, {
     orderBy: { order: 'asc' },
@@ -98,7 +91,7 @@ const ProductsPage: BlitzPage = () => {
     <div id="app">
       <Layout>
         <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
-          <ProductTypesMenu type={types} onChange={tabsChange} />
+          {/* <ProductTypesMenu type={types} onChange={tabsChange} /> */}
         </div>
         <AllProducts
           product={currentProducts}
@@ -115,12 +108,11 @@ const ProductsPage: BlitzPage = () => {
         >
           Logout
         </Button>
-        <Background />
       </Layout>
     </div>
   )
 }
 
-ProductsPage.authenticate = { redirectTo: Routes.LoginP() }
+//ProductsPage.authenticate = { redirectTo: Routes.LoginP() }
 
 export default ProductsPage

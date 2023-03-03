@@ -13,7 +13,7 @@ import getAllGroupFields from 'src/products/template-editor/groupseditor/queries
 import { ProductType } from '@prisma/client'
 import next from 'next'
 import Link from 'next/link'
-import getTypes from 'src/products/mutations/getTypes'
+import getTypes from 'src/products/queries/getTypes'
 import { IProductFields, IProductGroups, IProductTypes } from 'src/types'
 import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 

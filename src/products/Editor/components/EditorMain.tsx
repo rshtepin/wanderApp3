@@ -5,9 +5,9 @@ import { render } from '@testing-library/react'
 import React, { Suspense, useEffect, useState } from 'react'
 import { ProductTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getAllFields from 'src/products/queries/getAllFields'
-import getProductGroups from 'src/products/mutations/getProductGroups'
+import getProductGroups from 'src/products/queries/getProductGroups'
 
-import getTypes from 'src/products/mutations/getTypes'
+import getTypes from 'src/products/queries/getTypes'
 import { IEditorGroup, IEditorTab, IEditorUI, IProductTypes } from 'src/types'
 
 function EditorMain() {

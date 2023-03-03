@@ -6,10 +6,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import Layout from 'src/core/layouts/Layout'
 
 import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
-import getAllFields from 'src/products/mutations/getAllFields'
-import getProductGroups from 'src/products/mutations/getProductGroups'
+import getAllFields from 'src/products/queries/getAllFields'
+import getProductGroups from 'src/products/queries/getProductGroups'
 
-import getTypes from 'src/products/mutations/getTypes'
+import getTypes from 'src/products/queries/getTypes'
 import {
   IEditorGroup,
   IEditorItem,
@@ -27,9 +27,10 @@ import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
 
 const EditorUI = () => {
-  const [getTypesMutation] = useMutation(getTypes)
-  const [getGroupsMutation] = useMutation(getProductGroups)
-  const [getFieldsMutation] = useMutation(getAllFields)
+  const [{ types }] = usePaginatedQuery(getTypes, {})
+  const _groups = useQuery(getProductGroups, {})
+  const [{ fields }] = usePaginatedQuery(getAllFields, { orderBy: { order: 'asc' } })
+
   const [updProductTypeMutation] = useMutation(addUpdateProductType)
   const [delProductTypeMutation] = useMutation(delProductType)
   const [updProductGroupMutation] = useMutation(addUpdateProductGroup)
@@ -39,43 +40,37 @@ const EditorUI = () => {
 
   let EditorTab: IEditorTab[] = []
 
-  const [currentTab, SetCurrnetTab] = useState<IEditorTab>({ id: 0, title: '', group: [] })
+  useEffect(() => {
+    console.log('GET DATABASE')
+    //sort groups to tabs
+    EditorTab = types.map((v: IEditorTab, i) => {
+      EditorTab[i] = v
+      EditorTab[i]!['group'] = []
+      _groups[0].map((group, k) => {
+        if (group.typeId == v.id) {
+          EditorTab[i]!.group!.push(group)
+          EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
+          fields.map((field, j) => {
+            if (field.id_group == group.id)
+              EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
+          })
+        }
+        console.log('USEEFECT_EditorTab')
+        console.log(EditorTab)
+      })
+    })
+
+    //setInterfaceState({ ...Editor })
+  }, [])
   const [interfaceState, setInterfaceState] = useState<IEditorUI>({
     id: 1,
-    title: 'Редактор ',
+    title: 'Редактор всего',
     tab: EditorTab,
   })
 
   let Editor: IEditorUI = interfaceState
 
-  useEffect(() => {
-    console.log('GET DATABASE')
-    void getTypesMutation({ orderBy: { order: 'asc' } }).then((rT) => {
-      void getGroupsMutation({ orderBy: { order: 'asc' } }).then((rG) => {
-        void getFieldsMutation({ orderBy: { order: 'asc' } }).then((rF) => {
-          console.log('CONVERT BASE DATA TO INTERFACE OBJECT')
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          EditorTab = rT.types.map((tab: IEditorTab, i) => {
-            if (i == 0) SetCurrnetTab(tab)
-            EditorTab[i] = tab
-
-            EditorTab[i]!['group'] = []
-            rG.map((group) => {
-              if (group.typeId == tab.id) {
-                EditorTab[i]!.group!.push(group)
-                EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
-                rF.fields.map((field) => {
-                  if (field.id_group == group.id)
-                    EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
-                })
-              }
-            })
-          })
-        })
-      })
-    })
-  }, [])
-
+  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(types[0])
   const reorderTypes = async (type: IEditorTab[]) => {
     Editor.tab = type
     Editor.tab.map((tab, i) => updProductTypeMutation(tab))
