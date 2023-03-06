@@ -8,18 +8,24 @@ const addUpdateProduct = z.object({
   logo: z.string().optional(),
   longdesc: z.string().optional(),
   shortdesc: z.string().optional(),
-  type: z.string()?.optional(),
+  typeId: z.number(),
   id: z.number().optional(),
 })
 
 export default resolver.pipe(
   resolver.zod(addUpdateProduct),
   // resolver.authorize(),
-  async ({ title, logo, longdesc, shortdesc, type, id }) => {
+  async ({ title, logo, longdesc, shortdesc, typeId, id }) => {
     const product = await db.product.upsert({
       where: { id: id },
-      update: { title: title, logo: logo, longdesc: longdesc, shortdesc: shortdesc },
-      create: { title: title, type: type },
+      update: {
+        title: title,
+        logo: logo,
+        longdesc: longdesc,
+        shortdesc: shortdesc,
+        typeId: typeId,
+      },
+      create: { title: title, typeId: typeId },
     })
 
     if (!product) throw new NotFoundError()

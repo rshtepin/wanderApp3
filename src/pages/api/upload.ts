@@ -20,6 +20,7 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       const obj = JSON.parse(JSON.stringify({ fields, files }, null, 2))
       const idproduct: number = +obj.fields.idproduct
       const title: string = obj.fields.productitle
+      const typeId: number = parseInt(obj.fields.typeId)
       const oldFileName = obj.fields.oldfile
       const fileName: string = uuid.v4() + '.' + files.file.originalFilename.split('.').pop()
 
@@ -30,7 +31,7 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       mv(oldPath, newPath, () => {})
 
       // Запись в базу и удаление старого файла
-      await addUpdateProduct({ id: idproduct, title: title, logo: fileName }, ctx)
+      await addUpdateProduct({ id: idproduct, typeId: typeId, title: title, logo: fileName }, ctx)
       try {
         fs.unlinkSync(path + oldFileName)
         console.log('Файл ' + oldFileName + ' удален.')

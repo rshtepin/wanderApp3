@@ -7,9 +7,11 @@ import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
 import getAllFields from 'src/products/template-editor/queries/_getAllFields'
 import { ProductPropField } from 'src/products/components/ProductPropField'
-import { Image } from '@chakra-ui/react'
+import { Box, Center, Image } from '@chakra-ui/react'
 import { usePagination } from 'src/core/hooks/usePagination'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import { BlitzPage } from '@blitzjs/auth'
+import { IProductFields, IProductGroups } from 'src/types'
 
 export const Product = () => {
   const [fieldGroups, setFieldGroups] = useState<any>([])
@@ -50,7 +52,7 @@ export const Product = () => {
     }
     return res
   }
-  console.log(getValue())
+
   return (
     <>
       <Head>
@@ -62,28 +64,27 @@ export const Product = () => {
             <Image
               height="50px"
               objectFit="cover"
-              src={
-                process.env.NEXT_PUBLIC_APP_URL +
-                process.env.NEXT_PUBLIC_PRODUCT_LOGODIR +
-                Product.logo
-              }
+              src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR + Product.logo}
               alt={'Logo ' + Product.title}
             />
             <div className="one-product-page-header">{Product.title}</div>
             <div className="one-product-page-subtitle">{Product.shortdesc}</div>
           </div>
           <div className="description-block">
-            {fieldGroups.map((group) => {
-              if (group.name != 'default')
-                return (
-                  <div key={group.var} className="table-product-props-container">
-                    <div className="description-part-title">{group.name}</div>
-                    {group.fields.map((item) => (
-                      <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
-                    ))}
-                  </div>
-                )
-            })}
+            {fieldGroups.map((group: IProductGroups) => (
+              <div key={group.id} className="table-product-props-container">
+                <div className="description-part-title">{group.title}</div>
+                <Center w={'100%'}>
+                  <Box width={'98%'}>
+                    <ul className="product-desription-field">
+                      {group.fields.map((item: IProductFields) => (
+                        <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
+                      ))}
+                    </ul>
+                  </Box>
+                </Center>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@ export const Product = () => {
   )
 }
 
-const ShowProductPage = () => {
+const ShowProductPage: BlitzPage = () => {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
@@ -101,7 +102,7 @@ const ShowProductPage = () => {
   )
 }
 
-ShowProductPage.authenticate = true
+// .ShowProductPage.authenticate = true
 ShowProductPage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default ShowProductPage

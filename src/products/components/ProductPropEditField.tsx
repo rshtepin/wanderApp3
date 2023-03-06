@@ -5,22 +5,22 @@ export const ProductPropEditField = (prop) => {
   const { field, value, save, product } = prop
 
   return (
-    <div className="row-product-prop">
-      <Stack spacing={3}>
-        <InputGroup>
-          <InputLeftAddon children={field.name} minW="220px" />
-          <div className="row-product-prop-right-column">
-            <Input
-              type="text"
-              onBlur={(e) =>
-                save({ id_product: product.id, id_variable: field.id, value: e.target.value })
-              }
-              defaultValue={value}
-              width={300}
-            />
-          </div>
-        </InputGroup>
-      </Stack>
-    </div>
+    <Stack spacing={3} w={'100%'}>
+      <InputGroup size={'xs'}>
+        <InputLeftAddon children={field.title} flexWrap={'wrap'} />
+        <div className="row-product-prop-right-column">
+          <Input
+            textAlign={'right'}
+            size={'xs'}
+            type="text"
+            onBlur={(e) =>
+              save({ id_product: product.id, id_variable: field.id, value: e.target.value })
+            }
+            defaultValue={value}
+            width={'100%'}
+          />
+        </div>
+      </InputGroup>
+    </Stack>
   )
 }

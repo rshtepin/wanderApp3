@@ -14,6 +14,7 @@ const HomeHeader = () => {
     { title: 'Услуги', href: '/#services' },
     { title: 'Компания', href: '/#company' },
     { title: 'Партнеры', href: '/partners' },
+    { title: 'Продукты', href: '/products' },
   ]
   //{ title: 'Редактор', href: '../products/editor/' },
   const NavLink = ({ children, links }) => (

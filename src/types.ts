@@ -40,12 +40,12 @@ export interface IEditorItem extends IProductFields {
   upd?: () => void
 }
 export interface IProduct {
-  id: Number
-  logo?: String
-  longdesc?: String
+  id: number
+  logo?: string
+  longdesc?: string
   order: Number
   shortdesc?: Number
-  title: String
+  title: string
   typeId: number
   Variable_value?: []
 }

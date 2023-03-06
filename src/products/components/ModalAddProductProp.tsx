@@ -10,28 +10,28 @@ import {
   ModalOverlay,
   Select,
 } from '@chakra-ui/react'
+import { type } from 'os'
 import React, { useState } from 'react'
+import { IProduct, IProductGroups, IProductTypes } from 'src/types'
 
-const ModalAddProductProp = (prop) => {
-  const { show, onHide, onSave, onClose } = prop
-  const [modVars, setModVars] = useState({ title: '', type: '' })
+interface ModalAddProductProps {
+  show: boolean
+  onHide: () => void
+  onSave: (newProduct: IProduct) => void
+  onClose: () => void
+  types: IProductTypes[]
+}
+
+const ModalAddProductProp = (prop: ModalAddProductProps) => {
+  const { show, onHide, onSave, onClose, types } = prop
+  const [modVars, setModVars] = useState<IProduct>({ title: '', typeId: 0 })
   const [disabledBtn, setDisabledBtn] = useState(true)
 
   const handleSave = () => {
-    console.log(modVars)
     onSave(modVars)
     setDisabledBtn(true)
     onHide()
   }
-  // const handleShow = () => {
-  //   return (show)
-
-  // }
-  console.log('modVars.title')
-  console.log(modVars.title)
-  console.log('modVars.type')
-  console.log(modVars.type)
-
   return (
     <>
       <Modal isOpen={show} onClose={onHide}>
@@ -41,28 +41,34 @@ const ModalAddProductProp = (prop) => {
           <ModalCloseButton />
           <ModalBody>
             <Input
+              id="newProductTitle"
+              color={'black'}
               placeholder="Введите название продукта"
               onChange={(e) => {
-                setModVars({ title: e.target.value, type: modVars.type })
+                setModVars({ typeId: modVars.type, title: e.target.value })
                 setDisabledBtn(e.target.value === '' || modVars.type === '' ? true : false)
               }}
             />
             <Select
               id="type"
+              color={'black'}
               placeholder="Выберите тип продукта"
               onChange={(e) => {
-                setModVars({ type: e.target.value, title: modVars.title })
-                setDisabledBtn(e.target.value === '' || modVars.title === '' ? true : false)
-                console.log(modVars.type)
+                setModVars({
+                  typeId: e.currentTarget.value,
+                  title: modVars.title,
+                })
+                setDisabledBtn(e.currentTarget.value === '' || modVars.title === '' ? true : false)
+                console.log(modVars.typeId)
               }}
             >
-              {/* {productType.map((i) => {
+              {types.map((i: IProductTypes) => {
                 return (
-                  <option key={i} value={i}>
-                    {i}
+                  <option key={i.id} value={i.id}>
+                    {i.title}
                   </option>
                 )
-              })} */}
+              })}
             </Select>
           </ModalBody>
 

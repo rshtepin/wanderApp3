@@ -21,20 +21,19 @@ import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import uploadImageFile from 'src/products/helpers/uploadImageLogo'
 import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
 import { usePagination } from 'src/core/hooks/usePagination'
+import { IProduct } from 'src/types'
 const uuid = require('uuid')
 
 export const Product = () => {
   const [addUpdateProductFieldValueMutation] = useMutation(addUpdateFieldValue)
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
-  const [Product] = useQuery(getProduct, { id: productId })
+  const [Product] = useQuery<IProduct>(getProduct, { id: productId })
   const [fieldGroups, setFieldGroups] = useState<any>([])
   const [objUrl, setObjUrl] = useState<string | undefined>()
   const pagination = usePagination()
   async function fetchImageBlob(): Promise<Blob> {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_APP_URL! + process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + Product.logo
-    )
+    const response = await fetch(process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + Product.logo)
     // if (!response.ok) throw new Error('Response not OK')
     return response.blob()
   }
@@ -70,7 +69,6 @@ export const Product = () => {
     setFieldGroups(mystate)
   }, [])
   const pass = async (i) => {
-    console.log('TEST: ')
     const oUrl = URL.createObjectURL(i)
     setObjUrl(oUrl)
   }
@@ -79,7 +77,7 @@ export const Product = () => {
     if (event.target.files && event.target.files[0]) {
       let passFlag: boolean = false
       const i = event.target.files[0]
-      const f = await uploadImageFile(i, Product.id, Product.title, Product.logo, { pass })
+      const f = await uploadImageFile(i, Product, { pass })
       console.log(f)
     }
   }
@@ -120,6 +118,7 @@ export const Product = () => {
                     addUpdateProductFieldMutation({
                       title: e.target.value,
                       id: Product.id,
+                      typeId: Product.typeId,
                     })
                   }
                   defaultValue={Product.title}
@@ -136,6 +135,7 @@ export const Product = () => {
                     addUpdateProductFieldMutation({
                       title: Product.title,
                       shortdesc: e.target.value,
+                      typeId: Product.typeId,
                       id: Product.id,
                     })
                   }
@@ -155,6 +155,7 @@ export const Product = () => {
                     addUpdateProductFieldMutation({
                       title: Product.title,
                       longdesc: e.target.value,
+                      typeId: Product.typeId,
                       id: Product.id,
                     })
                   }
@@ -170,7 +171,7 @@ export const Product = () => {
               if (group.id != 1)
                 return (
                   <div key={group.var} className="table-product-props-container">
-                    <div className="description-part-title">{group.name}</div>
+                    <div className="description-part-title">{group.title}</div>
                     {group.fields.map((item) => (
                       <ProductPropEditField
                         key={item.id}

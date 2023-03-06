@@ -75,11 +75,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
               <Image
                 height="20px"
                 objectFit="cover"
-                src={
-                  process.env.NEXT_PUBLIC_APP_URL! +
-                  process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! +
-                  product.logo
-                }
+                src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + product.logo}
                 alt={'Logo ' + product.title}
               />
               <Heading>{product.title}</Heading>

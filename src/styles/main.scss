@@ -266,6 +266,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 .table-product-props-container {
+  color: grey;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -274,6 +275,31 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   width: 100%;
 }
 
+.product-desription-field li {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1.5ex;
+}
+
+.product-desription-field li .title {
+  max-width: 400px;
+  order: 1;
+}
+
+.product-desription-field li .chapter {
+  order: 3;
+}
+
+.product-desription-field li::after {
+  background-image: radial-gradient(circle, currentcolor 0.25px, transparent 0.5px);
+  background-position: bottom;
+  background-size: 1ex 1.5ex;
+  background-repeat: space no-repeat;
+  content: '';
+  flex-grow: 1;
+
+  order: 2;
+}
 .row-product-prop {
   display: flex;
   flex-direction: row;
@@ -282,6 +308,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 .row-product-prop-left-column {
+  max-width: 500px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -306,7 +333,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 .row-product-prop-right-column {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: flex-end;
   padding: 0px;
   width: 100%;
 }
