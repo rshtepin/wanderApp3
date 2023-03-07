@@ -243,9 +243,9 @@ const EditorUI = () => {
   return (
     <>
       <VStack>
-        <Heading size={'xm'}>{interfaceState.title && interfaceState.title}</Heading>
+        <Heading size={'xm'}>{interfaceState.title}</Heading>
         <div>
-          <b> {currentTab.title}</b>
+          <b> {currentTab.title && currentTab.title}</b>
         </div>
 
         <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
