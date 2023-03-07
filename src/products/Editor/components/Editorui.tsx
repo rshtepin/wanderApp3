@@ -245,7 +245,7 @@ const EditorUI = () => {
       <VStack>
         <Heading size={'xm'}>{interfaceState.title}</Heading>
         <div>
-          <b> {currentTab.title && currentTab.title}</b>
+          <b> {currentTab.title != undefined && currentTab.title}</b>
         </div>
 
         <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
