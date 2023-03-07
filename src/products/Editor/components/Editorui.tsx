@@ -70,7 +70,7 @@ const EditorUI = () => {
 
   let Editor: IEditorUI = interfaceState
 
-  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(types[0])
+  const [currentTab, SetCurrnetTab] = useState<IEditorTab>({ id: 0, title: '', group: [] })
   const reorderTypes = async (type: IEditorTab[]) => {
     Editor.tab = type
     Editor.tab.map((tab, i) => updProductTypeMutation(tab))
@@ -245,7 +245,7 @@ const EditorUI = () => {
       <VStack>
         <Heading size={'xm'}>{interfaceState.title}</Heading>
         <div>
-          <b> {currentTab.title != undefined && currentTab.title}</b>
+          <b> {currentTab.title}</b>
         </div>
 
         <div style={{ width: '50vw', padding: '4px 0 20px 0' }}>
