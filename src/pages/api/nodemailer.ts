@@ -35,7 +35,7 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
     }
 
     public notifyUserForSignup(email: string) {
-      this.sendEmail(newUserEmailTemplate(email))
+      void this.sendEmail(newUserEmailTemplate(email))
     }
   }
 
