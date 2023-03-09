@@ -23,7 +23,7 @@ const ProductsPage: BlitzPage = () => {
   const ITEMS_PER_PAGE = 30
   const [logoutMutation] = useMutation(logout)
   const pagination = usePagination()
-  const [{ types }]: IProductTypes[] = useQuery(getTypes, {})
+  const [{ types }] = useQuery(getTypes, {})
 
   const [{ products }] = usePaginatedQuery(getProducts, {
     orderBy: { order: 'asc' },
@@ -31,7 +31,7 @@ const ProductsPage: BlitzPage = () => {
     take: ITEMS_PER_PAGE,
   })
 
-  const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0])
+  const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
 
   const AdminBlock: any = () => {
     const session = useSession()
@@ -50,7 +50,7 @@ const ProductsPage: BlitzPage = () => {
         console.log(newProduct)
         await addProductMutation({
           title: newProduct.title,
-          typeId: parseInt(newProduct.typeId),
+          typeId: newProduct.typeId,
           id: -1,
         })
       }
@@ -74,7 +74,7 @@ const ProductsPage: BlitzPage = () => {
     }
   }
   useEffect(() => {
-    let prodArr: IProduct[] = []
+    let prodArr: any = []
     products.map((product) => {
       product.typeId === currentTab.id && prodArr.push(product)
     })

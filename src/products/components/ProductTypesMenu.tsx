@@ -13,7 +13,7 @@ const ProductTypesMenu = ({ type, onChange }: ProductTypesProps) => {
         bg={'blackAlpha.0'}
         w={'100%'}
         overflow={'hidden'}
-        onChange={(e) => onChange(type[e])}
+        onChange={(e) => onChange(type[e]!)}
         colorScheme={'green'}
       >
         <TabList>

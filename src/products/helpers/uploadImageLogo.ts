@@ -1,6 +1,6 @@
 import { getAntiCSRFToken } from '@blitzjs/auth' // Примает файл изображения и ID продукта и делает запрос
 import { IProduct } from 'src/types'
-const uploadImageFile = async (i, Product: IProduct, { pass }): Promise<boolean> => {
+const uploadImageFile = async (i, Product, { pass }): Promise<boolean> => {
   let result: boolean = false
   // console.log('Размер файла: ' + i.size + ' байт')
   // console.log('Имя файла: ' + i.name)
@@ -26,10 +26,10 @@ const uploadImageFile = async (i, Product: IProduct, { pass }): Promise<boolean>
 
         //pass(true, fileName, oUrl)
         //console.log('новый файл: ' + fileName)
-        body.append('idproduct', Product.id)
+        body.append('idproduct', Product.id.toString())
         body.append('productitle', Product.title)
-        body.append('oldfile', Product.logo)
-        body.append('typeId', Product.typeId)
+        body.append('oldfile', Product.logo!)
+        body.append('typeId', Product.typeId.toLocaleString())
         body.append('file', i)
 
         const response = await fetch('/api/upload', {

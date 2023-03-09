@@ -25,7 +25,7 @@ export default resolver.pipe(
         shortdesc: shortdesc,
         typeId: typeId,
       },
-      create: { title: title, typeId: typeId },
+      create: { title: title!, typeId: typeId },
     })
 
     if (!product) throw new NotFoundError()

@@ -22,8 +22,8 @@ import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 
 interface ProductItemCardProps {
   product: IProduct
-  onDelete: ({ product }) => void
-  compare: ({ product, flag }) => void
+  onDelete: (product: IProduct) => void
+  compare: (product: IProduct, flag: boolean) => void
 }
 
 const AdminBlock: any = ({ product, onDelete }: ProductItemCardProps) => {
@@ -45,7 +45,7 @@ const AdminBlock: any = ({ product, onDelete }: ProductItemCardProps) => {
             <Button
               colorScheme="red"
               onClick={() => {
-                if (confirm('Удалить продукт ' + product.title + ' ?')) onDelete({ id: product.id })
+                if (confirm('Удалить продукт ' + product.title + ' ?')) onDelete(product)
               }}
             >
               Удалить
@@ -62,7 +62,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
 
   const toCompare = () => {
     {
-      compare({ product: product, flag: !flag })
+      compare(product, !flag)
       setFlag(!flag)
     }
   }

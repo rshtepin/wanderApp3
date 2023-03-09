@@ -13,11 +13,12 @@ export default resolver.pipe(
   resolver.zod(GetProduct),
   // resolver.authorize(),
   async ({ id }) => {
-    const product: IProduct = await db.product.findUnique({
+    const product = await db.product.findUnique!({
       where: { id: id },
       include: { Variable_value: { include: { variable: true } } },
     })
     if (!product) throw new NotFoundError()
+
     return product
   }
 )

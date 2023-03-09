@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import { Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react'
 import React from 'react'
 

@@ -5,16 +5,16 @@ import { useQuery, useMutation, usePaginatedQuery } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
-import getAllFields from 'src/products/template-editor/queries/_getAllFields'
+import getAllFields from 'src/products/queries/getAllFields'
 import { ProductPropField } from 'src/products/components/ProductPropField'
 import { Box, Center, Image } from '@chakra-ui/react'
 import { usePagination } from 'src/core/hooks/usePagination'
-import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import getAllGroupFields from 'src/products/queries/getProductGroups'
 import { BlitzPage } from '@blitzjs/auth'
-import { IProductFields, IProductGroups } from 'src/types'
+import { IProductFields, IProductFieldValues, IProductGroups } from 'src/types'
 
 export const Product = () => {
-  const [fieldGroups, setFieldGroups] = useState<any>([])
+  const [fieldGroups, setFieldGroups] = useState<IProductGroups[]>([])
   const productId = useParam('productId', 'number')
   const [Product] = useQuery(getProduct, { id: productId })
   const pagination = usePagination()
@@ -23,19 +23,20 @@ export const Product = () => {
     skip: 0 * pagination.page,
     take: 100,
   })
-  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
-    productType: Product.type,
+  const groups = usePaginatedQuery(getAllGroupFields, {
+    productType: Product.typeId,
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
   })
+  console.log('groups')
   console.log(groups)
   useEffect(() => {
-    let mystate = []
-    groups.map((itemG: any) => {
-      const addFileds = []
-      fields.map((itemF) => {
-        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+    let mystate: IProductGroups[] = []
+    groups[0].map((itemG: IProductGroups) => {
+      const addFileds: IProductFields[] = []
+      fields.map((itemF: IProductFields) => {
+        itemF.id_group == itemG.id ? addFileds.push(itemF) : {}
       })
       mystate.push({ ...itemG, fields: addFileds })
     })
@@ -43,14 +44,17 @@ export const Product = () => {
   }, [])
 
   const getValue = (id_variable) => {
-    let res = ''
-    var result = Product.Variable_value.filter(function (item) {
-      return item.id_variable === id_variable
-    })
-    if (result.length > 0) {
-      res = result[0].value
+    if (Product) {
+      let res: string = ''
+
+      const result: any = Product?.Variable_value?.filter((item: any) => {
+        return item.id_variable === id_variable
+      })
+      if (result!.length > 0) {
+        res = result![0]!.value!
+      }
+      return res
     }
-    return res
   }
 
   return (
@@ -64,7 +68,7 @@ export const Product = () => {
             <Image
               height="50px"
               objectFit="cover"
-              src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR + Product.logo}
+              src={process!.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + Product.logo}
               alt={'Logo ' + Product.title}
             />
             <div className="one-product-page-header">{Product.title}</div>
@@ -77,7 +81,7 @@ export const Product = () => {
                 <Center w={'100%'}>
                   <Box width={'98%'}>
                     <ul className="product-desription-field">
-                      {group.fields.map((item: IProductFields) => (
+                      {group.fields!.map((item: IProductFields) => (
                         <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
                       ))}
                     </ul>

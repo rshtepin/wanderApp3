@@ -11,11 +11,11 @@ interface EditorGroupsProps {
   reorderGroups?: (groups: IEditorGroup[]) => void
   add?: React.MouseEventHandler<HTMLButtonElement>
   onChange?: (tab: IEditorTab) => void
-  del?: (group: IEditorGroup) => void
-  upd?: (group: IEditorGroup) => void
-  addField?: (group: IEditorGroup) => void
-  updField?: (field: IEditorItem) => void
-  delField?: (field: IEditorItem) => void
+  del: (group: IEditorGroup) => void
+  upd: (group: IEditorGroup) => void
+  addField: (group: IEditorGroup) => void
+  updField: (field: IEditorItem) => void
+  delField: (field: IEditorItem) => void
 }
 
 function EditorGroups({
@@ -35,11 +35,7 @@ function EditorGroups({
       return
     }
 
-    const items: IEditorGroup[] = arrayReorder(
-      groups,
-      result.source.index,
-      result.destination.index
-    )
+    const items: any = arrayReorder(groups, result.source.index, result.destination.index)
     console.log(items)
     items.map((group: IEditorGroup, i) => {
       group.order = i + 1
@@ -68,7 +64,7 @@ function EditorGroups({
                         <EditorGroup
                           isDragging={snapshot.isDragging}
                           group={group}
-                          isDisabled={group.isDisabled}
+                          isDisabled={group.isDisabled!}
                           del={del}
                           upd={upd}
                           addField={addField}

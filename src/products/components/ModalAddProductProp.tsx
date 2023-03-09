@@ -24,11 +24,11 @@ interface ModalAddProductProps {
 
 const ModalAddProductProp = (prop: ModalAddProductProps) => {
   const { show, onHide, onSave, onClose, types } = prop
-  const [modVars, setModVars] = useState<IProduct>({ title: '', typeId: 0 })
+  const [modVars, setModVars] = useState<any>()
   const [disabledBtn, setDisabledBtn] = useState(true)
 
   const handleSave = () => {
-    onSave(modVars)
+    onSave(modVars!)
     setDisabledBtn(true)
     onHide()
   }

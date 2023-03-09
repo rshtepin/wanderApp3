@@ -1,4 +1,4 @@
-import { IEditorTab } from 'src/types'
+import { IEditorGroup, IEditorTab } from 'src/types'
 import { Button, HStack, Center } from '@chakra-ui/react'
 import EditorTabInput from './EditorTabInput'
 import { DragDropContext, Droppable, Draggable, resetServerContext } from 'react-beautiful-dnd'
@@ -6,7 +6,7 @@ import arrayReorder from 'src/products/helpers/arrayReorder'
 interface EditorTypesProps {
   type: IEditorTab[]
   currentTab: IEditorTab
-  reorderTypes?: (type: IEditorTab[]) => void
+  reorderTypes: (type: IEditorTab[]) => void
   add?: React.MouseEventHandler<HTMLButtonElement>
   onChange: (tab: IEditorTab) => void
   del: (tab: IEditorTab) => void
@@ -27,12 +27,12 @@ export function EditorTypesMenu({
       return
     }
 
-    const items = arrayReorder(type, result.source.index, result.destination.index)
+    const items: any = arrayReorder(type, result.source.index, result.destination.index)
     console.log(items)
-    items.map((_type: IEditorGroup, i) => {
+    items.map((_type, i) => {
       _type.order = i + 1
     })
-    reorderTypes(items)
+    reorderTypes!(items)
   }
   return (
     <DragDropContext onDragEnd={onDragEndTypes}>

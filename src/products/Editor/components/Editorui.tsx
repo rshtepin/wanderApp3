@@ -1,10 +1,7 @@
-import { useSession } from '@blitzjs/auth'
-import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
-import { Box, Heading, VStack } from '@chakra-ui/react'
-import { Console } from 'console'
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
-import Layout from 'src/core/layouts/Layout'
-
+import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
+import { Heading, VStack } from '@chakra-ui/react'
 import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
 import getAllFields from 'src/products/queries/getAllFields'
 import getProductGroups from 'src/products/queries/getProductGroups'
@@ -27,7 +24,7 @@ import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
 
 const EditorUI = () => {
-  const [{ types }] = usePaginatedQuery(getTypes, {})
+  const [{ types }] = usePaginatedQuery(getTypes, { orderBy: { order: 'asc' } })
   const _groups = useQuery(getProductGroups, {})
   const [{ fields }] = usePaginatedQuery(getAllFields, { orderBy: { order: 'asc' } })
 
@@ -38,15 +35,15 @@ const EditorUI = () => {
   const [updProductFieldMutation] = useMutation(addUpdateProductField)
   const [deleteProductFieldMutation] = useMutation(delProductField)
 
-  let EditorTab: IEditorTab[] = []
+  let EditorTab: any = []
 
   useEffect(() => {
     console.log('GET DATABASE')
     //sort groups to tabs
-    EditorTab = types.map((v: IEditorTab, i) => {
+    EditorTab = types!.map((v: any, i) => {
       EditorTab[i] = v
       EditorTab[i]!['group'] = []
-      _groups[0].map((group, k) => {
+      _groups[0].map((group: IEditorGroup, k) => {
         if (group.typeId == v.id) {
           EditorTab[i]!.group!.push(group)
           EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
@@ -55,12 +52,8 @@ const EditorUI = () => {
               EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
           })
         }
-        console.log('USEEFECT_EditorTab')
-        console.log(EditorTab)
       })
     })
-
-    //setInterfaceState({ ...Editor })
   }, [])
   const [interfaceState, setInterfaceState] = useState<IEditorUI>({
     id: 1,

@@ -4,7 +4,7 @@ import { useQuery, usePaginatedQuery, useMutation } from '@blitzjs/rpc'
 import { useParam } from '@blitzjs/next'
 import Layout from 'src/core/layouts/Layout'
 import getProduct from 'src/products/queries/getProduct'
-import getAllFields from 'src/products/template-editor/queries/_getAllFields'
+import getAllFields from 'src/products/queries/getAllFields'
 import { ProductPropEditField } from 'src/products/components/ProductPropEditField'
 import addUpdateFieldValue from 'src/products/mutations/addUpdateFieldValue'
 import {
@@ -19,16 +19,16 @@ import {
 } from '@chakra-ui/react'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import uploadImageFile from 'src/products/helpers/uploadImageLogo'
-import getAllGroupFields from 'src/products/template-editor/groupseditor/queries/getAllGroupFields'
+import getAllGroupFields from 'src/products/queries/getProductGroups'
 import { usePagination } from 'src/core/hooks/usePagination'
-import { IProduct } from 'src/types'
+import { IProduct, IProductFields, IProductFieldValues, IProductGroups } from 'src/types'
 const uuid = require('uuid')
 
 export const Product = () => {
   const [addUpdateProductFieldValueMutation] = useMutation(addUpdateFieldValue)
   const [addUpdateProductFieldMutation] = useMutation(addUpdateProduct)
   const productId = useParam('productId', 'number')
-  const [Product] = useQuery<IProduct>(getProduct, { id: productId })
+  const [Product] = useQuery(getProduct, { id: productId })
   const [fieldGroups, setFieldGroups] = useState<any>([])
   const [objUrl, setObjUrl] = useState<string | undefined>()
   const pagination = usePagination()
@@ -42,7 +42,7 @@ export const Product = () => {
     skip: 0,
     take: 100,
   })
-  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
+  const groups = usePaginatedQuery(getAllGroupFields, {
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
@@ -58,11 +58,11 @@ export const Product = () => {
     [objUrl]
   )
   useEffect(() => {
-    let mystate = []
-    groups.map((itemG: any) => {
-      const addFileds = []
+    let mystate: IProductGroups[] = []
+    groups[0].map((itemG: any) => {
+      const addFileds: IProductFields[] = []
       fields.map((itemF) => {
-        itemF.id_group == itemG.id ? addFileds.push(itemF) : next
+        itemF.id_group == itemG.id ? addFileds.push(itemF) : {}
       })
       mystate.push({ ...itemG, fields: addFileds })
     })
@@ -84,9 +84,11 @@ export const Product = () => {
 
   const getValue = (id_variable) => {
     let res = ''
-    let result = Product.Variable_value.filter((item) => item.id_variable === id_variable)
+    let result: any = Product.Variable_value!.filter(
+      (item: any) => item.id_variable === id_variable
+    )
     if (result.length > 0) {
-      res = result[0].value
+      res = result![0]!.value!
     }
     return res
   }
@@ -130,7 +132,6 @@ export const Product = () => {
               <div className="one-product-page-subtitle">
                 <FormLabel mb="0px">Короткое описание видно внутри карточки продукта</FormLabel>
                 <Textarea
-                  type="text"
                   onBlur={(e) =>
                     addUpdateProductFieldMutation({
                       title: Product.title,
@@ -139,7 +140,7 @@ export const Product = () => {
                       id: Product.id,
                     })
                   }
-                  defaultValue={Product.shortdesc}
+                  defaultValue={Product.shortdesc!}
                   width={'100%'}
                 />
               </div>
@@ -148,7 +149,6 @@ export const Product = () => {
                   Длинное описание видно на странице со всеми продуктами
                 </FormLabel>
                 <Textarea
-                  type="text"
                   resize={'vertical'}
                   height={100}
                   onBlur={(e) =>
@@ -159,7 +159,7 @@ export const Product = () => {
                       id: Product.id,
                     })
                   }
-                  defaultValue={Product.longdesc}
+                  defaultValue={Product.longdesc!}
                   width={'100%'}
                 />
               </div>

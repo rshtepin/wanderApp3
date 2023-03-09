@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { api } from 'src/blitz-server'
 
 export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
-  const data = await new Promise((resolve, reject) => {
+  const data: any = await new Promise((resolve, reject) => {
     const form = new IncomingForm({ multiples: true })
 
     form.parse(req, (err, fields, files) => {
@@ -13,7 +13,6 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       resolve({ err, fields, files })
     })
   })
-  console.log(data.fields)
   class Emailer {
     private readonly transporter: nodemailer.Transporter
 
@@ -50,16 +49,16 @@ export default api(async (req: NextApiRequest, res: NextApiResponse, ctx) => {
       html:
         `
       <p>Имя отправителя: <b>` +
-        data.fields.name +
+        data!.fields.name +
         `</b></p>
       <p>Email отправителя: <b>` +
-        data.fields.email +
+        data!.fields.email +
         `</b></p>
         <p>Телефон отправителя: <b>` +
-        data.fields.tel +
+        data!.fields.tel +
         `</b></p>
         <p>Комментарий: <b>` +
-        data.fields.comment +
+        data!.fields.comment +
         `</b></p>
     `,
     } as MailOptions

@@ -12,9 +12,9 @@ interface EditorGroupProps {
   isDragging: boolean
   upd: (group: IEditorGroup) => void
   del: (group: IEditorGroup) => void
-  addField?: (group: IEditorGroup) => void
-  updField?: (field: IEditorItem) => void
-  delField?: (field: IEditorItem) => void
+  addField: (group: IEditorGroup) => void
+  updField: (field: IEditorItem) => void
+  delField: (field: IEditorItem) => void
 }
 
 function EditorGroup({
@@ -36,7 +36,7 @@ function EditorGroup({
       return
     }
 
-    const items = arrayReorder(group.field, result.source.index, result.destination.index)
+    const items: any = arrayReorder(group.field, result.source.index, result.destination.index)
     console.log(items)
     items.map((field: IEditorItem, i) => {
       field.order = i + 1
@@ -127,8 +127,8 @@ function EditorGroup({
                         <EditorGroupField
                           isDragging={snapshot.isDragging}
                           field={field}
-                          isDisabled={field.isDisabled}
-                          add={addField}
+                          isDisabled={field.isDisabled!}
+                          //  add={addField}
                           upd={updField}
                           del={delField}
                         />
@@ -141,7 +141,7 @@ function EditorGroup({
               <Spinner />
             )}
             {provided.placeholder}
-            <Button size={'xs'} mt={2} onClick={() => addField(group)} m={1}>
+            <Button size={'xs'} mt={2} onClick={() => addField!(group)} m={1}>
               +
             </Button>
           </Box>

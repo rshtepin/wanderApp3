@@ -1,14 +1,12 @@
 import { resolver } from '@blitzjs/rpc'
 import db, { Prisma } from 'db'
 import { paginate } from 'blitz'
-import { IProductTypes } from 'src/types'
-
-interface GetUsersInput
+interface GetProductTypes
   extends Pick<Prisma.UserFindManyArgs, 'where' | 'orderBy' | 'skip' | 'take'> {}
 
 export default resolver.pipe(
   // resolver.authorize(),
-  async ({ where, orderBy, skip = 0, take = 100 }: GetUsersInput) => {
+  async ({ where, orderBy, skip = 0, take = 100 }: GetProductTypes) => {
     const {
       items: types,
       hasMore,
@@ -18,7 +16,7 @@ export default resolver.pipe(
       skip,
       take,
       count: () => db.productType.count(),
-      query: () => db.productType.findMany({ where, orderBy: { order: 'asc' } }),
+      query: (paginateArgs) => db.productType.findMany({ ...paginateArgs, orderBy }),
     })
 
     return {

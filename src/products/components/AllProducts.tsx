@@ -5,8 +5,8 @@ import ProductItemCard from './ProductItemCard'
 interface AllProductsProps {
   product: IProduct[]
   type: IProductTypes
-  onDelete: ({ product }) => void
-  compare: ({ product, flag }) => void
+  onDelete: (product: IProduct) => void
+  compare: (product: IProduct, flag: boolean) => void
 }
 
 export function AllProducts({ product, type, onDelete, compare }: AllProductsProps) {

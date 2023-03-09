@@ -43,8 +43,8 @@ export interface IProduct {
   id: number
   logo?: string
   longdesc?: string
-  order: Number
-  shortdesc?: Number
+  order: number
+  shortdesc?: string
   title: string
   typeId: number
   Variable_value?: []
@@ -69,13 +69,10 @@ export interface IProductFields {
   title: string
   unit?: string
 }
-
-declare module '@blitzjs/auth' {
-  export interface Session {
-    isAuthorized: SimpleRolesIsAuthorized<Role>
-    PublicData: {
-      userId: User['id']
-      role: Role
-    }
-  }
+export interface IProductFieldValues {
+  id: number
+  id_variable: number
+  id_product: number
+  order?: number
+  value?: string
 }

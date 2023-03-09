@@ -6,13 +6,6 @@ import { IProduct } from 'src/types'
 interface GetUsersInput
   extends Pick<Prisma.UserFindManyArgs, 'where' | 'orderBy' | 'skip' | 'take'> {}
 
-interface DbProduct {
-  items: IProduct
-  hasMore?: boolean
-  nextPage: Number
-  count: Number
-}
-
 export default resolver.pipe(
   // resolver.authorize(),
   async ({ where, orderBy, skip = 0, take = 100 }: GetUsersInput) => {
@@ -21,7 +14,7 @@ export default resolver.pipe(
       hasMore,
       nextPage,
       count,
-    } = await paginate<DbProduct>({
+    } = await paginate({
       skip,
       take,
       count: () => db.product.count({ where }),

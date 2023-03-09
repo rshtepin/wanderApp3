@@ -18,6 +18,7 @@ enum UserStatus {
   VerifyingLogIn = 'Verifying Log In',
   Registering = 'Registering',
 }
+
 // const UserInfo = () => {
 //   const currentUser = useCurrentUser()
 //   const [logoutMutation] = useMutation(logout)
@@ -77,26 +78,6 @@ const useCurrentDateEffect = (): Date => {
   }, [date])
 
   return date
-}
-const T: ITimeUtility = {
-  format: (date: Date): string => {
-    const hours: string = T.formatHours(date.getHours()),
-      minutes: string = date.getMinutes(),
-      seconds: string = date.getSeconds()
-
-    return `${hours}:${T.formatSegment(minutes)}`
-  },
-  formatHours: (hours: number): string => {
-    return hours % 24 === 0 ? 24 : hours % 24
-  },
-  formatSegment: (segment: number): string => {
-    return segment < 10 ? `0${segment}` : segment
-  },
-}
-const Time: FC = () => {
-  const date: Date = useCurrentDateEffect()
-
-  return <span className="time">{T.format(date)}</span>
 }
 
 type LoginFormProps = {
@@ -163,8 +144,20 @@ export const LoginFormP = (props: LoginFormProps) => {
                 }}
                 className="form"
               >
-                <LabeledTextField name="email" placeholder="Почта" type="email" size="40" />
-                <LabeledTextField name="password" placeholder="Пароль" type="password" size="40" />
+                <LabeledTextField
+                  label=""
+                  name="email"
+                  placeholder="Почта"
+                  type="email"
+                  size={40}
+                />
+                <LabeledTextField
+                  label=""
+                  name="password"
+                  placeholder="Пароль"
+                  type="password"
+                  size={40}
+                />
               </Form>
             </div>
             <div id="registering-inputs" className={getStatusClass()}>
@@ -175,7 +168,7 @@ export const LoginFormP = (props: LoginFormProps) => {
                 onSubmit={async (values) => {
                   try {
                     await signupMutation(values)
-                    props.onSuccess?.()
+                    // props.onSuccess?.()
                   } catch (error: any) {
                     if (error.code === 'P2002' && error.meta?.target?.includes('email')) {
                       // This error comes from Prisma
@@ -186,15 +179,24 @@ export const LoginFormP = (props: LoginFormProps) => {
                   }
                 }}
               >
-                <LabeledTextField name="email" placeholder="Почта" type="email" size="40" />
-                <LabeledTextField name="password" placeholder="Пароль" type="password" size="40" />
+                <LabeledTextField
+                  label=""
+                  name="email"
+                  placeholder="Почта"
+                  type="email"
+                  size={40}
+                />
+                <LabeledTextField
+                  label=""
+                  name="password"
+                  placeholder="Пароль"
+                  type="password"
+                  size={40}
+                />
               </Form>
             </div>
           </div>
         </div>
-      </div>
-      <div className="time-container">
-        <Time />
       </div>
       <Background />
     </div>
