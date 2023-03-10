@@ -64,7 +64,9 @@ const EditorUI = () => {
   let Editor: IEditorUI = interfaceState
 
   const [currentTab, SetCurrnetTab] = useState<IEditorTab>(
-    Editor.tab.length > 0 ? Editor.tab[0]! : { id: 0, title: '', group: [] }
+    Editor.tab.length > 0
+      ? { id: types[0]!.id, title: types[0]!.title }
+      : { id: 0, title: '', group: [] }
   )
   const reorderTypes = async (type: IEditorTab[]) => {
     Editor.tab = type
