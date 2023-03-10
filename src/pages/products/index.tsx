@@ -1,6 +1,4 @@
 import { Routes, BlitzPage } from '@blitzjs/next'
-import Layout from 'src/core/layouts/Layout'
-import logout from 'src/auth/mutations/logout'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
 import { Box, Button, Center, Divider } from '@chakra-ui/react'
@@ -8,12 +6,13 @@ import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { Suspense, useEffect, useState } from 'react'
-import { IProduct, IProductGroups, IProductTypes } from 'src/types'
+import { IProduct, IProductTypes } from 'src/types'
 import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
+import { quotelessJson } from 'zod'
 
 // Блок администратора
 
@@ -21,7 +20,7 @@ const ProductsPage: BlitzPage = () => {
   const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
 
   const ITEMS_PER_PAGE = 30
-  const [logoutMutation] = useMutation(logout)
+
   const pagination = usePagination()
   const [{ types }] = useQuery(getTypes, {})
 
@@ -32,6 +31,15 @@ const ProductsPage: BlitzPage = () => {
   })
 
   const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
+  const [compareProducts, setCompareProducts] = useState<Object>({})
+
+  useEffect(() => {
+    let json: Object = {}
+    types.map((i) => {
+      json[i.id.toString()] = []
+    })
+    setCompareProducts(json)
+  }, [])
 
   const AdminBlock: any = () => {
     const session = useSession()
@@ -73,6 +81,7 @@ const ProductsPage: BlitzPage = () => {
       )
     }
   }
+
   useEffect(() => {
     let prodArr: any = []
     products.map((product) => {
@@ -90,9 +99,19 @@ const ProductsPage: BlitzPage = () => {
   }
 
   const compare = (product: IProduct, flag: boolean) => {
-    console.log(product)
+    if (flag) {
+      let json = compareProducts
+      json[product.typeId.toString()].push(product)
+      setCompareProducts(json)
+    } else {
+      let json = compareProducts
+      let array = json[product.typeId.toString()]
+      json[product.typeId.toString()] = array.filter((i) => i !== product)
+      setCompareProducts(quotelessJson)
+    }
   }
 
+  console.log(compareProducts)
   return (
     <Center>
       <Box w={'75%'} maxW={'1200px'}>
