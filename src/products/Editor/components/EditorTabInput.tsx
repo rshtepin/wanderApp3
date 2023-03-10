@@ -45,7 +45,7 @@ function EditorTabInput({ upd, del, tab, isDisabled }: IEditorTabInput) {
         {_isDisabled ? 'E' : 'S'}
       </Button>
       <Button
-        isDisabled={tab.group.length > 0 ? true : false}
+        isDisabled={tab.group!.length > 0 ? true : false}
         ml={0.5}
         size={'xs'}
         onClick={() => {

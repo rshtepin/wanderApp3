@@ -22,6 +22,8 @@ import delProductField from '../mutations/delProductField'
 import delProductGroup from '../mutations/delProductGroup'
 import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
+import { type } from 'os'
+import { title } from 'process'
 
 const EditorUI = () => {
   const [{ types }] = usePaginatedQuery(getTypes, { orderBy: { order: 'asc' } })
@@ -36,6 +38,10 @@ const EditorUI = () => {
   const [deleteProductFieldMutation] = useMutation(delProductField)
 
   let EditorTab: any = []
+
+  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(
+    types.length > 0 ? types![0]! : { id: 0, title: '', order: 1, group: [] }
+  )
 
   useEffect(() => {
     console.log('GET DATABASE')
@@ -55,6 +61,7 @@ const EditorUI = () => {
       })
     })
   }, [])
+
   const [interfaceState, setInterfaceState] = useState<IEditorUI>({
     id: 1,
     title: 'Редактор всего',
@@ -62,12 +69,6 @@ const EditorUI = () => {
   })
 
   let Editor: IEditorUI = interfaceState
-
-  const [currentTab, SetCurrnetTab] = useState<IEditorTab>(
-    Editor.tab.length > 0
-      ? { id: types[0]!.id, title: types[0]!.title }
-      : { id: 0, title: '', group: [] }
-  )
   const reorderTypes = async (type: IEditorTab[]) => {
     Editor.tab = type
     Editor.tab.map((tab, i) => updProductTypeMutation(tab))
@@ -118,7 +119,7 @@ const EditorUI = () => {
     const crntTabIndx = Editor.tab.indexOf(currentTab)
     Editor.tab[crntTabIndx]!.group = _groups
     setInterfaceState({ ...Editor })
-    Editor.tab[crntTabIndx]?.group.map((group, i) =>
+    Editor.tab[crntTabIndx]!.group!.map((group, i) =>
       updProductGroupMutation({
         id: group.id,
         typeId: currentTab.id,
@@ -152,13 +153,13 @@ const EditorUI = () => {
       )
     ]
 
-    Editor.tab[crntTabIndx]!.group = Editor.tab[crntTabIndx]!.group.filter(function () {
+    Editor.tab[crntTabIndx]!.group = Editor.tab[crntTabIndx]!.group!.filter(function () {
       return true
     })
 
     setInterfaceState({ ...Editor })
     await deleteProductGroupMutation({ id: group.id })
-    await reorderGroups(Editor.tab[crntTabIndx]!.group)
+    await reorderGroups(Editor.tab[crntTabIndx]!.group!)
   }
 
   const updGroup = async (group: IEditorGroup) => {
@@ -190,7 +191,7 @@ const EditorUI = () => {
 
   const addField = async (group: IEditorGroup) => {
     const crntTabIndx = Editor.tab.indexOf(currentTab)
-    const crntGroupIndx = Editor.tab[crntTabIndx]!.group.indexOf(group)
+    const crntGroupIndx = Editor.tab[crntTabIndx]!.group!.indexOf(group)
 
     const fld: IProductFields = await updProductFieldMutation({
       id: -1,
@@ -206,7 +207,7 @@ const EditorUI = () => {
       isDisabled: false,
       order: fld.order,
     }
-    Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field.push(newField)
+    Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field.push(newField)
     setInterfaceState({ ...Editor })
   }
 
@@ -219,18 +220,18 @@ const EditorUI = () => {
       if (_group.id == field.id_group) return (crntGroupIndx = i)
     })
 
-    delete Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field[
-      Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field.indexOf(field)
+    delete Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field[
+      Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field.indexOf(field)
     ]
-    Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field = Editor.tab[crntTabIndx]!.group[
+    Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field = Editor.tab[crntTabIndx]!.group![
       crntGroupIndx
     ]!.field.filter(function () {
       return true
     })
 
-    Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field.map(async (field, i) => {
-      Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field[i]!.order = i + 1
-      await updProductFieldMutation(Editor.tab[crntTabIndx]!.group[crntGroupIndx]!.field[i])
+    Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field.map(async (field, i) => {
+      Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field[i]!.order = i + 1
+      await updProductFieldMutation(Editor.tab[crntTabIndx]!.group![crntGroupIndx]!.field[i])
     })
     await deleteProductFieldMutation({ id: field.id })
 
