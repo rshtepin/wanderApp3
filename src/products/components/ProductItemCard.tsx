@@ -35,7 +35,7 @@ const AdminBlock: any = ({ product, onDelete }: ProductItemCardProps) => {
       <>
         <Grid mt={1} templateColumns="repeat(5, 1fr)" gap={1}>
           <GridItem>
-            <Link href={Routes.EditProductPage({ productId: product.id })}>
+            <Link href={Routes.EditProductPage({ productId: product.id.toString() })}>
               <Button mr={1} colorScheme="yellow">
                 Редактировать
               </Button>
