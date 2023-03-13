@@ -125,6 +125,7 @@ export const LoginFormP = (props: LoginFormProps) => {
                     }
                   }
                 }}
+                className="form"
               >
                 <LabeledTextField
                   label=""
