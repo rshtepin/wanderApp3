@@ -1,5 +1,5 @@
 import { SimpleRolesIsAuthorized } from '@blitzjs/auth'
-import { Field_group, User } from 'db'
+import { Field_group, Product, ProductType, Product_variable, User, Variable_value } from 'db'
 declare module '@blitzjs/auth' {
   export interface Session {
     isAuthorized: SimpleRolesIsAuthorized<Role>
@@ -39,41 +39,41 @@ export interface IEditorItem extends IProductFields {
   del?: () => void
   upd?: () => void
 }
-export interface IProduct {
-  id?: number
+export interface IProduct extends Product {
+  id: number
   logo?: string
   longdesc?: string
-  order?: number
+  order: number
   shortdesc?: string
   title: string
   typeId: number
   isCompare?: boolean
   Variable_value?: []
 }
-export interface IProductTypes {
+export interface IProductTypes extends ProductType {
   id: number
   title: string
-  order?: number
+  order: number
 }
 
-export interface IProductGroups {
+export interface IProductGroups extends Field_group {
   id: number
-  typeId: Number
-  order?: Number
+  typeId: number
+  order: number
   title: string
-  fields?: IProductFields[]
+  fields: IProductFields[]
 }
-export interface IProductFields {
+export interface IProductFields extends Product_variable {
   id: number
   id_group: number
-  order?: number
+  order: number
   title: string
-  unit?: string
+  unit: string
 }
-export interface IProductFieldValues {
+export interface IProductFieldValues extends Variable_value {
   id: number
   id_variable: number
   id_product: number
-  order?: number
-  value?: string
+  order: number
+  value: string
 }

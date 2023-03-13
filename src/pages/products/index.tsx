@@ -34,12 +34,13 @@ const ProductsPage: BlitzPage = () => {
   const pagination = usePagination()
   const [{ types }] = useQuery(getTypes, {})
 
-  const [{ products }] = usePaginatedQuery(getProducts, {
+  const [{ products }]: any = usePaginatedQuery(getProducts, {
     orderBy: { order: 'asc' },
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
-  let allProducts: any = products
+
+  const [allProducts, setAllProducts] = useState<IProduct[]>(products)
   const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
   const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -50,9 +51,6 @@ const ProductsPage: BlitzPage = () => {
   }
 
   useEffect(() => {
-    allProducts = []
-    products.map((product) => allProducts.push({ ...product, isCompare: false }))
-
     let json: Object = {}
     types.map((i) => {
       json[i.id.toString()] = []
@@ -74,8 +72,6 @@ const ProductsPage: BlitzPage = () => {
         setShow(false)
       }
       const onSave = async (newProduct: IProduct) => {
-        console.log('newProduct')
-        console.log(newProduct)
         await addProductMutation({
           title: newProduct.title,
           typeId: newProduct.typeId,
@@ -119,14 +115,15 @@ const ProductsPage: BlitzPage = () => {
 
   useEffect(() => {
     let prodArr: any = []
+
     allProducts.map((product) => {
       product.typeId === currentTab.id && prodArr.push(product)
     })
+
     return SetCurrnetProducts(prodArr)
   }, [currentTab, products])
 
   const tabsChange = async (type: IProductTypes) => {
-    console.log(type.title)
     await SetCurrnetTab(type)
   }
   const onDelete = (product: IProduct) => {
@@ -135,20 +132,24 @@ const ProductsPage: BlitzPage = () => {
 
   const compare = (product: IProduct, flag: boolean) => {
     if (flag) {
-      console.log(allProducts)
-
       let json = compareProducts
       json[product.typeId.toString()].push(product)
-      setCompareProducts(json)
+      setCompareProducts({ ...json })
     } else {
       let json = compareProducts
       let array = json[product.typeId.toString()]
-      json[product.typeId.toString()] = array.filter((i) => i !== product)
-      setCompareProducts(json)
+      json[product.typeId.toString()] = array.filter((i) => i.id !== product.id)
+      setCompareProducts({ ...json })
     }
+    allProducts.map((_product) =>
+      setAllProducts(
+        allProducts.map((_product, i) =>
+          product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
+        )
+      )
+    )
   }
 
-  console.log(compareProducts)
   return (
     <Center>
       <Box w={'75%'} maxW={'1200px'}>
