@@ -44,8 +44,7 @@ const AdminBlock: any = ({ product, onDelete }: ProductItemCardProps) => {
 
 const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) => {
   const [flag, setFlag] = useState(product.isCompare)
-  console.log('product.isCompare')
-  console.log(product.isCompare)
+
   const toCompare = () => {
     {
       compare(product, !flag)
