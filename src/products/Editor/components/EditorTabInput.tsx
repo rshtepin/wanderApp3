@@ -1,7 +1,5 @@
-import { Button, ButtonGroup, Input } from '@chakra-ui/react'
-import { render } from '@testing-library/react'
-import { useEffect, useState } from 'react'
-import { Form } from 'react-final-form'
+import { Button, Input } from '@chakra-ui/react'
+import { useState } from 'react'
 import { IEditorTab } from 'src/types'
 interface IEditorTabInput {
   tab: IEditorTab

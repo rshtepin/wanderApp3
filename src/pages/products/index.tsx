@@ -1,7 +1,20 @@
-import { Routes, BlitzPage } from '@blitzjs/next'
+import { BlitzPage } from '@blitzjs/next'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
-import { Box, Button, Center, Divider } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useDisclosure,
+  Wrap,
+} from '@chakra-ui/react'
 import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
@@ -12,13 +25,11 @@ import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
-import { quotelessJson } from 'zod'
+import { T } from 'vitest/dist/types-de0e0997'
 
 // Блок администратора
 
 const ProductsPage: BlitzPage = () => {
-  const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
-
   const ITEMS_PER_PAGE = 30
 
   const pagination = usePagination()
@@ -29,11 +40,20 @@ const ProductsPage: BlitzPage = () => {
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
-
+  let allProducts: any = products
   const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
+  const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [compareProducts, setCompareProducts] = useState<Object>({})
 
+  const handleClick = () => {
+    onOpen()
+  }
+
   useEffect(() => {
+    allProducts = []
+    products.map((product) => allProducts.push({ ...product, isCompare: false }))
+
     let json: Object = {}
     types.map((i) => {
       json[i.id.toString()] = []
@@ -55,6 +75,7 @@ const ProductsPage: BlitzPage = () => {
         setShow(false)
       }
       const onSave = async (newProduct: IProduct) => {
+        console.log('newProduct')
         console.log(newProduct)
         await addProductMutation({
           title: newProduct.title,
@@ -82,9 +103,24 @@ const ProductsPage: BlitzPage = () => {
     }
   }
 
+  const CompareBlock = () => {
+    return (
+      <Drawer onClose={onClose} isOpen={isOpen} size={'full'}>
+        <DrawerOverlay />
+        <DrawerContent bg={'#001d00'}>
+          <DrawerCloseButton />
+          <DrawerHeader>HEADER</DrawerHeader>
+          <DrawerBody>
+            <p>{JSON.stringify(compareProducts[currentTab.id.toString()])}</p>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    )
+  }
+
   useEffect(() => {
     let prodArr: any = []
-    products.map((product) => {
+    allProducts.map((product) => {
       product.typeId === currentTab.id && prodArr.push(product)
     })
     return SetCurrnetProducts(prodArr)
@@ -100,6 +136,8 @@ const ProductsPage: BlitzPage = () => {
 
   const compare = (product: IProduct, flag: boolean) => {
     if (flag) {
+      console.log(allProducts)
+
       let json = compareProducts
       json[product.typeId.toString()].push(product)
       setCompareProducts(json)
@@ -107,7 +145,7 @@ const ProductsPage: BlitzPage = () => {
       let json = compareProducts
       let array = json[product.typeId.toString()]
       json[product.typeId.toString()] = array.filter((i) => i !== product)
-      setCompareProducts(quotelessJson)
+      setCompareProducts(json)
     }
   }
 
@@ -118,15 +156,21 @@ const ProductsPage: BlitzPage = () => {
         <Suspense>
           <HomeHeader />
         </Suspense>
-
+        <Button onClick={() => handleClick()} m={4} color={'black'}>
+          Сравнить
+        </Button>
+        <CompareBlock />
         <ProductTypesMenu type={types} onChange={tabsChange} />
         <Divider mb={4} />
-        <AllProducts
-          product={currentProducts}
-          type={currentTab}
-          onDelete={onDelete}
-          compare={compare}
-        />
+
+        <Wrap spacing={'2em'} justify={'center'}>
+          <AllProducts
+            product={currentProducts}
+            type={currentTab}
+            onDelete={onDelete}
+            compare={compare}
+          />
+        </Wrap>
 
         <AdminBlock />
       </Box>

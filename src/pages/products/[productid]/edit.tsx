@@ -75,10 +75,8 @@ export const Product = () => {
 
   const uploadToClient = async (event) => {
     if (event.target.files && event.target.files[0]) {
-      let passFlag: boolean = false
       const i = event.target.files[0]
       const f = await uploadImageFile(i, Product, { pass })
-      console.log(f)
     }
   }
 
@@ -116,13 +114,14 @@ export const Product = () => {
                   type="text"
                   placeholder="Название продукта"
                   fontSize={24}
-                  onBlur={(e) =>
+                  onBlur={(e) => {
                     addUpdateProductFieldMutation({
                       title: e.target.value,
                       id: Product.id,
                       typeId: Product.typeId,
                     })
-                  }
+                    Product.title = e.target.value
+                  }}
                   defaultValue={Product.title}
                   width={'100%'}
                 />
@@ -132,14 +131,15 @@ export const Product = () => {
               <div className="one-product-page-subtitle">
                 <FormLabel mb="0px">Короткое описание видно внутри карточки продукта</FormLabel>
                 <Textarea
-                  onBlur={(e) =>
+                  onBlur={(e) => {
                     addUpdateProductFieldMutation({
                       title: Product.title,
                       shortdesc: e.target.value,
                       typeId: Product.typeId,
                       id: Product.id,
                     })
-                  }
+                    Product.shortdesc = e.target.value
+                  }}
                   defaultValue={Product.shortdesc!}
                   width={'100%'}
                 />
@@ -151,14 +151,15 @@ export const Product = () => {
                 <Textarea
                   resize={'vertical'}
                   height={100}
-                  onBlur={(e) =>
+                  onBlur={(e) => {
                     addUpdateProductFieldMutation({
                       title: Product.title,
                       longdesc: e.target.value,
                       typeId: Product.typeId,
                       id: Product.id,
                     })
-                  }
+                    Product.longdesc = e.target.value
+                  }}
                   defaultValue={Product.longdesc!}
                   width={'100%'}
                 />
@@ -168,21 +169,20 @@ export const Product = () => {
 
           <div className="description-block">
             {fieldGroups.map((group) => {
-              if (group.id != 1)
-                return (
-                  <div key={group.var} className="table-product-props-container">
-                    <div className="description-part-title">{group.title}</div>
-                    {group.fields.map((item) => (
-                      <ProductPropEditField
-                        key={item.id}
-                        product={Product}
-                        field={item}
-                        value={getValue(item.id)}
-                        save={addUpdateProductFieldValueMutation}
-                      />
-                    ))}
-                  </div>
-                )
+              return (
+                <div key={group.var} className="table-product-props-container">
+                  <div className="description-part-title">{group.title}</div>
+                  {group.fields.map((item) => (
+                    <ProductPropEditField
+                      key={item.id}
+                      product={Product}
+                      field={item}
+                      value={getValue(item.id)}
+                      save={addUpdateProductFieldValueMutation}
+                    />
+                  ))}
+                </div>
+              )
             })}
           </div>
         </div>

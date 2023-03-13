@@ -1,24 +1,9 @@
 import React, { Suspense, useState } from 'react'
-import {
-  Button,
-  Card,
-  Checkbox,
-  Heading,
-  CardBody,
-  CardHeader,
-  Image,
-  Box,
-  Stack,
-  Text,
-  Grid,
-  GridItem,
-  useBoolean,
-} from '@chakra-ui/react'
+import { Button, Heading, Image, Box, Stack, Text, Grid, GridItem } from '@chakra-ui/react'
 import Link from 'next/link'
 import { Routes } from '@blitzjs/next'
 import { useSession } from '@blitzjs/auth'
 import { IProduct, IProductTypes } from 'src/types'
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 
 interface ProductItemCardProps {
   product: IProduct
@@ -70,24 +55,21 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
     <div className="card-container">
       <div className="card-text-container">
         <div className="card-title">
-          <Stack>
-            <Link href={Routes.ShowProductPage({ productId: product.id.toString() })}>
-              <Image
-                height="20px"
-                objectFit="cover"
-                src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + product.logo}
-                alt={'Logo ' + product.title}
-              />
-              <Heading>{product.title}</Heading>
-            </Link>
-          </Stack>
+          <Link href={Routes.ShowProductPage({ productId: product.id!.toString() })}>
+            <Image
+              height="20px"
+              objectFit="cover"
+              src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + product.logo}
+              alt={'Logo ' + product.title}
+            />
+            <Heading>{product.title}</Heading>
+            {product.isCompare}
+          </Link>
         </div>
         <div className="card-description">
-          <Stack>
-            <Link href={Routes.ShowProductPage({ productId: product.id })}>
-              <Text noOfLines={6}>{product.longdesc}</Text>
-            </Link>
-          </Stack>
+          <Link href={Routes.ShowProductPage({ productId: product.id })}>
+            <Text noOfLines={6}>{product.longdesc}</Text>
+          </Link>
         </div>
       </div>
 

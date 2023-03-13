@@ -6,7 +6,7 @@ export const ProductPropEditField = (prop) => {
   const { field, value, save, product } = prop
 
   return (
-    <Stack spacing={3} w={'100%'}>
+    <Stack spacing={3} w={'100%'} mb={2}>
       <InputGroup size={'xs'}>
         <InputLeftAddon children={field.title} flexWrap={'wrap'} />
         <div className="row-product-prop-right-column">

@@ -9,7 +9,7 @@ interface AllProductsProps {
   compare: (product: IProduct, flag: boolean) => void
 }
 
-export function AllProducts({ product, type, onDelete, compare }: AllProductsProps) {
+export function AllProducts({ product, onDelete, compare }: AllProductsProps) {
   return (
     <>
       {product.map((item) => (

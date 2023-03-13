@@ -24,11 +24,11 @@ interface ModalAddProductProps {
 
 const ModalAddProductProp = (prop: ModalAddProductProps) => {
   const { show, onHide, onSave, onClose, types } = prop
-  const [modVars, setModVars] = useState<any>()
+  const [modVars, setModVars] = useState<IProduct>({ typeId: -1, title: '' })
   const [disabledBtn, setDisabledBtn] = useState(true)
 
   const handleSave = () => {
-    onSave(modVars!)
+    onSave(modVars)
     setDisabledBtn(true)
     onHide()
   }
@@ -45,8 +45,8 @@ const ModalAddProductProp = (prop: ModalAddProductProps) => {
               color={'black'}
               placeholder="Введите название продукта"
               onChange={(e) => {
-                setModVars({ typeId: modVars.type, title: e.target.value })
-                setDisabledBtn(e.target.value === '' || modVars.type === '' ? true : false)
+                setModVars({ typeId: modVars.typeId, title: e.target.value })
+                setDisabledBtn(e.target.value === '' || modVars.typeId === -1 ? true : false)
               }}
             />
             <Select
@@ -55,11 +55,10 @@ const ModalAddProductProp = (prop: ModalAddProductProps) => {
               placeholder="Выберите тип продукта"
               onChange={(e) => {
                 setModVars({
-                  typeId: e.currentTarget.value,
                   title: modVars.title,
+                  typeId: parseInt(e.currentTarget.value),
                 })
                 setDisabledBtn(e.currentTarget.value === '' || modVars.title === '' ? true : false)
-                console.log(modVars.typeId)
               }}
             >
               {types.map((i: IProductTypes) => {

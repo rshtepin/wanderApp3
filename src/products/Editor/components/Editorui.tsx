@@ -76,8 +76,6 @@ const EditorUI = () => {
     setInterfaceState({ ...Editor })
   }
   const tabsChange = (tab: IEditorTab) => {
-    console.log('change to')
-    console.log(tab)
     //if tab==[] console.log('EMPTY')
     SetCurrnetTab(tab)
   }

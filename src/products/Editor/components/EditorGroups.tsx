@@ -1,4 +1,4 @@
-import { Box, Button, Center, Heading, Spinner, VStack } from '@chakra-ui/react'
+import { Box, Button, Center, Spinner } from '@chakra-ui/react'
 import React from 'react'
 import { IEditorGroup, IEditorItem, IEditorTab } from 'src/types'
 import EditorGroup from './EditorGroup'
