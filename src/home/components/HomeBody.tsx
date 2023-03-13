@@ -15,6 +15,8 @@ import {
   WrapItem,
   Link,
 } from '@chakra-ui/react'
+import { Player } from '@lottiefiles/react-lottie-player'
+
 import useDeviceSize from '../helpers/useDeviceSize'
 
 const HomeBody = () => {
@@ -33,7 +35,8 @@ const HomeBody = () => {
       <Box>
         <Stack direction={'row'} alignItems={'baseline'} mb={4}>
           <Image w={'60%'} src={LogoText} alt="DW" />
-          <Image w={'40%'} src={LogoStar} alt="DW" className="imageRotate" />
+          {/* <Image w={'40%'} src={LogoStar} alt="DW" className="imageRotate" /> */}
+          <Player autoplay loop src="/media/images/landing/logoStarAnimation.json"></Player>
         </Stack>
         <Box h={'2px'} w={'60%'} bg={'#05fe5f'} mb={2}></Box>
         <Text fontSize={20} color={'#05fe5f'} mb={4}>

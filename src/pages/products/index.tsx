@@ -25,7 +25,6 @@ import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
-import { T } from 'vitest/dist/types-de0e0997'
 
 // Блок администратора
 

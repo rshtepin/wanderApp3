@@ -33,6 +33,7 @@
     "@emotion/styled": "11.10.5",
     "@fontsource/open-sans": "4.5.14",
     "@fontsource/raleway": "4.5.12",
+    "@lottiefiles/react-lottie-player": "3.5.2",
     "@prisma/client": "4.8.1",
     "@types/nodemailer": "6.4.7",
     "axios": "1.2.5",
