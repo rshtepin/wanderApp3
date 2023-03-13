@@ -40,13 +40,14 @@ export interface IEditorItem extends IProductFields {
   upd?: () => void
 }
 export interface IProduct {
-  id: number
+  id?: number
   logo?: string
   longdesc?: string
-  order: number
+  order?: number
   shortdesc?: string
   title: string
   typeId: number
+  isCompare?: boolean
   Variable_value?: []
 }
 export interface IProductTypes {
