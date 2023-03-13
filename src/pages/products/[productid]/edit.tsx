@@ -114,8 +114,8 @@ export const Product = () => {
                   type="text"
                   placeholder="Название продукта"
                   fontSize={24}
-                  onBlur={(e) => {
-                    addUpdateProductFieldMutation({
+                  onBlur={async (e) => {
+                    await addUpdateProductFieldMutation({
                       title: e.target.value,
                       id: Product.id,
                       typeId: Product.typeId,
@@ -131,8 +131,8 @@ export const Product = () => {
               <div className="one-product-page-subtitle">
                 <FormLabel mb="0px">Короткое описание видно внутри карточки продукта</FormLabel>
                 <Textarea
-                  onBlur={(e) => {
-                    addUpdateProductFieldMutation({
+                  onBlur={async (e) => {
+                    await addUpdateProductFieldMutation({
                       title: Product.title,
                       shortdesc: e.target.value,
                       typeId: Product.typeId,
@@ -151,8 +151,8 @@ export const Product = () => {
                 <Textarea
                   resize={'vertical'}
                   height={100}
-                  onBlur={(e) => {
-                    addUpdateProductFieldMutation({
+                  onBlur={async (e) => {
+                    await addUpdateProductFieldMutation({
                       title: Product.title,
                       longdesc: e.target.value,
                       typeId: Product.typeId,

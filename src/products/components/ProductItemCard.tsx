@@ -20,7 +20,7 @@ const AdminBlock: any = ({ product, onDelete }: ProductItemCardProps) => {
       <>
         <Grid mt={1} templateColumns="repeat(5, 1fr)" gap={1}>
           <GridItem>
-            <Link href={Routes.EditProductPage({ productId: product.id.toString() })}>
+            <Link href={Routes.EditProductPage({ productId: product.id!.toString() })}>
               <Button mr={1} colorScheme="yellow">
                 Редактировать
               </Button>
@@ -55,7 +55,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
     <div className="card-container">
       <div className="card-text-container">
         <div className="card-title">
-          <Link href={Routes.ShowProductPage({ productId: product.id!.toString() })}>
+          <Link href={Routes.ShowProductPage({ productId: product.id! })}>
             <Image
               height="20px"
               objectFit="cover"
@@ -67,7 +67,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
           </Link>
         </div>
         <div className="card-description">
-          <Link href={Routes.ShowProductPage({ productId: product.id })}>
+          <Link href={Routes.ShowProductPage({ productId: product.id! })}>
             <Text noOfLines={6}>{product.longdesc}</Text>
           </Link>
         </div>
