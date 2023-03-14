@@ -14,7 +14,6 @@ const HomeHeader = () => {
     { title: 'Услуги', href: '/#services' },
     { title: 'Компания', href: '/#company' },
     { title: 'Партнеры', href: '/partners' },
-    { title: 'Продукты', href: '/products' },
   ]
   //{ title: 'Редактор', href: '../products/editor/' },
   const NavLink = ({ children, links }) => (
@@ -47,6 +46,18 @@ const HomeHeader = () => {
 
           {session.userId && (
             <Layout>
+              <Link
+                px={2}
+                py={1}
+                rounded={'md'}
+                _hover={{
+                  textDecoration: 'none',
+                  bg: '#003d00',
+                }}
+                href={'/products/'}
+              >
+                Продукты
+              </Link>
               <Link
                 px={2}
                 py={1}
