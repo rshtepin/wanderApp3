@@ -39,16 +39,17 @@ const ProductsPage: BlitzPage = () => {
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
+  const [addProductMutation] = useMutation(addUpdateProduct)
 
   const [allProducts, setAllProducts] = useState<IProduct[]>(products)
   const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
   const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [compareProducts, setCompareProducts] = useState<Object>({})
+  const [show, setShow] = useState(false)
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const session = useSession()
   const role = session.role
-  const [show, setShow] = useState(false)
-  const [addProductMutation] = useMutation(addUpdateProduct)
 
   const handleClick = () => {
     onOpen()
