@@ -154,9 +154,7 @@ const ProductsPage: BlitzPage = () => {
   return (
     <Center>
       <Box w={'75%'} maxW={'1200px'}>
-        <Suspense>
-          <HomeHeader />
-        </Suspense>
+        <HomeHeader />
         <Button onClick={() => handleClick()} m={4} color={'black'}>
           Сравнить
         </Button>
