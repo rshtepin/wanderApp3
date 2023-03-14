@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BlitzPage, NoPageFlicker } from '@blitzjs/next'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
