@@ -45,6 +45,10 @@ const ProductsPage: BlitzPage = () => {
   const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [compareProducts, setCompareProducts] = useState<Object>({})
+  const session = useSession()
+  const role = session.role
+  const [show, setShow] = useState(false)
+  const [addProductMutation] = useMutation(addUpdateProduct)
 
   const handleClick = () => {
     onOpen()
@@ -59,10 +63,6 @@ const ProductsPage: BlitzPage = () => {
   }, [])
 
   const AdminBlock: any = () => {
-    const session = useSession()
-    const role = session.role
-    const [show, setShow] = useState(false)
-    const [addProductMutation] = useMutation(addUpdateProduct)
     if (role == 'ADMIN') {
       const onHide = () => {
         setShow(false)
