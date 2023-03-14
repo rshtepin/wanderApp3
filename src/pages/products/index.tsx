@@ -13,6 +13,12 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Grid,
+  GridItem,
+  Radio,
+  RadioGroup,
+  SimpleGrid,
+  Stack,
   useDisclosure,
   Wrap,
 } from '@chakra-ui/react'
@@ -26,6 +32,7 @@ import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
+import { h } from 'vitest/dist/index-9f5bc072'
 
 // Блок администратора
 
@@ -101,6 +108,11 @@ const ProductsPage: BlitzPage = () => {
   }
 
   const CompareBlock = () => {
+    const [currentCompareProducts, setCurrentCompareProducts] = useState<IProduct[]>(
+      compareProducts[currentTab.id.toString()]
+    )
+    const [radioValue, setRadioValue] = useState('1')
+
     return (
       <Drawer onClose={onClose} isOpen={isOpen} size={'full'}>
         <DrawerOverlay />
@@ -108,7 +120,30 @@ const ProductsPage: BlitzPage = () => {
           <DrawerCloseButton />
           <DrawerHeader>HEADER</DrawerHeader>
           <DrawerBody>
-            <p>{JSON.stringify(compareProducts[currentTab.id.toString()])}</p>
+            <Center>
+              <RadioGroup value={radioValue} onChange={setRadioValue}>
+                <Stack direction="row">
+                  <Radio value="1">Все</Radio>
+                  <Radio value="2">Отличия</Radio>
+                  <Radio value="3">Одинаковые</Radio>
+                </Stack>
+              </RadioGroup>
+            </Center>
+            <Center>
+              {currentCompareProducts && (
+                <Box minH={'100px'} bg={'whiteAlpha.50'}>
+                  <table className="compare-product-table">
+                    <tbody>
+                      <tr className="compare-product-table-head">
+                        {currentCompareProducts.map((_product) => (
+                          <td key={_product.id}>{_product.title}</td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                </Box>
+              )}
+            </Center>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

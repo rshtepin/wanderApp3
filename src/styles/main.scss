@@ -63,6 +63,25 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   background-size: cover;
 }
 
+.compare-product-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid;
+}
+
+.compare-product-table tr.compare-product-table-head td {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.compare-product-table tr.compare-product-table-head {
+  background-color: #5336ca;
+  color: #ffffff;
+}
 #tab-group {
   box-sizing: border-box;
   display: flex;
