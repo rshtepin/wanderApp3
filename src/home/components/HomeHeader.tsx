@@ -54,7 +54,7 @@ const HomeHeader = () => {
                   textDecoration: 'none',
                   bg: '#003d00',
                 }}
-                href={'/products/'}
+                href={'/products'}
               >
                 Продукты
               </Link>
