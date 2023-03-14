@@ -1,4 +1,4 @@
-import { BlitzPage } from '@blitzjs/next'
+import { BlitzPage, NoPageFlicker } from '@blitzjs/next'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { AllProducts } from 'src/products/components/AllProducts'
 import {
@@ -78,7 +78,7 @@ const ProductsPage: BlitzPage = () => {
           id: -1,
         })
       }
-
+      NoPageFlicker
       return (
         <>
           <Box mt={5}>
@@ -121,7 +121,7 @@ const ProductsPage: BlitzPage = () => {
     })
 
     return SetCurrnetProducts(prodArr)
-  }, [currentTab, products])
+  }, [currentTab])
 
   const tabsChange = async (type: IProductTypes) => {
     await SetCurrnetTab(type)
@@ -179,5 +179,5 @@ const ProductsPage: BlitzPage = () => {
 }
 
 //ProductsPage.authenticate = { redirectTo: Routes.LoginP() }
-
+ProductsPage.suppressFirstRenderFlicker = true
 export default ProductsPage
