@@ -7,16 +7,14 @@ import { Suspense } from 'react'
 const HomeComponent = () => {
   return (
     <>
-      <Suspense fallback="...">
-        <Center>
-          <Box w={'75%'} maxW={'1200px'}>
-            <HomeHeader />
-            <HomeBody />
-          </Box>
-        </Center>
-        <HomeContactForm />
-        <HomeFooter />
-      </Suspense>
+      <Center>
+        <Box w={'75%'} maxW={'1200px'}>
+          <HomeHeader />
+          <HomeBody />
+        </Box>
+      </Center>
+      <HomeContactForm />
+      <HomeFooter />
     </>
   )
 }

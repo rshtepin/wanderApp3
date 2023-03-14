@@ -19,7 +19,7 @@ import {
 import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IProduct, IProductTypes } from 'src/types'
 import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 import { useSession } from '@blitzjs/auth'
@@ -178,6 +178,5 @@ const ProductsPage: BlitzPage = () => {
   )
 }
 
-//ProductsPage.authenticate = { redirectTo: Routes.LoginP() }
 ProductsPage.suppressFirstRenderFlicker = true
 export default ProductsPage
