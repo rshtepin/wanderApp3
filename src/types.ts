@@ -41,10 +41,10 @@ export interface IEditorItem extends IProductFields {
 }
 export interface IProduct extends Product {
   id: number
-  logo: string
-  longdesc: string
+  logo?: string
+  longdesc?: string
   order: number
-  shortdesc: string
+  shortdesc?: string
   title: string
   typeId: number
   isCompare?: boolean

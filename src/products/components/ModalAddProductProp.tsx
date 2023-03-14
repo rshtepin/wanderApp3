@@ -24,7 +24,7 @@ interface ModalAddProductProps {
 
 const ModalAddProductProp = (prop: ModalAddProductProps) => {
   const { show, onHide, onSave, onClose, types } = prop
-  const [modVars, setModVars] = useState<IProduct>({ typeId: -1, title: '' })
+  const [modVars, setModVars] = useState<IProduct>({ id: -1, typeId: -1, title: '', order: -1 })
   const [disabledBtn, setDisabledBtn] = useState(true)
 
   const handleSave = () => {
@@ -45,7 +45,12 @@ const ModalAddProductProp = (prop: ModalAddProductProps) => {
               color={'black'}
               placeholder="Введите название продукта"
               onChange={(e) => {
-                setModVars({ typeId: modVars.typeId, title: e.target.value })
+                setModVars({
+                  id: modVars.id,
+                  typeId: modVars.typeId,
+                  title: e.target.value,
+                  order: modVars.order,
+                })
                 setDisabledBtn(e.target.value === '' || modVars.typeId === -1 ? true : false)
               }}
             />
@@ -55,8 +60,10 @@ const ModalAddProductProp = (prop: ModalAddProductProps) => {
               placeholder="Выберите тип продукта"
               onChange={(e) => {
                 setModVars({
+                  id: modVars.id,
                   title: modVars.title,
                   typeId: parseInt(e.currentTarget.value),
+                  order: modVars.order,
                 })
                 setDisabledBtn(e.currentTarget.value === '' || modVars.title === '' ? true : false)
               }}
