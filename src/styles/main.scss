@@ -66,7 +66,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 .compare-product-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid;
+  border: 0px none;
 }
 
 .compare-product-table tr.compare-product-table-head td {
@@ -78,8 +78,48 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   max-width: 300px;
 }
 
+.compare-product-table td.compare-product-table-logo {
+  padding: 1em;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.compare-product-table td.compare-product-table-group-title {
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0.25em;
+  padding-left: 0.5em;
+  background-color: rgba(178, 161, 255, 0.5);
+}
+
+.compare-product-table td.compare-product-table-field-title {
+  text-align: left;
+  max-width: 400px;
+  display: flex;
+  font-size: 16px;
+  font-weight: 200;
+  padding: 0.25em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.compare-product-table td.compare-product-table-field-value {
+  text-align: center;
+  max-width: 400px;
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.compare-product-table tr:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
 .compare-product-table tr.compare-product-table-head {
-  background-color: #5336ca;
+  background-color: #b2a1ffff;
   color: #ffffff;
 }
 #tab-group {

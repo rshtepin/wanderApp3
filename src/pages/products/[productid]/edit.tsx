@@ -32,6 +32,7 @@ export const Product = () => {
   const [fieldGroups, setFieldGroups] = useState<any>([])
   const [objUrl, setObjUrl] = useState<string | undefined>()
   const pagination = usePagination()
+
   async function fetchImageBlob(): Promise<Blob> {
     const response = await fetch(process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + Product.logo)
     // if (!response.ok) throw new Error('Response not OK')
@@ -102,7 +103,7 @@ export const Product = () => {
           <div className="header-product-container">
             <div className="one-product-page-header">
               <HStack spacing="24px">
-                <Img height="50px" objectFit="cover" src={objUrl} alt={'Logo ' + Product.title} />
+                <Img height="50px" objectFit="cover" src={objUrl} alt={''} />
 
                 <Input
                   type="file"

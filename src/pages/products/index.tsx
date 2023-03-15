@@ -13,11 +13,10 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Grid,
-  GridItem,
+  Image,
+  Img,
   Radio,
   RadioGroup,
-  SimpleGrid,
   Stack,
   useDisclosure,
   Wrap,
@@ -26,13 +25,15 @@ import getTypes from 'src/products/queries/getTypes'
 import getProducts from 'src/products/queries/getProducts'
 import { usePagination } from 'src/core/hooks/usePagination'
 import { useEffect, useState } from 'react'
-import { IProduct, IProductTypes } from 'src/types'
+import { IJSONProduct, IProduct, IProductFields, IProductGroups, IProductTypes } from 'src/types'
 import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 import { useSession } from '@blitzjs/auth'
 import addUpdateProduct from 'src/products/mutations/addUpdateProduct'
 import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
-import { h } from 'vitest/dist/index-9f5bc072'
+import getAllGroupFields from 'src/products/queries/getProductGroups'
+import getAllFields from 'src/products/queries/getAllFields'
+import { group } from 'console'
 
 // Блок администратора
 
@@ -47,12 +48,23 @@ const ProductsPage: BlitzPage = () => {
     skip: ITEMS_PER_PAGE * pagination.page,
     take: ITEMS_PER_PAGE,
   })
+  const groups = usePaginatedQuery(getAllGroupFields, {
+    orderBy: { order: 'asc' },
+    skip: 0 * pagination.page,
+    take: 100,
+  })
+  const [{ fields, hasMore }] = usePaginatedQuery(getAllFields, {
+    orderBy: { order: 'asc' },
+    skip: 0,
+    take: 100,
+  })
+
   const [addProductMutation] = useMutation(addUpdateProduct)
 
-  const [allProducts, setAllProducts] = useState<IProduct[]>(products)
-  const [currentTab, SetCurrnetTab] = useState<IProductTypes>(types[0]!)
-  const [currentProducts, SetCurrnetProducts] = useState<IProduct[]>([])
-  const [compareProducts, setCompareProducts] = useState<Object>({})
+  const [currentTab, setCurrnetTab] = useState<IProductTypes>(types[0]!)
+  const [currentProducts, setCurrnetProducts] = useState<IProduct[]>([])
+  const [compareProducts, setCompareProducts] = useState<IJSONProduct[]>([])
+  const [currentJSONProducts, setCurrentJSONProducts] = useState<IJSONProduct[]>()
   const [show, setShow] = useState(false)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -62,15 +74,48 @@ const ProductsPage: BlitzPage = () => {
   const handleClick = () => {
     onOpen()
   }
-
+  const getValue = (id_variable, Product) => {
+    let res = ''
+    let result: any = Product.Variable_value!.filter(
+      (item: any) => item.id_variable === id_variable
+    )
+    if (result.length > 0) {
+      res = result![0]!.value!
+    }
+    return res
+  }
+  let allProductsArray: IJSONProduct[] = []
   useEffect(() => {
-    let json: Object = {}
+    allProductsArray = products.map((_product, i) => {
+      allProductsArray[i] = _product
+      allProductsArray[i]!['isCompare'] = false
+      allProductsArray[i]!['groups'] = []
+
+      groups[0].map((group: IProductGroups, k) => {
+        if (group.typeId == _product.typeId) {
+          allProductsArray[i]!.groups.push(group)
+          allProductsArray[i]!.groups![allProductsArray[i]!.groups!.indexOf(group)]!['fields'] = []
+
+          fields.map((field, j) => {
+            if (field.id_group == group.id) {
+              field['value'] = getValue(field.id, _product)
+              allProductsArray[i]!.groups![
+                allProductsArray[i]!.groups!.indexOf(group)
+              ]!.fields.push(field)
+            }
+          })
+        }
+      })
+    })
+
+    let json: IJSONProduct[] = {}
     types.map((i) => {
       json[i.id.toString()] = []
     })
     setCompareProducts(json)
   }, [])
 
+  const [allProducts, setAllProducts] = useState<IJSONProduct[]>(allProductsArray)
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
       const onHide = () => {
@@ -108,7 +153,7 @@ const ProductsPage: BlitzPage = () => {
   }
 
   const CompareBlock = () => {
-    const [currentCompareProducts, setCurrentCompareProducts] = useState<IProduct[]>(
+    const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>(
       compareProducts[currentTab.id.toString()]
     )
     const [radioValue, setRadioValue] = useState('1')
@@ -135,10 +180,47 @@ const ProductsPage: BlitzPage = () => {
                   <table className="compare-product-table">
                     <tbody>
                       <tr className="compare-product-table-head">
+                        <td></td>
                         {currentCompareProducts.map((_product) => (
                           <td key={_product.id}>{_product.title}</td>
                         ))}
                       </tr>
+
+                      <tr>
+                        <td></td>
+                        {currentCompareProducts.map((_product) => (
+                          <td key={_product.id} className="compare-product-table-logo">
+                            <Img
+                              w={'150px'}
+                              src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + _product.logo}
+                              alt=""
+                            />
+                          </td>
+                        ))}
+                      </tr>
+                      {currentCompareProducts[0]?.groups.map((_group: IProductGroups, i) => (
+                        <>
+                          <tr key={_group.id}>
+                            <td className="compare-product-table-group-title">{_group.title}</td>
+                            {currentCompareProducts.map((_product) => (
+                              <td
+                                key={_product.id}
+                                className="compare-product-table-group-title"
+                              ></td>
+                            ))}
+                          </tr>
+                          {_group.fields.map((_field, k) => (
+                            <tr key={_field.id}>
+                              <td className="compare-product-table-field-title">{_field.title}</td>
+                              {currentCompareProducts.map((_product) => (
+                                <td key={_product.id} className="compare-product-table-field-value">
+                                  {_product.groups[i]?.fields[k]!.value}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </>
+                      ))}
                     </tbody>
                   </table>
                 </Box>
@@ -151,23 +233,23 @@ const ProductsPage: BlitzPage = () => {
   }
 
   useEffect(() => {
-    let prodArr: any = []
+    let prodArr: IJSONProduct[] = []
 
     allProducts.map((product) => {
       product.typeId === currentTab.id && prodArr.push(product)
     })
 
-    return SetCurrnetProducts(prodArr)
+    return setCurrnetProducts(prodArr)
   }, [currentTab])
 
   const tabsChange = async (type: IProductTypes) => {
-    await SetCurrnetTab(type)
+    await setCurrnetTab(type)
   }
   const onDelete = (product: IProduct) => {
     console.log(product)
   }
 
-  const compare = (product: IProduct, flag: boolean) => {
+  const compare = (product: IJSONProduct, flag: boolean) => {
     if (flag) {
       let json = compareProducts
       json[product.typeId.toString()].push(product)
@@ -178,6 +260,7 @@ const ProductsPage: BlitzPage = () => {
       json[product.typeId.toString()] = array.filter((i) => i.id !== product.id)
       setCompareProducts({ ...json })
     }
+
     allProducts.map((_product) =>
       setAllProducts(
         allProducts.map((_product, i) =>

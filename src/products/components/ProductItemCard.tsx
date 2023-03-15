@@ -51,6 +51,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
       setFlag(!flag)
     }
   }
+
   return (
     <div className="card-container">
       <div className="card-text-container">
@@ -60,7 +61,7 @@ const ProductItemCard = ({ product, onDelete, compare }: ProductItemCardProps) =
               height="20px"
               objectFit="cover"
               src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + product.logo}
-              alt={'Logo ' + product.title}
+              alt={''}
             />
             <Heading>{product.title}</Heading>
             {product.isCompare}
