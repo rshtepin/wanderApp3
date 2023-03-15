@@ -243,7 +243,6 @@ const ProductsPage: BlitzPage = () => {
   }, [currentTab])
 
   const tabsChange = async (type: IProductTypes) => {
-    console.log(allProducts)
     await setCurrnetTab(type)
   }
   const onDelete = (product: IProduct) => {
