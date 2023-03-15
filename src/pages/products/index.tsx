@@ -33,9 +33,7 @@ import HomeHeader from 'src/home/components/HomeHeader'
 import ProductTypesMenu from 'src/products/components/ProductTypesMenu'
 import getAllGroupFields from 'src/products/queries/getProductGroups'
 import getAllFields from 'src/products/queries/getAllFields'
-import { group } from 'console'
-
-// Блок администратора
+import React from 'react'
 
 const ProductsPage: BlitzPage = () => {
   const ITEMS_PER_PAGE = 30
@@ -62,9 +60,10 @@ const ProductsPage: BlitzPage = () => {
   const [addProductMutation] = useMutation(addUpdateProduct)
 
   const [currentTab, setCurrnetTab] = useState<IProductTypes>(types[0]!)
-  const [currentProducts, setCurrnetProducts] = useState<IProduct[]>([])
+  const [currentProducts, setCurrnetProducts] = useState<IJSONProduct[]>([])
   const [compareProducts, setCompareProducts] = useState<IJSONProduct[]>([])
   const [currentJSONProducts, setCurrentJSONProducts] = useState<IJSONProduct[]>()
+  const [compareDisabled, setCompareDisabled] = useState<boolean>(true)
   const [show, setShow] = useState(false)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -108,7 +107,7 @@ const ProductsPage: BlitzPage = () => {
       })
     })
 
-    let json: IJSONProduct[] = {}
+    let json: IJSONProduct[] = []
     types.map((i) => {
       json[i.id.toString()] = []
     })
@@ -199,12 +198,12 @@ const ProductsPage: BlitzPage = () => {
                         ))}
                       </tr>
                       {currentCompareProducts[0]?.groups.map((_group: IProductGroups, i) => (
-                        <>
-                          <tr key={_group.id}>
+                        <React.Fragment key={_group.id}>
+                          <tr>
                             <td className="compare-product-table-group-title">{_group.title}</td>
                             {currentCompareProducts.map((_product) => (
                               <td
-                                key={_product.id}
+                                key={_product.title}
                                 className="compare-product-table-group-title"
                               ></td>
                             ))}
@@ -219,7 +218,7 @@ const ProductsPage: BlitzPage = () => {
                               ))}
                             </tr>
                           ))}
-                        </>
+                        </React.Fragment>
                       ))}
                     </tbody>
                   </table>
@@ -234,7 +233,6 @@ const ProductsPage: BlitzPage = () => {
 
   useEffect(() => {
     let prodArr: IJSONProduct[] = []
-
     allProducts.map((product) => {
       product.typeId === currentTab.id && prodArr.push(product)
     })
@@ -259,22 +257,30 @@ const ProductsPage: BlitzPage = () => {
       let array = json[product.typeId.toString()]
       json[product.typeId.toString()] = array.filter((i) => i.id !== product.id)
       setCompareProducts({ ...json })
-    }
 
-    allProducts.map((_product) =>
-      setAllProducts(
-        allProducts.map((_product, i) =>
-          product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
+      allProducts.map((_product) =>
+        setAllProducts(
+          allProducts.map((_product, i) =>
+            product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
+          )
         )
       )
-    )
+    }
+    console.log(compareProducts[currentTab.id.toString()].length)
+    if (compareProducts[currentTab.id.toString()].length > 1) {
+      setCompareDisabled(false)
+      console.log(compareProducts[currentTab.id.toString()].length)
+    } else {
+      setCompareDisabled(true)
+      console.log(compareProducts[currentTab.id.toString()].length)
+    }
   }
 
   return (
     <Center>
       <Box w={'75%'} maxW={'1200px'}>
         <HomeHeader />
-        <Button onClick={() => handleClick()} m={4} color={'black'}>
+        <Button onClick={() => handleClick()} m={4} color={'black'} isDisabled={compareDisabled}>
           Сравнить
         </Button>
         <CompareBlock />
