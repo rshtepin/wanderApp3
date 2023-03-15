@@ -13,7 +13,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Image,
   Img,
   Radio,
   RadioGroup,
@@ -56,13 +55,12 @@ const ProductsPage: BlitzPage = () => {
     skip: 0,
     take: 100,
   })
-
+  console.log(fields)
   const [addProductMutation] = useMutation(addUpdateProduct)
 
   const [currentTab, setCurrnetTab] = useState<IProductTypes>(types[0]!)
   const [currentProducts, setCurrnetProducts] = useState<IJSONProduct[]>([])
   const [compareProducts, setCompareProducts] = useState<IJSONProduct[]>([])
-  const [currentJSONProducts, setCurrentJSONProducts] = useState<IJSONProduct[]>()
   const [compareDisabled, setCompareDisabled] = useState<boolean>(true)
   const [show, setShow] = useState(false)
 
@@ -73,41 +71,44 @@ const ProductsPage: BlitzPage = () => {
   const handleClick = () => {
     onOpen()
   }
-  const getValue = (id_variable, Product) => {
-    let res = ''
-    let result: any = Product.Variable_value!.filter(
+  const getValue = (id_variable, Product: IJSONProduct) => {
+    const result: any = Product.Variable_value!.filter(
       (item: any) => item.id_variable === id_variable
     )
-    if (result.length > 0) {
-      res = result![0]!.value!
-    }
-    return res
+    if (result.length > 0) return result![0]!.value!
   }
   let allProductsArray: IJSONProduct[] = []
   useEffect(() => {
-    console.log('!!!!!RENDER!')
-    allProductsArray = products.map((_product, i) => {
+    products.map((_product, i) => {
       allProductsArray[i] = _product
-      allProductsArray[i]!['isCompare'] = false
-      allProductsArray[i]!['groups'] = []
+      allProductsArray[i]!.isCompare = false
+      allProductsArray[i]!.group = []
+      console.log('allProductsArray[i]')
+      console.log(allProductsArray[i])
+      groups[0].map((_group: IProductGroups, k) => {
+        if (_group.typeId === _product.typeId) {
+          allProductsArray[i]!.group.push(_group)
+          allProductsArray[i]!.group![k]!.field = []
 
-      groups[0].map((group: IProductGroups, k) => {
-        if (group.typeId == _product.typeId) {
-          allProductsArray[i]!.groups.push(group)
-          allProductsArray[i]!.groups![allProductsArray[i]!.groups!.indexOf(group)]!['fields'] = []
+          fields.map((_field: IProductFields, j) => {
+            const val = getValue(_field.id, _product)
+            if (_field.id_group === _group.id) {
+              _field.value = val
+              allProductsArray[i]!.group[k]!.field.push(_field)
+              console.log(allProductsArray[i]!.group[k]!.field[j])
+              // allProductsArray[i]!.group[k]!.field[j]!.value = ' '
+              // allProductsArray[i]!.group[k]!.field[j]!.value = getValue(_field.id, _product)
+              console.log(getValue(_field.id, _product))
+              console.log(_field)
 
-          fields.map((field, j) => {
-            if (field.id_group == group.id) {
-              field['value'] = getValue(field.id, _product)
-              allProductsArray[i]!.groups![
-                allProductsArray[i]!.groups!.indexOf(group)
-              ]!.fields.push(field)
+              console.log(allProductsArray[i]!.group[k]!.field)
             }
           })
         }
       })
     })
-
+    // console.log('allProductsArray')
+    // console.log(allProductsArray)
     let json: IJSONProduct[] = []
     types.map((i) => {
       json[i.id.toString()] = []
@@ -116,7 +117,8 @@ const ProductsPage: BlitzPage = () => {
   }, [])
 
   const [allProducts, setAllProducts] = useState<IJSONProduct[]>(allProductsArray)
-
+  console.log('allProducts')
+  console.log(allProducts)
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
       const onHide = () => {
@@ -152,7 +154,7 @@ const ProductsPage: BlitzPage = () => {
       )
     }
   }
-
+  console.log(JSON.stringify(compareProducts))
   const CompareBlock = () => {
     const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>(
       compareProducts[currentTab.id.toString()]
@@ -199,7 +201,7 @@ const ProductsPage: BlitzPage = () => {
                           </td>
                         ))}
                       </tr>
-                      {currentCompareProducts[0]?.groups.map((_group: IProductGroups, i) => (
+                      {currentCompareProducts[0]?.group.map((_group: IProductGroups, i) => (
                         <React.Fragment key={_group.id}>
                           <tr>
                             <td className="compare-product-table-group-title">{_group.title}</td>
@@ -210,12 +212,12 @@ const ProductsPage: BlitzPage = () => {
                               ></td>
                             ))}
                           </tr>
-                          {_group.fields.map((_field, k) => (
+                          {_group.field.map((_field, k) => (
                             <tr key={_field.id}>
                               <td className="compare-product-table-field-title">{_field.title}</td>
                               {currentCompareProducts.map((_product) => (
                                 <td key={_product.id} className="compare-product-table-field-value">
-                                  {_product.groups[i]?.fields[k]!.value}
+                                  {_product.group[i]?.field[k]!.value}
                                 </td>
                               ))}
                             </tr>

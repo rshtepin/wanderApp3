@@ -41,7 +41,7 @@ export interface IEditorItem extends IProductFields {
 }
 
 export interface IJSONProduct extends IProduct {
-  groups: IProductGroups[]
+  group: IProductGroups[]
 }
 export interface IProduct extends Product {
   id: number
@@ -65,7 +65,7 @@ export interface IProductGroups extends Field_group {
   typeId: number
   order: number
   title: string
-  fields: IProductFields[]
+  field: IProductFields[]
 }
 
 export interface IProductFields extends Product_variable {
@@ -74,7 +74,7 @@ export interface IProductFields extends Product_variable {
   order: number
   title: string
   unit: string
-  value?: string | number
+  value?: any
 }
 export interface IProductFieldValues extends Variable_value {
   id: number

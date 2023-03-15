@@ -67,6 +67,8 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
   width: 100%;
   border-collapse: collapse;
   border: 0px none;
+  border-radius: 10px;
+  overflow: clip;
 }
 
 .compare-product-table tr.compare-product-table-head td {
