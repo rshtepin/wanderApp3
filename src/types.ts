@@ -67,15 +67,14 @@ export interface IProductGroups extends Field_group {
   title: string
   fields: IProductFields[]
 }
-export interface IJSONProductFields extends IProductFields {
-  value: string | number
-}
+
 export interface IProductFields extends Product_variable {
   id: number
   id_group: number
   order: number
   title: string
   unit: string
+  value?: string | number
 }
 export interface IProductFieldValues extends Variable_value {
   id: number

@@ -85,6 +85,7 @@ const ProductsPage: BlitzPage = () => {
   }
   let allProductsArray: IJSONProduct[] = []
   useEffect(() => {
+    console.log('!!!!!RENDER!')
     allProductsArray = products.map((_product, i) => {
       allProductsArray[i] = _product
       allProductsArray[i]!['isCompare'] = false
@@ -115,6 +116,7 @@ const ProductsPage: BlitzPage = () => {
   }, [])
 
   const [allProducts, setAllProducts] = useState<IJSONProduct[]>(allProductsArray)
+
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
       const onHide = () => {
@@ -241,6 +243,7 @@ const ProductsPage: BlitzPage = () => {
   }, [currentTab])
 
   const tabsChange = async (type: IProductTypes) => {
+    console.log(allProducts)
     await setCurrnetTab(type)
   }
   const onDelete = (product: IProduct) => {
@@ -257,22 +260,16 @@ const ProductsPage: BlitzPage = () => {
       let array = json[product.typeId.toString()]
       json[product.typeId.toString()] = array.filter((i) => i.id !== product.id)
       setCompareProducts({ ...json })
-
-      allProducts.map((_product) =>
-        setAllProducts(
-          allProducts.map((_product, i) =>
-            product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
-          )
-        )
-      )
     }
-    console.log(compareProducts[currentTab.id.toString()].length)
+    setAllProducts(
+      allProducts.map((_product, i) =>
+        product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
+      )
+    )
     if (compareProducts[currentTab.id.toString()].length > 1) {
       setCompareDisabled(false)
-      console.log(compareProducts[currentTab.id.toString()].length)
     } else {
       setCompareDisabled(true)
-      console.log(compareProducts[currentTab.id.toString()].length)
     }
   }
 
