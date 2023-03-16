@@ -94,7 +94,7 @@ const HomeBody = () => {
           </Grid>
         </Box>
         <Box mb={16}>
-          <HStack>
+          <HStack id="services">
             <Image w={'50%'} src="/media/images/landing/photo.svg" alt=""></Image>
             <Center>
               <VStack textAlign={'left'}>
@@ -166,7 +166,7 @@ const HomeBody = () => {
             разработки
           </Text>
         </Box>
-        <Center>
+        <Center id="company">
           <Box mb={16} textAlign="center">
             <Text
               fontSize={width! > 800 ? '42px' : '36px'}

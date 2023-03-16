@@ -7,7 +7,7 @@ interface GetProductFieldsInput
 
 export default resolver.pipe(
   // resolver.authorize(),
-  async ({ orderBy, skip = 0, take = 100 }: GetProductFieldsInput) => {
+  async ({ orderBy, skip = 0, take = 1000 }: GetProductFieldsInput) => {
     const {
       items: fields,
       hasMore,
