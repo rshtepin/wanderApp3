@@ -11,11 +11,9 @@ const EditorPage: BlitzPage = () => {
     <>
       <Center>
         <Box w={'75%'} maxW={'1200px'}>
-          <Suspense>
+          <Suspense fallback={'...'}>
             <HomeHeader />
           </Suspense>
-
-          <Suspense fallback={'...'}>{/* <HomeHeader /> */}</Suspense>
 
           <Suspense fallback={<div>Загружается </div>}>
             <EditorUI />
