@@ -11,8 +11,8 @@ const HomeHeader = () => {
   const Logo = '/media/images/landing/dw-03.svg'
 
   const Links = [
-    { title: 'Услуги', href: '/#services' },
-    { title: 'Компания', href: '/#company' },
+    { title: 'Услуги', href: '/home/#services' },
+    { title: 'Компания', href: '/home/#company' },
     { title: 'Партнеры', href: '/partners' },
   ]
   //{ title: 'Редактор', href: '../products/editor/' },

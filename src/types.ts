@@ -39,6 +39,10 @@ export interface IEditorItem extends IProductFields {
   del?: () => void
   upd?: () => void
 }
+
+export interface IJSONProduct extends IProduct {
+  group: IProductGroups[]
+}
 export interface IProduct extends Product {
   id: number
   logo?: string
@@ -61,14 +65,16 @@ export interface IProductGroups extends Field_group {
   typeId: number
   order: number
   title: string
-  fields: IProductFields[]
+  field: IProductFields[]
 }
+
 export interface IProductFields extends Product_variable {
   id: number
   id_group: number
   order: number
   title: string
   unit: string
+  value?: any
 }
 export interface IProductFieldValues extends Variable_value {
   id: number
