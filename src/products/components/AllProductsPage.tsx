@@ -249,25 +249,19 @@ const AllProductsPage = () => {
 
   const compare = (product: IJSONProduct, flag: boolean) => {
     if (flag) {
-      let json = compareProducts
-      json[product.typeId.toString()].push(product)
-      setCompareProducts({ ...json })
+      compareProducts[product.typeId.toString()].push(product)
     } else {
-      let json = compareProducts
-      let array = json[product.typeId.toString()]
-      json[product.typeId.toString()] = array.filter((i) => i.id !== product.id)
-      setCompareProducts({ ...json })
+      compareProducts[product.typeId.toString()] = compareProducts[
+        product.typeId.toString()
+      ].filter((i) => i.id !== product.id)
     }
+    setCompareProducts({ ...compareProducts })
     setAllProducts(
       allProducts.map((_product, i) =>
         product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
       )
     )
-    if (compareProducts[currentTab.id.toString()].length > 1) {
-      setCompareDisabled(false)
-    } else {
-      setCompareDisabled(true)
-    }
+    setCompareDisabled(compareProducts[currentTab.id]!.length <= 1)
   }
 
   return (
