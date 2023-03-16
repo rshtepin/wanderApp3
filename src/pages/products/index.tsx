@@ -95,6 +95,7 @@ const ProductsPage: BlitzPage = () => {
             if (_field.id_group === _group.id) {
               _field.value = val
               allProductsArray[i]!.group[k]!.field.push(_field)
+              console.log('allProductsArray[i]!.group[k]!.field[j]')
               console.log(allProductsArray[i]!.group[k]!.field[j])
               // allProductsArray[i]!.group[k]!.field[j]!.value = ' '
               // allProductsArray[i]!.group[k]!.field[j]!.value = getValue(_field.id, _product)
