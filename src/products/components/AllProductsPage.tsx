@@ -140,15 +140,15 @@ const AllProductsPage = () => {
     const [radioValue, setRadioValue] = useState('1')
 
     const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>([])
-    const getAllFields = () => {
-      return compareProducts[currentTab.id.toString()]
-    }
-    const getSameFields = () => {
-      const arr = compareProducts[currentTab.id.toString()]
-      return sameFields(arr)
-    }
 
     useEffect(() => {
+      const getAllFields = () => {
+        return compareProducts[currentTab.id.toString()]
+      }
+      const getSameFields = () => {
+        const arr = compareProducts[currentTab.id.toString()]
+        return sameFields(arr)
+      }
       switch (radioValue) {
         case '1':
           setCurrentCompareProducts(getAllFields())
