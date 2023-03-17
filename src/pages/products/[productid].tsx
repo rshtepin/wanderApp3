@@ -28,8 +28,7 @@ export const Product = () => {
     skip: 0 * pagination.page,
     take: 100,
   })
-  console.log('groups')
-  console.log(groups)
+
   useEffect(() => {
     let mystate: IProductGroups[] = []
     groups.map((itemG: any) => {

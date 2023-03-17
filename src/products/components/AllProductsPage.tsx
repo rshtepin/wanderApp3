@@ -36,7 +36,7 @@ import ModalAddProductProp from 'src/products/components/ModalAddProductProp'
 
 import { IJSONProduct, IProduct, IProductGroups, IProductTypes } from 'src/types'
 import allDataParser from 'src/home/helpers/allDataParser'
-import differentDataParser from 'src/home/helpers/differentDataParser'
+import sameFields from 'src/home/helpers/sameFieldsProduct'
 
 const AllProductsPage = () => {
   const ITEMS_PER_PAGE = 30
@@ -139,24 +139,33 @@ const AllProductsPage = () => {
   const CompareBlock = () => {
     const [radioValue, setRadioValue] = useState('1')
 
-    const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>(
-      compareProducts[currentTab.id.toString()]
-    )
+    const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>([])
+    const getAllFields = () => {
+      return compareProducts[currentTab.id.toString()]
+    }
+    const getSameFields = () => {
+      const arr = compareProducts[currentTab.id.toString()]
+      return sameFields(arr)
+    }
+
     useEffect(() => {
       switch (radioValue) {
         case '1':
-          setCurrentCompareProducts(compareProducts[currentTab.id.toString()])
+          setCurrentCompareProducts(getAllFields())
+          console.log('1: ', getAllFields())
+          console.log('1')
           break
         case '2':
-          setCurrentCompareProducts(
-            differentDataParser(compareProducts[currentTab.id.toString()], groups, fields)
-          )
+          setCurrentCompareProducts(() => getSameFields())
+          console.log('2: ', getSameFields())
+          break
+        case '3':
+          setCurrentCompareProducts(getAllFields())
+          console.log('3')
           break
       }
     }, [radioValue])
 
-    // console.log('currentCompareProducts')
-    // console.log(currentCompareProducts)
     return (
       <Drawer onClose={onClose} isOpen={isOpen} size={'full'}>
         <DrawerOverlay />
@@ -248,12 +257,11 @@ const AllProductsPage = () => {
   }
 
   const compare = (product: IJSONProduct, flag: boolean) => {
+    let arr = compareProducts[product.typeId.toString()]
     if (flag) {
-      compareProducts[product.typeId.toString()].push(product)
+      arr.push(product)
     } else {
-      compareProducts[product.typeId.toString()] = compareProducts[
-        product.typeId.toString()
-      ].filter((i) => i.id !== product.id)
+      arr = compareProducts[product.typeId.toString()].filter((i) => i.id !== product.id)
     }
     setCompareProducts({ ...compareProducts })
     setAllProducts(
@@ -261,7 +269,8 @@ const AllProductsPage = () => {
         product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
       )
     )
-    setCompareDisabled(compareProducts[currentTab.id]!.length <= 1)
+    setCompareDisabled(arr.length <= 1)
+    console.log('compare: ', arr)
   }
 
   return (
@@ -281,7 +290,6 @@ const AllProductsPage = () => {
           compare={compare}
         />
       </Wrap>
-
       <AdminBlock />
     </>
   )
