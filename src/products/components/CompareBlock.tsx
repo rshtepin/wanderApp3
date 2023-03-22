@@ -15,11 +15,11 @@ import {
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import sameFields from 'src/home/helpers/sameFieldsProduct'
 
-const CompareBlock = ({ currentCompareProducts, isOpen, onOpen, onClose }) => {
+const CompareBlock = ({ currentCompareProducts, isOpen, onOpen, onClose, radioValueHandle }) => {
   const [radioValue, setRadioValue] = useState('1')
 
   const setRadioValueHandle = (v) => {
-    setRadioValue(v)
+    radioValueHandle(v)
   }
 
   return (
@@ -49,7 +49,6 @@ const CompareBlock = ({ currentCompareProducts, isOpen, onOpen, onClose }) => {
                         <td key={_product.id}>{_product.title}</td>
                       ))}
                     </tr>
-
                     <tr>
                       <td></td>
                       {currentCompareProducts.map((_product) => (

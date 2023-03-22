@@ -81,7 +81,8 @@ const AllProductsPage = () => {
     types.map((i) => {
       json[i.id.toString()] = []
     })
-    setCompareProducts(json)
+    setCompareProducts({ ...json })
+    console.log('JSON ', json)
   }, [])
 
   const AdminBlock: any = () => {
@@ -245,24 +246,28 @@ const AllProductsPage = () => {
   }
 
   const compare = (product: IJSONProduct, flag: boolean) => {
-    console.log('product: ', product, ' flag: ', flag)
-    let arr = compareProducts[currentTab.id.toString()]
-    console.log('arr: ', arr, 'currentTab.id.toString() ', currentTab.id.toString())
+    console.log('currentTab.id.toString(): ', currentTab.id.toString())
+    let arr = compareProducts
+
+    console.log('arr: ', arr[currentTab.id.toString()])
     if (flag) {
       arr.push(product)
     } else {
       arr = compareProducts[currentTab.id.toString()].filter((i) => i.id !== product.id)
+      console.log('arr ', arr)
     }
-    setCompareProducts({ ...arr })
+    setCompareProducts({ currentTab: arr })
     setAllProducts(
       allProducts.map((_product, i) =>
         product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
       )
     )
     setCompareDisabled(arr.length <= 1)
-    console.log('compare: ', compareProducts[currentTab.id.toString()])
+    console.log('compare: ', compareProducts)
   }
-
+  const radioValueHandle = (v) => {
+    console.log(v)
+  }
   return (
     <>
       <Button onClick={() => handleClick()} m={4} color={'black'} isDisabled={compareDisabled}>
@@ -273,6 +278,7 @@ const AllProductsPage = () => {
         isOpen={isOpen}
         onClose={onClose}
         onOpen={onOpen}
+        radioValueHandle={radioValueHandle}
       />
       <ProductTypesMenu type={types} onChange={tabsChange} />
       <Divider mb={4} />
@@ -285,6 +291,7 @@ const AllProductsPage = () => {
           compare={compare}
         />
       </Wrap>
+      {JSON.stringify(compareProducts)}
       <AdminBlock />
     </>
   )
