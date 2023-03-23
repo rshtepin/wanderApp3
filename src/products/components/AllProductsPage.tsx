@@ -71,14 +71,6 @@ const AllProductsPage = () => {
   const handleClick = () => {
     onOpen()
   }
-
-  const getValue = (id_variable, Product: IJSONProduct) => {
-    const result: any = Product.Variable_value!.filter(
-      (item: any) => item.id_variable === id_variable
-    )
-    if (result.length > 0) return result![0]!.value!
-  }
-
   useEffect(() => {
     let json: any = []
     types.map((i) => {
