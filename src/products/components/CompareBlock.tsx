@@ -14,12 +14,14 @@ import {
 } from '@chakra-ui/react'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import sameFields from 'src/home/helpers/sameFieldsProduct'
+import { IProductGroups } from 'src/types'
 
 const CompareBlock = ({ currentCompareProducts, isOpen, onOpen, onClose, radioValueHandle }) => {
   const [radioValue, setRadioValue] = useState('1')
 
   const setRadioValueHandle = (v) => {
     radioValueHandle(v)
+    setRadioValue(v)
   }
 
   return (

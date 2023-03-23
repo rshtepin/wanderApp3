@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useSession } from '@blitzjs/auth'
@@ -59,7 +60,7 @@ const AllProductsPage = () => {
 
   const [currentTab, setCurrnetTab] = useState<IProductTypes>(types[0]!)
   const [currentProducts, setCurrnetProducts] = useState<IJSONProduct[]>([])
-  const [compareProducts, setCompareProducts] = useState<IJSONProduct[]>([])
+  const [compareProducts, setCompareProducts] = useState<Record<string, IJSONProduct[]>>({})
   const [compareDisabled, setCompareDisabled] = useState<boolean>(true)
   const [show, setShow] = useState(false)
 
@@ -77,7 +78,7 @@ const AllProductsPage = () => {
   }
 
   useEffect(() => {
-    let json: IJSONProduct[] = []
+    let json: any = []
     types.map((i) => {
       json[i.id.toString()] = []
     })
@@ -246,24 +247,30 @@ const AllProductsPage = () => {
   }
 
   const compare = (product: IJSONProduct, flag: boolean) => {
-    console.log('currentTab.id.toString(): ', currentTab.id.toString())
-    let arr = compareProducts
-
-    console.log('arr: ', arr[currentTab.id.toString()])
-    if (flag) {
-      arr.push(product)
-    } else {
-      arr = compareProducts[currentTab.id.toString()].filter((i) => i.id !== product.id)
-      console.log('arr ', arr)
-    }
-    setCompareProducts({ currentTab: arr })
+    setCompareProducts((prevProducts) => {
+      const typeId = product.typeId.toString()
+      const updatedProducts = { ...prevProducts }
+      if (flag) {
+        if (typeId in updatedProducts) {
+          updatedProducts[typeId]!.push(product)
+        } else {
+          updatedProducts[typeId] = [product]
+        }
+      } else {
+        if (typeId in updatedProducts) {
+          updatedProducts[typeId] = updatedProducts[typeId]!.filter(
+            (item) => item.id !== product.id // используем метод filter для удаления элемента из списка
+          )
+        }
+      }
+      setCompareDisabled(updatedProducts[typeId]!.length <= 1)
+      return updatedProducts
+    })
     setAllProducts(
       allProducts.map((_product, i) =>
         product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
       )
     )
-    setCompareDisabled(arr.length <= 1)
-    console.log('compare: ', compareProducts)
   }
   const radioValueHandle = (v) => {
     console.log(v)
