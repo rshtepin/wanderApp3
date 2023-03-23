@@ -86,12 +86,9 @@ const AllProductsPage = () => {
     })
     setCompareProducts({ ...json })
     setCompareShowProducts({ ...json })
-    console.log('JSON ', json)
   }, [])
 
-  useEffect(() => {
-    console.log('   compareProducts  ', compareProducts)
-  }, [compareProducts])
+  useEffect(() => {}, [compareProducts])
 
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
@@ -175,35 +172,27 @@ const AllProductsPage = () => {
     switch (value) {
       case '1': {
         setCompareShowProducts({ ...compareProducts })
-        console.log('compareProducts ', compareProducts)
+
         break
       }
       case '2': {
         const sameF: IJSONProduct[] = sameFields(
           JSON.parse(JSON.stringify(compareProducts[currentTab.id.toString()]))
         )
-        const typeId = currentTab.id.toString()
         setCompareShowProducts((prevProducts) => {
-          const typeId = currentTab.id.toString()
           const updatedProducts = { ...prevProducts }
-          updatedProducts[typeId] = sameF
-
+          updatedProducts[currentTab.id.toString()] = sameF
           return updatedProducts
         })
-
-        console.log(sameF)
         break
       }
       case '3': {
-        console.log('3')
         const diffF: IJSONProduct[] = differentFieldsProduct(
           JSON.parse(JSON.stringify(compareProducts[currentTab.id.toString()]))
         )
-        const typeId = currentTab.id.toString()
         setCompareShowProducts((prevProducts) => {
-          const typeId = currentTab.id.toString()
           const updatedProducts = { ...prevProducts }
-          updatedProducts[typeId] = diffF
+          updatedProducts[currentTab.id.toString()] = diffF
           return updatedProducts
         })
       }
@@ -232,7 +221,7 @@ const AllProductsPage = () => {
           compare={compare}
         />
       </Wrap>
-      {JSON.stringify(compareProducts)}
+
       <AdminBlock />
     </>
   )
