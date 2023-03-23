@@ -1,9 +1,8 @@
 import { IJSONProduct } from 'src/types'
 
-const differentFieldsProduct = (getproducts: IJSONProduct[]): IJSONProduct[] => {
+const differentFieldsProduct = (products: IJSONProduct[]): IJSONProduct[] => {
   const filterIds = new Set<number>() // использование Set вместо массива для id
-  let products = getproducts
-  // Находим id, у которых есть повторяющиеся значения
+  // Находим id, у которых есть отличающиеся значения
   if (products) {
     products.forEach((product) => {
       product.group?.forEach((group) => {
