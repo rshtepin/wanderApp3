@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react'
+import React, { useReducer } from 'react'
 import { useEffect, useState } from 'react'
 import { useSession } from '@blitzjs/auth'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
@@ -22,6 +22,7 @@ import { IJSONProduct, IProduct, IProductGroups, IProductTypes } from 'src/types
 import allDataParser from 'src/home/helpers/allDataParser'
 import sameFields from 'src/home/helpers/sameFieldsProduct'
 import CompareBlock from './CompareBlock'
+import differentFieldsProduct from 'src/home/helpers/differentFieldsProduct'
 
 const AllProductsPage = () => {
   const ITEMS_PER_PAGE = 30
@@ -61,6 +62,7 @@ const AllProductsPage = () => {
   const [currentTab, setCurrnetTab] = useState<IProductTypes>(types[0]!)
   const [currentProducts, setCurrnetProducts] = useState<IJSONProduct[]>([])
   const [compareProducts, setCompareProducts] = useState<Record<string, IJSONProduct[]>>({})
+  const [compareShowProducts, setCompareShowProducts] = useState<Record<string, IJSONProduct[]>>({})
   const [compareDisabled, setCompareDisabled] = useState<boolean>(true)
   const [show, setShow] = useState(false)
 
@@ -83,8 +85,13 @@ const AllProductsPage = () => {
       json[i.id.toString()] = []
     })
     setCompareProducts({ ...json })
+    setCompareShowProducts({ ...json })
     console.log('JSON ', json)
   }, [])
+
+  useEffect(() => {
+    console.log('   compareProducts  ', compareProducts)
+  }, [compareProducts])
 
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
@@ -122,114 +129,6 @@ const AllProductsPage = () => {
     }
   }
 
-  // const CompareBlock = (initialArray: IJSONProduct[]) => {
-  //   const [radioValue, setRadioValue] = useState('1')
-
-  //   const [currentCompareProducts, setCurrentCompareProducts] = useState<IJSONProduct[]>(
-  //     initialArray.initialArray
-  //   )
-
-  //   const getAllFields = () => {
-  //     return initialArray.initialArray
-  //   }
-  //   const getSameFields = () => {
-  //     return sameFields(initialArray.initialArray)
-  //   }
-  //   console.log('initialArray!!!! ', initialArray.initialArray)
-
-  //   useEffect(() => {
-  //     switch (radioValue) {
-  //       case '1':
-  //         setCurrentCompareProducts(getAllFields())
-  //         console.log('1: ', getAllFields())
-
-  //         break
-  //       case '2':
-  //         setCurrentCompareProducts(() => getSameFields())
-  //         console.log('2: ', getSameFields())
-  //         break
-  //       case '3':
-  //         setCurrentCompareProducts(getAllFields())
-  //         console.log('3')
-  //         break
-  //     }
-  //   }, [radioValue])
-
-  //   console.log('currentCompareProducts', currentCompareProducts)
-  //   return (
-  //     <Drawer onClose={onClose} isOpen={isOpen} size={'full'}>
-  //       <DrawerOverlay />
-  //       <DrawerContent bg={'#001d00'}>
-  //         <DrawerCloseButton />
-  //         <DrawerHeader>HEADER</DrawerHeader>
-  //         <DrawerBody>
-  //           <Center>
-  //             <RadioGroup value={radioValue} onChange={setRadioValue}>
-  //               <Stack direction="row">
-  //                 <Radio value="1">Все</Radio>
-  //                 <Radio value="2">Отличия</Radio>
-  //                 <Radio value="3">Одинаковые</Radio>
-  //               </Stack>
-  //             </RadioGroup>
-  //           </Center>
-  //           <Center>
-  //             {currentCompareProducts !== undefined && (
-  //               <Box minH={'100px'} bg={'whiteAlpha.50'}>
-  //                 <table className="compare-product-table">
-  //                   <tbody>
-  //                     <tr className="compare-product-table-head">
-  //                       <td></td>
-  //                       {currentCompareProducts.map((_product) => (
-  //                         <td key={_product.id}>{_product.title}</td>
-  //                       ))}
-  //                     </tr>
-
-  //                     <tr>
-  //                       <td></td>
-  //                       {currentCompareProducts.map((_product) => (
-  //                         <td key={_product.id} className="compare-product-table-logo">
-  //                           <Img
-  //                             w={'150px'}
-  //                             src={process.env.NEXT_PUBLIC_PRODUCT_LOGODIR! + _product.logo}
-  //                             alt=""
-  //                           />
-  //                         </td>
-  //                       ))}
-  //                     </tr>
-  //                     {currentCompareProducts![0]?.group!.map((_group: IProductGroups, i) => (
-  //                       <React.Fragment key={_group.id}>
-  //                         <tr>
-  //                           <td className="compare-product-table-group-title">{_group.title}</td>
-  //                           {currentCompareProducts.map((_product) => (
-  //                             <td
-  //                               key={_product.title}
-  //                               className="compare-product-table-group-title"
-  //                             ></td>
-  //                           ))}
-  //                         </tr>
-  //                         {_group!.field!.map((_field, k) => (
-  //                           <tr key={_field.id}>
-  //                             <td className="compare-product-table-field-title">{_field.title}</td>
-  //                             {currentCompareProducts.map((_product) => (
-  //                               <td key={_product.id} className="compare-product-table-field-value">
-  //                                 {_product!.group![i]!.field![k]!.value!}
-  //                               </td>
-  //                             ))}
-  //                           </tr>
-  //                         ))}
-  //                       </React.Fragment>
-  //                     ))}
-  //                   </tbody>
-  //                 </table>
-  //               </Box>
-  //             )}
-  //           </Center>
-  //         </DrawerBody>
-  //       </DrawerContent>
-  //     </Drawer>
-  //   )
-  // }
-
   useEffect(() => {
     let prodArr: IJSONProduct[] = []
     allProducts.map((product) => {
@@ -259,7 +158,7 @@ const AllProductsPage = () => {
       } else {
         if (typeId in updatedProducts) {
           updatedProducts[typeId] = updatedProducts[typeId]!.filter(
-            (item) => item.id !== product.id // используем метод filter для удаления элемента из списка
+            (item) => item.id !== product.id
           )
         }
       }
@@ -272,8 +171,43 @@ const AllProductsPage = () => {
       )
     )
   }
-  const radioValueHandle = (v) => {
-    console.log(v)
+  const radioValueHandle = (value) => {
+    switch (value) {
+      case '1': {
+        setCompareShowProducts({ ...compareProducts })
+        console.log('compareProducts ', compareProducts)
+        break
+      }
+      case '2': {
+        const sameF: IJSONProduct[] = sameFields(
+          JSON.parse(JSON.stringify(compareProducts[currentTab.id.toString()]))
+        )
+        const typeId = currentTab.id.toString()
+        setCompareShowProducts((prevProducts) => {
+          const typeId = currentTab.id.toString()
+          const updatedProducts = { ...prevProducts }
+          updatedProducts[typeId] = sameF
+
+          return updatedProducts
+        })
+
+        console.log(sameF)
+        break
+      }
+      case '3': {
+        console.log('3')
+        const diffF: IJSONProduct[] = differentFieldsProduct(
+          JSON.parse(JSON.stringify(compareProducts[currentTab.id.toString()]))
+        )
+        const typeId = currentTab.id.toString()
+        setCompareShowProducts((prevProducts) => {
+          const typeId = currentTab.id.toString()
+          const updatedProducts = { ...prevProducts }
+          updatedProducts[typeId] = diffF
+          return updatedProducts
+        })
+      }
+    }
   }
   return (
     <>
@@ -281,7 +215,7 @@ const AllProductsPage = () => {
         Сравнить
       </Button>
       <CompareBlock
-        currentCompareProducts={compareProducts[currentTab.id.toString()]}
+        currentCompareProducts={compareShowProducts[currentTab.id.toString()]}
         isOpen={isOpen}
         onClose={onClose}
         onOpen={onOpen}
