@@ -80,7 +80,9 @@ const AllProductsPage = () => {
     setCompareShowProducts({ ...json })
   }, [])
 
-  useEffect(() => {}, [compareProducts])
+  useEffect(() => {
+    setCompareShowProducts({ ...compareProducts })
+  }, [compareProducts])
 
   const AdminBlock: any = () => {
     if (role == 'ADMIN') {
@@ -145,6 +147,7 @@ const AllProductsPage = () => {
           updatedProducts[typeId] = [product]
         }
       } else {
+        console.log('ID ', product.id)
         if (typeId in updatedProducts) {
           updatedProducts[typeId] = updatedProducts[typeId]!.filter(
             (item) => item.id !== product.id
@@ -154,6 +157,7 @@ const AllProductsPage = () => {
       setCompareDisabled(updatedProducts[typeId]!.length <= 1)
       return updatedProducts
     })
+
     setAllProducts(
       allProducts.map((_product, i) =>
         product.id == _product.id ? { ..._product, isCompare: flag } : { ..._product }
@@ -192,6 +196,7 @@ const AllProductsPage = () => {
   }
   return (
     <>
+      {compareShowProducts[currentTab.id.toString()]?.map((pro) => JSON.stringify(pro.title))}
       <Button onClick={() => handleClick()} m={4} color={'black'} isDisabled={compareDisabled}>
         Сравнить
       </Button>
