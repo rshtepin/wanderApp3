@@ -344,6 +344,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 .product-desription-field li .title {
+  align-self: end;
   max-width: 400px;
   min-width: 300px;
   text-align: left;
@@ -351,6 +352,7 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 }
 
 .product-desription-field li .chapter {
+  align-self: end;
   order: 3;
   text-align: right;
 }
