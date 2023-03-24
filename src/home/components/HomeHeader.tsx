@@ -14,6 +14,7 @@ const HomeHeader = () => {
     { title: 'Услуги', href: '/home/#services' },
     { title: 'Компания', href: '/home/#company' },
     { title: 'Партнеры', href: '/partners' },
+    { title: 'Продукты', href: '/products' },
   ]
   //{ title: 'Редактор', href: '../products/editor/' },
   const NavLink = ({ children, links }) => (
@@ -46,7 +47,7 @@ const HomeHeader = () => {
 
           {session.userId && (
             <Layout>
-              <Link
+              {/* <Link
                 px={2}
                 py={1}
                 rounded={'md'}
@@ -57,19 +58,21 @@ const HomeHeader = () => {
                 href={'/products'}
               >
                 Продукты
-              </Link>
-              <Link
-                px={2}
-                py={1}
-                rounded={'md'}
-                _hover={{
-                  textDecoration: 'none',
-                  bg: '#003d00',
-                }}
-                href={'/products/editor'}
-              >
-                Редактор
-              </Link>
+              </Link> */}
+              {session.role === 'ADMIN' && (
+                <Link
+                  px={2}
+                  py={1}
+                  rounded={'md'}
+                  _hover={{
+                    textDecoration: 'none',
+                    bg: '#003d00',
+                  }}
+                  href={'/products/editor'}
+                >
+                  Редактор
+                </Link>
+              )}
               <Button
                 h={'24px'}
                 colorScheme="red"

@@ -24,5 +24,5 @@ const EditorPage: BlitzPage = () => {
   )
 }
 
-EditorPage.authenticate = { redirectTo: Routes.HomePage() }
+EditorPage.authenticate = { role: 'ADMIN', redirectTo: Routes.HomePage() }
 export default EditorPage
