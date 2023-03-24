@@ -41,8 +41,31 @@ export interface IEditorItem extends IProductFields {
 }
 
 export interface IJSONProduct extends IProduct {
-  group: IProductGroups[]
+  group?: IProductGroups[]
 }
+
+export interface IGPTProduct {
+  id: number
+  logo?: string
+  longdesc?: string
+  order: number
+  shortdesc?: string
+  title: string
+  typeId: number
+  isCompare?: boolean
+  group?: [
+    {
+      id: number
+      typeId: number
+      order: number
+      title: string
+      field?: [
+        { id: number; id_group: number; order: number; title: string; unit: string; value?: any }
+      ]
+    }
+  ]
+}
+
 export interface IProduct extends Product {
   id: number
   logo?: string
@@ -65,7 +88,7 @@ export interface IProductGroups extends Field_group {
   typeId: number
   order: number
   title: string
-  field: IProductFields[]
+  field?: IProductFields[]
 }
 
 export interface IProductFields extends Product_variable {

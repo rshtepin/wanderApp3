@@ -23,22 +23,20 @@ export const Product = () => {
     skip: 0 * pagination.page,
     take: 100,
   })
-  const groups = usePaginatedQuery(getAllGroupFields, {
-    productType: Product.typeId,
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
   })
-  console.log('groups')
-  console.log(groups)
+
   useEffect(() => {
     let mystate: IProductGroups[] = []
-    groups[0].map((itemG: IProductGroups) => {
+    groups.map((itemG: any) => {
       const addFileds: IProductFields[] = []
       fields.map((itemF: IProductFields) => {
         itemF.id_group == itemG.id ? addFileds.push(itemF) : {}
       })
-      mystate.push({ ...itemG, fields: addFileds })
+      mystate.push({ ...itemG, field: addFileds })
     })
     setFieldGroups(mystate)
   }, [])
@@ -81,7 +79,7 @@ export const Product = () => {
                 <Center w={'100%'}>
                   <Box width={'98%'}>
                     <ul className="product-desription-field">
-                      {group.fields!.map((item: IProductFields) => (
+                      {group.field!.map((item: IProductFields) => (
                         <ProductPropField key={item.id} field={item} value={getValue(item.id)} />
                       ))}
                     </ul>

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation, usePaginatedQuery, useQuery } from '@blitzjs/rpc'
 import { Heading, VStack } from '@chakra-ui/react'
 import { EditorTypesMenu } from 'src/products/Editor/components/EditorTypesMenu'
@@ -7,14 +7,7 @@ import getAllFields from 'src/products/queries/getAllFields'
 import getProductGroups from 'src/products/queries/getProductGroups'
 
 import getTypes from 'src/products/queries/getTypes'
-import {
-  IEditorGroup,
-  IEditorItem,
-  IEditorTab,
-  IEditorUI,
-  IProductFields,
-  IProductTypes,
-} from 'src/types'
+import { IEditorGroup, IEditorItem, IEditorTab, IEditorUI, IProductFields } from 'src/types'
 import addUpdateProductField from '../mutations/addUpdateProductField'
 import addUpdateProductGroup from '../mutations/addUpdateProductGroup'
 import addUpdateProductType from '../mutations/addUpdateProductType'
@@ -22,12 +15,10 @@ import delProductField from '../mutations/delProductField'
 import delProductGroup from '../mutations/delProductGroup'
 import delProductType from '../mutations/delProductType'
 import EditorGroups from './EditorGroups'
-import { type } from 'os'
-import { title } from 'process'
 
 const EditorUI = () => {
   const [{ types }] = usePaginatedQuery(getTypes, { orderBy: { order: 'asc' } })
-  const _groups = useQuery(getProductGroups, {})
+  const [{ groups }] = useQuery(getProductGroups, {})
   const [{ fields }] = usePaginatedQuery(getAllFields, { orderBy: { order: 'asc' } })
 
   const [updProductTypeMutation] = useMutation(addUpdateProductType)
@@ -49,13 +40,12 @@ const EditorUI = () => {
     EditorTab = types!.map((v: any, i) => {
       EditorTab[i] = v
       EditorTab[i]!['group'] = []
-      _groups[0].map((group: IEditorGroup, k) => {
+      groups.map((group: IEditorGroup, k) => {
         if (group.typeId == v.id) {
           EditorTab[i]!.group!.push(group)
-          EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!['field'] = []
+          EditorTab[i]!.group![k]!['field'] = []
           fields.map((field, j) => {
-            if (field.id_group == group.id)
-              EditorTab[i]!.group![EditorTab[i]!.group!.indexOf(group)]!.field.push(field)
+            if (field.id_group == group.id) EditorTab[i]!.group![k]!.field.push(field)
           })
         }
       })

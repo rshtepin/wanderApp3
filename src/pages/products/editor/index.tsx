@@ -11,11 +11,9 @@ const EditorPage: BlitzPage = () => {
     <>
       <Center>
         <Box w={'75%'} maxW={'1200px'}>
-          <Suspense>
+          <Suspense fallback={'...'}>
             <HomeHeader />
           </Suspense>
-
-          <Suspense fallback={'...'}>{/* <HomeHeader /> */}</Suspense>
 
           <Suspense fallback={<div>Загружается </div>}>
             <EditorUI />
@@ -26,5 +24,5 @@ const EditorPage: BlitzPage = () => {
   )
 }
 
-EditorPage.authenticate = { redirectTo: Routes.HomePage() }
+EditorPage.authenticate = { role: 'ADMIN', redirectTo: Routes.HomePage() }
 export default EditorPage
