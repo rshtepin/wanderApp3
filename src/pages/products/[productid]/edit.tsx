@@ -43,7 +43,7 @@ export const Product = () => {
     skip: 0,
     take: 100,
   })
-  const groups = usePaginatedQuery(getAllGroupFields, {
+  const [{ groups }] = usePaginatedQuery(getAllGroupFields, {
     orderBy: { order: 'asc' },
     skip: 0 * pagination.page,
     take: 100,
@@ -60,7 +60,7 @@ export const Product = () => {
   )
   useEffect(() => {
     let mystate: IProductGroups[] = []
-    groups[0].map((itemG: any) => {
+    groups.map((itemG: any) => {
       const addFileds: IProductFields[] = []
       fields.map((itemF) => {
         itemF.id_group == itemG.id ? addFileds.push(itemF) : {}
