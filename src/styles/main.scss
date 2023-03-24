@@ -345,11 +345,14 @@ $backgroundImageProduct: 'https://i2.wp.com/background4free.com/download/green_b
 
 .product-desription-field li .title {
   max-width: 400px;
+  min-width: 300px;
+  text-align: left;
   order: 1;
 }
 
 .product-desription-field li .chapter {
   order: 3;
+  text-align: right;
 }
 
 .product-desription-field li::after {
