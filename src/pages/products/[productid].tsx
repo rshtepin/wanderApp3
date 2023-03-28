@@ -12,6 +12,7 @@ import { usePagination } from 'src/core/hooks/usePagination'
 import getAllGroupFields from 'src/products/queries/getProductGroups'
 import { BlitzPage } from '@blitzjs/auth'
 import { IProductFields, IProductFieldValues, IProductGroups } from 'src/types'
+import HomeHeader from 'src/home/components/HomeHeader'
 
 export const Product = () => {
   const [fieldGroups, setFieldGroups] = useState<IProductGroups[]>([])
@@ -98,6 +99,11 @@ const ShowProductPage: BlitzPage = () => {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
+        <Center>
+          <Box width={'1200px'}>
+            <HomeHeader />
+          </Box>
+        </Center>
         <Product />
       </Suspense>
     </>
