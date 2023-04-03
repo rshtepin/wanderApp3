@@ -233,29 +233,6 @@ const HomeBody = () => {
                     <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
                   </UnorderedList>
                 </ListItem>
-
-                <ListItem minW={'150px'} maxW={'360px'}>
-                  <Text
-                    textAlign={'left'}
-                    fontWeight={700}
-                    fontSize={width! > 800 ? '32px' : '30px'}
-                    paddingTop={'8px'}
-                    paddingBottom={'6px'}
-                    marginRight={'20px'}
-                  >
-                    ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ
-                  </Text>
-                  <Box h={'3px'} w={'100%'} bg={'white'}></Box>
-                  <UnorderedList textAlign={'left'} fontSize={width! > 800 ? '18px' : '16px'}>
-                    <ListItem>оценка кибербезопасности инфраструктуры</ListItem>
-                    <ListItem>анализ защищенности приложений</ListItem>
-                    <ListItem>обучение персонала в области ИБ</ListItem>
-                    <ListItem>разработка стратегии развития ИБ</ListItem>
-                    <ListItem>приведение в соответствие требованиям законодательства</ListItem>
-                    <ListItem>импортозамещение средств ИБ</ListItem>
-                    <ListItem>мониторинг безопасности и управление инцидентами ИБ</ListItem>
-                  </UnorderedList>
-                </ListItem>
               </Wrap>
             </List>
           </Box>
