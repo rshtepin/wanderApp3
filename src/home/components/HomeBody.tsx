@@ -39,7 +39,7 @@ const HomeBody = () => {
           <Player autoplay loop src="/media/images/landing/logoStarAnimation.json"></Player>
         </Stack>
         <Box h={'2px'} w={'60%'} bg={'#05fe5f'} mb={2}></Box>
-        <Text fontSize={20} color={'#05fe5f'} mb={4}>
+        <Text fontSize={20} color={'#05fe5f'} mb={width! > 800 ? '4' : '8'}>
           Креативная IT компания
         </Text>
         <Box>
@@ -48,46 +48,81 @@ const HomeBody = () => {
               Ключевые партнеры
             </Center>
           </GridItem>
-          <Grid templateColumns="repeat(3, 2fr)" gap={6} alignItems={'baseline'}>
+          <Grid
+            templateColumns={width! > 800 ? 'repeat(3, 2fr)' : 'repeat(2, 3fr)'}
+            gap={6}
+            alignItems={'baseline'}
+            mb={width! > 800 ? '0' : '8'}
+          >
             <GridItem w="100%" h="10">
               <Link href="https://it-bastion.com/">
                 <Center>
-                  <Image w="50%" src={LogoITBastion} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoITBastion}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
             <GridItem w="100%" h="10">
               <Link href="https://searchinform.ru/">
                 <Center>
-                  <Image w="50%" src={LogoSearchInform} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoSearchInform}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
             <GridItem w="100%" h="10">
               <Link href="https://r7-office.ru/">
                 <Center>
-                  <Image w="50%" src={LogoR7Office} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoR7Office}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
             <GridItem w="100%" h="10">
               <Link href="https://rdwcomp.ru/">
                 <Center>
-                  <Image w="50%" src={LogoRDW} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoRDW}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
             <GridItem w="100%" h="10">
               <Link href="https://www.depo.ru/">
                 <Center>
-                  <Image w="50%" src={LogoDepoComp} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoDepoComp}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
             <GridItem w="100%" h="10">
               <Link href="https://graviton.ru/">
                 <Center>
-                  <Image w="50%" src={LogoGraviton} className="img-desaturate" alt="" />
+                  <Image
+                    w={width! > 800 ? '50%' : '90%'}
+                    src={LogoGraviton}
+                    className="img-desaturate"
+                    alt=""
+                  />
                 </Center>
               </Link>
             </GridItem>
@@ -98,10 +133,14 @@ const HomeBody = () => {
             <Image w={'50%'} src="/media/images/landing/photo.svg" alt=""></Image>
             <Center>
               <VStack textAlign={'left'}>
-                <Text fontSize={'36px'} fontWeight={'500'} color={'#00fe5f'}>
+                <Text
+                  fontSize={width! > 800 ? '36px' : '26px'}
+                  fontWeight={'500'}
+                  color={'#00fe5f'}
+                >
                   ИНТЕГРАЦИИ
                 </Text>
-                <Text fontSize={'20px'} fontWeight={'300'}>
+                <Text fontSize={width! > 800 ? '20px' : '16px'} fontWeight={'300'}>
                   Проектирование ИТ/ИБ инфраструктуры. Партнерские отношениям с лидерами отрасли ИТ
                   и ИБ.
                 </Text>
@@ -113,10 +152,14 @@ const HomeBody = () => {
           <HStack>
             <Center>
               <VStack textAlign={'left'}>
-                <Text fontSize={'36px'} fontWeight={'500'} color={'#00fe5f'}>
+                <Text
+                  fontSize={width! > 800 ? '36px' : '26px'}
+                  fontWeight={'500'}
+                  color={'#00fe5f'}
+                >
                   САЙТЫ И СЕРВИСЫ
                 </Text>
-                <Text fontSize={'20px'} fontWeight={'300'}>
+                <Text fontSize={width! > 800 ? '20px' : '16px'} fontWeight={'300'}>
                   Аналитика, исследования. Проектирование UI/UX. Адаптивный дизайн. Верстка.
                   Разработка логики, интеграция шаблонов с CMS. Внедрение. Наполнение контентом.
                   Тестирование. Поддержка.
@@ -131,10 +174,14 @@ const HomeBody = () => {
             <Image w={'50%'} src="/media/images/landing/photo3.svg" alt=""></Image>
             <Center>
               <VStack textAlign={'left'}>
-                <Text fontSize={'36px'} fontWeight={'500'} color={'#00fe5f'}>
+                <Text
+                  fontSize={width! > 800 ? '36px' : '26px'}
+                  fontWeight={'500'}
+                  color={'#00fe5f'}
+                >
                   БРЕНДИНГ И АЙДЕНТИКА
                 </Text>
-                <Text fontSize={'20px'} fontWeight={'300'}>
+                <Text fontSize={width! > 800 ? '20px' : '16px'} fontWeight={'300'}>
                   Брендбук. Дизайн-код. Фирменный стиль. Платформа бренда.
                 </Text>
               </VStack>
@@ -145,10 +192,14 @@ const HomeBody = () => {
           <HStack>
             <Center>
               <VStack textAlign={'left'}>
-                <Text fontSize={'36px'} fontWeight={'500'} color={'#00fe5f'}>
+                <Text
+                  fontSize={width! > 800 ? '36px' : '26px'}
+                  fontWeight={'500'}
+                  color={'#00fe5f'}
+                >
                   BIM-моделирование
                 </Text>
-                <Text fontSize={'20px'} fontWeight={'300'}>
+                <Text fontSize={width! > 800 ? '20px' : '16px'} fontWeight={'300'}>
                   Информационное моделирование объектов капитального строительства по вашему
                   стандарту. Внедрение и консультирование, поддержка.
                 </Text>
@@ -158,10 +209,10 @@ const HomeBody = () => {
           </HStack>
         </Box>
         <Box mb={16} textAlign="center">
-          <Text fontSize={'36px'} fontWeight={'500'} color={'#00fe5f'}>
+          <Text fontSize={width! > 800 ? '36px' : '26px'} fontWeight={'500'} color={'#00fe5f'}>
             СЕРВИС РАЗРАБОТКИ ЦИФРОВЫХ ПЛАТФОРМ
           </Text>
-          <Text fontSize={'20px'} fontWeight={'300'} mb={12}>
+          <Text fontSize={width! > 800 ? '20px' : '16px'} fontWeight={'300'} mb={12}>
             Мы предлагаем вашему бизнесу полный набор инструментов управления проектами продуктовой
             разработки
           </Text>
@@ -169,17 +220,17 @@ const HomeBody = () => {
         <Center id="company">
           <Box mb={16} textAlign="center">
             <Text
-              fontSize={width! > 800 ? '42px' : '36px'}
+              fontSize={width! > 800 ? '36px' : '26px'}
               fontWeight={600}
               color={'rgb(0, 254, 95)'}
             >
               DW ИНТЕГРАЦИЯ
             </Text>
             <Text
-              fontSize={width! > 800 ? '24px' : '20px'}
+              fontSize={width! > 800 ? '20px' : '16px'}
               fontWeight={300}
               lineHeight={1.5}
-              mb={4}
+              mb={6}
             >
               Портфель DW содержит современные решения, применение которых обеспечивает комплексную
               оптимизацию затрат на ИТ, а также снижение рисков, связанных с непрерывностью бизнеса

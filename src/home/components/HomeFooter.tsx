@@ -1,13 +1,15 @@
 import { Center, HStack, Image, Text } from '@chakra-ui/react'
 import React from 'react'
+import useDeviceSize from '../helpers/useDeviceSize'
 
 const HomeFooter = () => {
+  const [width, height] = useDeviceSize()
   const LogoText = 'media/images/landing/dw-04.svg'
   return (
     <Center w={'100%'} bg={'#171717'} p={10} paddingTop={'50px'} paddingBottom={'75px'}>
       <HStack w={'100%'} justifyContent={'space-between'}>
-        <Image src={LogoText} alt="" maxW={'150px'}></Image>
-        <Text textAlign={'center'}>
+        <Image src={LogoText} alt="" width={width! > 800 ? '150px' : '90px'} maxW={'150px'}></Image>
+        <Text textAlign={'center'} fontSize={width! > 800 ? '16px' : '10px'}>
           © Digital Wonder <br /> ООО «ДИДЖИТАЛ ВАНДЕР» / ИНН 7203542555 / ОГРН 1227200013655 <br />
           625000 г. Тюмень, ул. Дзержинского, 15, 3 этаж
         </Text>
