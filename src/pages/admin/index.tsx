@@ -8,5 +8,5 @@ const Admin: BlitzPage = () => {
   return <></>
 }
 Admin.authenticate = { redirectTo: Routes.LoginP() }
-Admin.redirectAuthenticatedTo = Routes.HomePage()
+Admin.redirectAuthenticatedTo = Routes.Index()
 export default Admin
