@@ -38,5 +38,4 @@ function MyApp({ Component, pageProps }: AppProps) {
     </ChakraProvider>
   )
 }
-
 export default withBlitz(MyApp)
