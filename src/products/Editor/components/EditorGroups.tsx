@@ -17,7 +17,6 @@ interface EditorGroupsProps {
   updField: (field: IEditorItem) => void
   delField: (field: IEditorItem) => void
 }
-
 function EditorGroups({
   groups,
   reorderGroups,
